@@ -79,9 +79,13 @@
 	*------------------------------------------------------------*/
 	var bpxpj_csvData = new Array();
 	jQuery(document).on('change' , "#bpxp_import_file" , function(e){
+		jQuery('.bpxp-maping').remove();
+		jQuery('.bpxp-error-data').remove();
+		jQuery('.bpxp-success-data').remove();
 		var bpxpj_ext = jQuery("input#bpxp_import_file").val().split(".").pop().toLowerCase();
 
 		if(jQuery.inArray(bpxpj_ext, ["csv"]) == -1) {
+			jQuery('#bpxp-fields-maping').remove();
 			jQuery('#bpxp_import_message').addClass('bpxp-error-message');
 			jQuery('#bpxp_import_message').html('Please Select CSV File.');
 			return false;
@@ -142,7 +146,8 @@
 				    },
 				    function(response) {
 				       	console.log(response);
-				       	jQuery('.bpxp-limit').before(response); 
+				       	jQuery('.bpxp-limit').before(response);
+				       	jQuery('.bpxp-maping').remove(); 
 				       	//alert(tempChunk + 'Member data import do you want import another ' + tempChunk);
 				       	jQuery('.bpxp-admin-button-spinner').css('display' , 'none');                      
 				    }

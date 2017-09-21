@@ -88,8 +88,8 @@ class Bp_Xprofile_Import_Admin_Ajax {
 				* in Member impor page
 				*/
 				$currentGroup = '';
-				$currentGroup .= '<div class="bpxp-admin-row">';
-				$currentGroup .= '<table class="bpxp-admin-table">';
+				$currentGroup .= '<div class="bpxp-admin-row bpxp-maping">';
+				$currentGroup .= '<table class="bpxp-admin-table" id="bpxp-fields-maping">';
 				$currentGroup .= '<tr><th>Current xProfile Group Fields</th>';
 				$currentGroup .= '<th>Exported xProfile Group Fields</th></tr>';
 				foreach($bpxp_fields_group as $bpxp_index => $bpxp_fields){
@@ -204,23 +204,14 @@ class Bp_Xprofile_Import_Admin_Ajax {
 				$bpxp_import_update_message = array();
 				$bpxp_import_success_message = array();
 				$bpxp_grp_msg = array();
-				
+				$bpxp_pass   = array();
 				foreach($bpxp_users_data as $bpxp_user){
 					$flage = false;
 					if(!empty($bpxp_user)){
 						$bpxp_userArr = array();
-						$bpxp_userPass = array();
-						if(array_key_exists('user_email', $bpxp_user)){
-							$flage = true;
-						}else{
-							$flage = false;
-						}
+						$bpxp_userPass = '';
+						
 						foreach($bpxp_user as $fieldsKey => $fieldsValue){
-							$userPass = '';
-							if($fieldsKey == 'user_pass' && !empty($fieldsValue)){
-								$bpxp_userPass[] = $fieldsValue;
-							}
-							$bpxp_role = '';
 							/* Check if user already exists */
 							if($fieldsKey == 'user_login' && !empty($fieldsValue)){
 								$user_id 	= username_exists( $fieldsValue );
@@ -228,9 +219,10 @@ class Bp_Xprofile_Import_Admin_Ajax {
 							}
 							/* Create user if not exists */
 							if($fieldsKey == 'user_email' && !empty($fieldsValue)){
+								$bpxp_userID = '';
 								if(empty($user_id) && email_exists($fieldsValue) == false){
-									/* Generate password */
-									$bpxp_password 	= wp_generate_password( $length=12, $include_standard_special_chars=false );
+									$bpxp_password 	= wp_generate_password( $length=12, $include_standard_special_chars=false );/* Generate password */
+									
 									$user_email 	= $fieldsValue;
 									$bpxp_userID 	= wp_create_user( $user_name, $bpxp_password, $user_email );
 									$bpxp_userArr[$bpxp_userID ] = $bpxp_userID;
@@ -248,6 +240,11 @@ class Bp_Xprofile_Import_Admin_Ajax {
 										$bpxp_import_error_message[] = $fieldsValue;
 									}
 								}
+								/* store password */
+								if($bpxp_userID){
+									$bpxp_pass[$bpxp_userID] = $bpxp_user['user_pass'];
+								}
+								
 							}
 							/**
 							* Update user meta fields
@@ -257,6 +254,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 								if($fieldsKey == 'user_role' && !empty($fieldsValue)){
 									$id = wp_update_user( array( 'ID' => $bpxp_userID, 'role' => $fieldsValue ) );
 								}
+						
 								/* update user meta usre nice name */ 
 								if($fieldsKey == 'user_nicename' && !empty($fieldsValue)){
 									wp_update_user( array( 'ID' => $bpxp_userID, 'user_nicename', $fieldsValue)); 
@@ -268,20 +266,20 @@ class Bp_Xprofile_Import_Admin_Ajax {
 								/* Create password */
 								if($fieldsKey == 'group_name' && !empty($fieldsValue)){
 									$bpxp_grp_msg[] = $this->bpxpd_add_members_to_group($fieldsValue , $bpxp_userID);
-								}
+								}							
 							}
 						}
 					}
 					/* update user xprofile fields */
 					if(!empty($bpxp_userArr)){
-					$bpxp_xprofielID = $this->bpxp_update_user_xprofile_fields($bpxp_userArr , $bpxp_fields_maping , $bpxp_user);
-						if(!empty($bpxp_userPass)){
-							$id = $this->bpxp_update_user_password($bpxp_userArr , $bpxp_userPass);
-						}
+						$bpxp_xprofielID = $this->bpxp_update_user_xprofile_fields($bpxp_userArr , $bpxp_fields_maping , $bpxp_user);
+					}
+					
+					if(!empty($bpxp_pass)){
+						$this->bpxp_update_user_password($bpxp_pass);
 					}
 				}
 			}
-
 			$this->bpxp_import_admin_notice($bpxp_grp_msg,'group_create');
 			$this->bpxp_import_admin_notice($bpxp_import_update_message,'user_update');
 			$this->bpxp_import_admin_notice($bpxp_import_error_message,'user_exists');
@@ -322,7 +320,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 					$boxCls 		= 'bpxp-success-message bpxp-message';
 					break;
 				case 'group_create':
-					$bpxpMsg 		= ' Groups Not exists ! ';
+					$bpxpMsg 		= ' does not exist! ';
 					$containerCls 	= 'bpxp-error-data';
 					$boxCls 		= 'bpxp-error-message bpxp-message';
 					break;
@@ -341,12 +339,17 @@ class Bp_Xprofile_Import_Admin_Ajax {
 					foreach($bpxpNotice as $key => $notice){
 						if(is_array($notice)){
 							foreach($notice as $grpNotice){
-								echo '<div class="'.$containerCls.'">';
-								_e('<p class="'.$boxCls.'">'. $grpNotice .' '. $bpxpMsg .'<a href="javascript:void(0)" class="bpxp-close">x</a></p></p>' , BPXP_TEXT_DOMAIN);
-								echo '</div>';
+								if($grpNotice != $groups){
+									echo '<div class="'.$containerCls.'">';
+									_e('<p class="'.$boxCls.'"> Profile field group '. $grpNotice .' '. $bpxpMsg .'<a href="javascript:void(0)" class="bpxp-close">x</a></p></p>' , BPXP_TEXT_DOMAIN);
+									echo '</div>';
+								}
+								
+								$groups = $grpNotice; 
 							}
 						}else{
 							echo '<div class="'.$containerCls.'">';
+
 							_e('<p class="'.$boxCls.'">'. $notice .' '. $bpxpMsg .' <a href="javascript:void(0)" class="bpxp-close">x</a></p>' , BPXP_TEXT_DOMAIN);
 							echo '</div>';
 						}
@@ -365,15 +368,13 @@ class Bp_Xprofile_Import_Admin_Ajax {
 	* @author   Wbcom Designs
 	* @return   string 
 	*/
-	public function bpxp_update_user_password($bpxpUID , $bpxpUserPass){
-		if(!empty($bpxpUID) && !empty($bpxpUserPass)){
-			foreach($bpxpUID as $idKey => $idVal){
-				if(!empty($bpxpUserPass)){
-					foreach($bpxpUserPass as $passKey => $passVal){
-						 global $wpdb;
-						$insert = $wpdb->query(" UPDATE `wp_users` SET `user_pass` = '$passVal' WHERE `ID` = '$idVal' ");
-					}
-				}	
+	public function bpxp_update_user_password($bpxp_pass){
+		if(!empty($bpxp_pass)){
+			global $wpdb;
+			$usertbl = $wpdb->prefix . 'users';
+			foreach($bpxp_pass as $id => $pass){
+				$wpdb->update($usertbl , array('user_pass' => $pass, 'user_activation_key' => ''), array('ID' => $id) );
+				wp_cache_delete($bpxpUID, 'users');
 			}
 		}
 	}

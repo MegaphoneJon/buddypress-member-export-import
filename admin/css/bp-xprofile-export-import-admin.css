@@ -105,7 +105,9 @@
 /*----------------------------------------------
  Maping group fields css on member import page admin
 -----------------------------------------------*/
-
+.bpxp-maping{
+  padding-top:0px!important;
+}
 .bpxp-admin-table{
   width:70%;
   margin:0px 10px;
