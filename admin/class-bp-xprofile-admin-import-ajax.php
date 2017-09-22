@@ -374,7 +374,9 @@ class Bp_Xprofile_Import_Admin_Ajax {
 			$usertbl = $wpdb->prefix . 'users';
 			foreach($bpxp_pass as $id => $pass){
 				$wpdb->update($usertbl , array('user_pass' => $pass, 'user_activation_key' => ''), array('ID' => $id) );
-				wp_cache_delete($bpxpUID, 'users');
+				wp_cache_delete($id, 'users');
+				$date = date('Y-m-d h:i:m');
+				update_user_meta($id , 'last_activity' , $date );
 			}
 		}
 	}
