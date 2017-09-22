@@ -94,7 +94,6 @@ class Bp_Xprofile_Export_Admin_Ajax {
 						}
 					} 
 				}
-			}else{
 			}
 			_e($bpxp_set_fields , BPXP_TEXT_DOMAIN);
 			die;
@@ -179,6 +178,8 @@ class Bp_Xprofile_Export_Admin_Ajax {
 	* @since    1.0.0
 	* @access   public
 	* @author   Wbcom Designs
+	* @param 	Array $arrayData csv data
+	* @param 	Array $arrayType csv data type
 	* @return   Array  Remove extra header fields from CSV
 	*/
 	public function bpxp_remove_array_value($arrayData , $arrayType){
@@ -221,7 +222,8 @@ class Bp_Xprofile_Export_Admin_Ajax {
 	* @since    1.0.0
 	* @access   public
 	* @author   Wbcom Designs
-	* @return   Array  Return user group data details
+	* @param    array $groupID group id 
+	* @return   Array  $bpxp_members_group Return user group data details
 	*/
 	public function bpxp_get_group_data($groupID){
 		if(!empty($groupID)){
@@ -234,7 +236,7 @@ class Bp_Xprofile_Export_Admin_Ajax {
 					$tempName[] 	= $bpxp_groups->name;
 				}
 			}
-			$bpxp_members_group['group_name'] 			= implode(" - ", $tempName);
+			$bpxp_members_group['group_name'] = implode(" - ", $tempName);
 		}
 		return $bpxp_members_group;
 	}

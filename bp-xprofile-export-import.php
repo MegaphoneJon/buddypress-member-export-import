@@ -35,28 +35,6 @@ if (!defined('ABSPATH')) exit; // Exit if accessed directly
 	define('BPXP_PLUGIN_PATH', plugin_dir_path(__FILE__));
 	define('BPXP_PLUGIN_URL', plugin_dir_url(__FILE__));
 	define('BPXP_TEXT_DOMAIN', 'bp-xprofile-export-import');
-
-
-if ( !function_exists( 'bpxp_plugin_activation' ) ) {
-
-	register_activation_hook(__FILE__, 'bpxp_plugin_activation');
-
-	/**
-	* Plugin Activation hooks
-	*
-	* @author 	Wbcom Designs
-	* @since    1.0.0
-	*/
-	function bpxp_plugin_activation()
-	{
-		/* Check if "Buddypress" plugin is active or not */
-		if (!in_array('buddypress/bp-loader.php', apply_filters('active_plugins', get_option('active_plugins')))) {
-
-			// Buddypress Plugin is inactive, hence deactivate this plugin
-			deactivate_plugins(plugin_basename(__FILE__));
-		}
-	}
-}
 	
 if ( !function_exists( 'bpxp_plugins_files' ) ) {
 
@@ -87,7 +65,7 @@ if ( !function_exists( 'bpxp_admin_notice' ) ) {
 	function bpxp_admin_notice() {
 	    ?>
 	    <div class="error notice is-dismissible">
-	        <p><?php _e( 'The <b>BP X-Profile Export Import </b> plugin requires <b>Buddypress</b> plugin to be installed and active', BPXP_TEXT_DOMAIN ); ?></p>
+	        <p><?php _e( 'The <b>Buddypress Member Export Import </b> plugin requires <b>Buddypress</b> plugin to be installed and active', BPXP_TEXT_DOMAIN ); ?></p>
 	    </div>
 	    <?php
 	}

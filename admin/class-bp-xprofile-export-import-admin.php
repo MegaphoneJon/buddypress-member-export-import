@@ -76,9 +76,9 @@ class Bp_Xprofile_Export_Import_Admin {
 		 * class.
 		 */
 		add_menu_page('Members Data' ,'Members Data','manage_options', 'bpxp-member-export', array($this, 'bpxp_dashboard_page' ),'dashicons-download');
-		add_submenu_page('bpxp-member-export', 'Members Export' , 'Members Export', 'manage_options' , 'bpxp-member-export');
-        add_submenu_page( 'bpxp-member-export', 'Members Import', 'Members Import',
-    'manage_options', 'bpxp-member-import' , array($this , 'bpxp_import_data_page'));
+		add_submenu_page('bpxp-member-export', 'Export Members' , 'Export Members', 'manage_options' , 'bpxp-member-export');
+        add_submenu_page( 'bpxp-export-member', 'Import Members', 'Import Members',
+    'manage_options', 'bpxp-import-member' , array($this , 'bpxp_import_data_page'));
 
 	}
 
