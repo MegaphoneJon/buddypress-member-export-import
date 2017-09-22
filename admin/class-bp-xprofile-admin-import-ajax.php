@@ -265,7 +265,11 @@ class Bp_Xprofile_Import_Admin_Ajax {
 								}
 								/* Create password */
 								if($fieldsKey == 'group_name' && !empty($fieldsValue)){
-									$bpxp_grp_msg[] = $this->bpxpd_add_members_to_group($fieldsValue , $bpxp_userID);
+									$grpName = '';
+									$grpName = $this->bpxpd_add_members_to_group($fieldsValue , $bpxp_userID);
+									if(!in_array($grpName , $bpxp_grp_msg)){
+										$bpxp_grp_msg[] = $grpName;
+									}
 								}							
 							}
 						}
@@ -280,7 +284,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 					}
 				}
 			}
-			$this->bpxp_import_admin_notice($bpxp_grp_msg,'group_create');
+			$this->bpxp_import_grp_admin_notice($bpxp_grp_msg);
 			$this->bpxp_import_admin_notice($bpxp_import_update_message,'user_update');
 			$this->bpxp_import_admin_notice($bpxp_import_error_message,'user_exists');
 			$this->bpxp_import_admin_notice($bpxp_import_success_message,'user_create');
@@ -289,7 +293,20 @@ class Bp_Xprofile_Import_Admin_Ajax {
 	}
 
 	
-
+	function bpxp_import_grp_admin_notice($bpxpNotice){
+		if(!empty($bpxpNotice)){
+			if(is_array($bpxpNotice)){
+				foreach($bpxpNotice as $key => $notice){
+					echo '<div class="bpxp-error-data">';
+					echo '<p class="bpxp-error-message bpxp-message">';
+					_e('Profile field group '. $notice .' does not exist! ' , BPXP_TEXT_DOMAIN);
+					echo '<a href="javascript:void(0)" class="bpxp-close">x</a></p>';
+					echo '</div>';
+				}
+				
+			}
+		}
+	}
 	/**
 	* Display admin notice in import member page
 	*
@@ -319,11 +336,6 @@ class Bp_Xprofile_Import_Admin_Ajax {
 					$containerCls 	= 'bpxp-success-data';
 					$boxCls 		= 'bpxp-success-message bpxp-message';
 					break;
-				case 'group_create':
-					$bpxpMsg 		= ' does not exist! ';
-					$containerCls 	= 'bpxp-error-data';
-					$boxCls 		= 'bpxp-error-message bpxp-message';
-					break;
 				case 'rong_data':
 					$bpxpMsg 		= ' ';
 					$containerCls 	= 'bpxp-error-data';
@@ -337,23 +349,11 @@ class Bp_Xprofile_Import_Admin_Ajax {
 				if(is_array($bpxpNotice)){
 					$groups = ' ';
 					foreach($bpxpNotice as $key => $notice){
-						if(is_array($notice)){
-							foreach($notice as $grpNotice){
-								if($grpNotice != $groups){
-									echo '<div class="'.$containerCls.'">';
-									_e('<p class="'.$boxCls.'"> Profile field group '. $grpNotice .' '. $bpxpMsg .'<a href="javascript:void(0)" class="bpxp-close">x</a></p></p>' , BPXP_TEXT_DOMAIN);
-									echo '</div>';
-								}
-								
-								$groups = $grpNotice; 
-							}
-						}else{
-							echo '<div class="'.$containerCls.'">';
-
-							_e('<p class="'.$boxCls.'">'. $notice .' '. $bpxpMsg .' <a href="javascript:void(0)" class="bpxp-close">x</a></p>' , BPXP_TEXT_DOMAIN);
-							echo '</div>';
-						}
-						
+						echo '<div class="'.$containerCls.'">';
+						echo '<p class="'.$boxCls.'">';
+						_e($notice .' '. $bpxpMsg , BPXP_TEXT_DOMAIN);
+						echo '<a href="javascript:void(0)" class="bpxp-close">x</a></p>';
+						echo '</div>';
 					}
 				}
 			}
@@ -388,7 +388,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 	* @return   string 
 	*/
 	public function bpxpd_add_members_to_group($bpxpcsvGroups , $memberID){
-		$groupMsg = array();
+		$groupMsg = '';
 		if (!empty($bpxpcsvGroups) && strpos($bpxpcsvGroups , " - ") !== false) {
 			$bpxpGrpArr = explode(" - ",$bpxpcsvGroups);
 			foreach($bpxpGrpArr as $grp){
@@ -398,7 +398,8 @@ class Bp_Xprofile_Import_Admin_Ajax {
 					if(!empty($grpID) && !empty($memberID)){
 						groups_join_group( $grpID , $memberID);
 					}else{
-						$groupMsg[] = $grp;
+						$groupMsg = $grp;
+						return $groupMsg;
 					}
 				}
 			}
@@ -409,11 +410,12 @@ class Bp_Xprofile_Import_Admin_Ajax {
 				if(!empty($grpID) && !empty($memberID)){
 					groups_join_group( $grpID , $memberID);
 				}else{
-					$groupMsg[] = $bpxpcsvGroups;
+					$groupMsg = $bpxpcsvGroups;
+					return $groupMsg;
 				}
 			}
 		}
-		return $groupMsg;  
+	 
 	}
 
 	/**
