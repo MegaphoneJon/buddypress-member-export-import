@@ -28,6 +28,9 @@
 	float:left;
 	display:inline;
 }
+#csv_header_error{
+  display:none;
+}
 
 /* Select box in drop down list */
 .bpxp-multiselect {
@@ -87,6 +90,11 @@
 .bpxp-error-message .bpxp-close{
   color: hsl(1, 44%, 46%);
 }
+
+#bpxp_header_close{
+ color: hsl(0, 0%, 100%);
+    float: right;
+}
 .bpxp-message{
   border-radius: 3px;
   font-weight: bold;
@@ -135,4 +143,7 @@ tr.bpxp-group-fields{
 }
 .bpxp-close:hover{
   color:white;
+}
+.bpxp-error-border{
+   border-color: hsl(0, 100%, 50%);
 }

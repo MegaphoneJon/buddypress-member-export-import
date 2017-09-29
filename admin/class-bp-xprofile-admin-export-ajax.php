@@ -135,7 +135,6 @@ class Bp_Xprofile_Export_Admin_Ajax {
 						}
 					}
 					$bpxp_memberData['avatar_path'] = get_avatar_url($bpxp_ID);
-					$bpxp_memberData['X-Profile'] 	= 'X-Profile Data';
 					if( bp_is_active('groups')){
 						$bpxp_usersGroup = BP_Groups_Member::get_group_ids($bpxp_ID);
 						if(!empty($bpxp_usersGroup)){

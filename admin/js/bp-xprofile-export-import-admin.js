@@ -74,11 +74,15 @@
 		jQuery('#bpxp_import_xprofile_data').attr("disabled", "disabled");
 	});
 
+	jQuery(document).on('click' , '#bpxp_header_close' , function(){
+		jQuery('#csv_header_error').hide();
+	});
 	/*-------------------------------------------------------------
 	* Read CSV file header fields
 	*------------------------------------------------------------*/
 	var bpxpj_csvData = new Array();
 	jQuery(document).on('change' , "#bpxp_import_file" , function(e){
+		jQuery('#csv_header_error').hide();
 		jQuery('.bpxp-maping').remove();
 		jQuery('.bpxp-error-data').remove();
 		jQuery('.bpxp-success-data').remove();
@@ -95,24 +99,30 @@
 			bpxpj_reader.onload = function(e) {
 				var bpxpj_csvHeader 	= e.target.result.split("\n");
 				var bpxpj_headerVal		= bpxpj_csvHeader[0].split(",");
-				for(var i = 0 ; i < bpxpj_csvHeader.length; i++){
+				if (jQuery.inArray('user_email', bpxpj_headerVal) != -1 && jQuery.inArray('user_login', bpxpj_headerVal) != -1)
+				{
+					for(var i = 0 ; i < bpxpj_csvHeader.length; i++){
 					var temp = bpxpj_csvHeader[i].split(",");
 					bpxpj_csvData.push(temp);
+					}
+					jQuery('.bpxp-admin-settings-spinner').css('display' , 'block');
+					jQuery.post(
+		            bpxp_ajax_url.ajaxurl,
+		                {
+		                'action'    			: 'bpxp_import_header_fields',
+		                'bpxp_csv_header'		: bpxpj_headerVal                                 
+		                },
+		                function(response) {
+		                   	console.log(response); 
+		                   	jQuery('#upload_csv').after(response);
+		                   	jQuery('#bpxp_import_xprofile_data').removeAttr("disabled", "disabled");
+		                   	jQuery('.bpxp-admin-settings-spinner').css('display' , 'none');                      
+		                }
+		        	);
+
+				}else{
+					jQuery('#csv_header_error').show();
 				}
-				jQuery('.bpxp-admin-settings-spinner').css('display' , 'block');
-				jQuery.post(
-	            bpxp_ajax_url.ajaxurl,
-	                {
-	                'action'    			: 'bpxp_import_header_fields',
-	                'bpxp_csv_header'		: bpxpj_headerVal                                 
-	                },
-	                function(response) {
-	                   	console.log(response); 
-	                   	jQuery('#upload_csv').after(response);
-	                   	jQuery('#bpxp_import_xprofile_data').removeAttr("disabled", "disabled");
-	                   	jQuery('.bpxp-admin-settings-spinner').css('display' , 'none');                      
-	                }
-	        	);
 			};
 			bpxpj_reader.readAsText(e.target.files.item(0));
 		}
@@ -174,7 +184,8 @@
 	  Export Buddypress member data 
 	--------------------------------------------------------------*/
 	jQuery(document).on('click', '#bpxp_export_xprofile_data', function(){ 
-
+		jQuery('#bpxp_export_message').hide();
+		jQuery('#bpxp_export_message').hide();
 		var bpxpj_bpmember = jQuery("input[name='bpxp_bpmember[]']")
           .map(function(){
           	if(jQuery(this).is(':checked')){
@@ -196,15 +207,8 @@
           	}
         }).get();
         if(bpxpj_bpmember == ''){
-        	jQuery('.bpxp-bpuser').addClass('bpxp-error-border');
-        }
-        if(bpxpj_field_group == ''){
-        	jQuery('.bpxp-fieldsgroup').addClass('bpxp-error-border');
-        }
-        if(bpxpj_xprofile_fields == ''){
-        	jQuery('.bpxp-xprofile').addClass('bpxp-error-border');
-        }
-        if(bpxpj_xprofile_fields != '' && bpxpj_field_group != '' && bpxpj_bpmember != ''){
+        	jQuery('#bpxp_user_xprofile').addClass('bpxp-error-border');
+        }else{
         	jQuery.post(
             bpxp_ajax_url.ajaxurl,
                 {
@@ -214,19 +218,19 @@
                 'bpxpj_xprofile_fields'	: bpxpj_xprofile_fields                                   
                 },
                 function(response) {
-                   	console.log(response);  
-                   	jQuery('#bpxp_export_message').addClass('bpxp-success-message');
-
-                   	var tasks = response;
-					JSONToCSVConvertor( tasks, "Buddypress Member Data ", true );
-        			jQuery('#bpxp_export_message').html('Successfully! CSV File Exported');                    
+                   	console.log(response);
+                   	jQuery('#bpxp_export_fields').before('<p id="bpxp_export_message" class="bpxp-success-message bpxp-message"> Successfully! CSV File Exported </p>');
+					JSONToCSVConvertor( response);                   
                 }
         	);
-        }else{
-        	jQuery('#bpxp_export_message').addClass('bpxp-error-message');
-        	jQuery('#bpxp_export_message').html('Please Select All Options');
         }
-        
+    });
+
+	
+
+    jQuery(document).on('click' , '.bpxp-all-selected' , function(){
+    	jQuery('#bpxp_user_xprofile').removeClass('bpxp-error-border');
+    	jQuery('#bpxp_export_message').hide();
     });
 
 	/*--------------------------------------------------------------
@@ -258,44 +262,46 @@
 })( jQuery );
 
 
-function JSONToCSVConvertor( JSONData, ReportTitle, ShowLabel ) {
-	var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-	var CSV = '';
-	CSV += ReportTitle + '\r\n';
-	if (ShowLabel) {
-		var row = "";
-		for (var index in arrData[0]) {
-			row += index + ',';
-		}
-		row = row.slice(0, -1);
-		CSV += row + '\r\n';
+function JSONToCSVConvertor(JSONData){
+	var allData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+	var dataText = "";    
+	var rowText = "";
+	var fileName = "Member-data"; 
+	dataText += fileName + '\r\n'; 
+	for (var index in allData[0]) {
+	    rowText += index + ',';
+	}
+	rowText = rowText.slice(0, -1);
+	dataText += rowText + '\r\n';
+
+	for (var i = 0; i < allData.length; i++) {
+	    var rowText = "";
+
+	    for (var index in allData[i]) {
+	        rowText += '"' + allData[i][index] + '",';
+	    }
+
+	    rowText.slice(0, rowText.length - 1);
+	    dataText += rowText + '\r\n';
 	}
 
-	//1st loop is to extract each row
-	for (var i = 0; i < arrData.length; i++) {
-		var row = "";
-		for (var index in arrData[i]) {
-			row += '"' + arrData[i][index] + '",';
-		}
-		row.slice(0, row.length - 1);
-		//add a line break after each row
-		CSV += row + '\r\n';
-	}
 
-	if (CSV == '') {
-		jQuery('#bpxp_export_message').addClass('bpxp-error-message');
-        jQuery('#bpxp_export_message').html('Invaid Data into CSV file..');
-		return;
+	var isIE = false || !!document.documentMode;
+	if (isIE){
+	    var IEwindow = window.open();
+	    IEwindow.document.write('sep=,\r\n' + dataText);
+	    IEwindow.document.close();
+	    IEwindow.document.execCommand('SaveAs', true, fileName + ".csv");
+	    IEwindow.close();
+	} 
+	else {
+	    var uri = 'data:text/csv;charset=utf-8,' + escape(dataText);
+	    var link = document.createElement("a");  
+	    link.href = uri;
+	    link.style = "visibility:hidden";
+	    link.download = fileName + ".csv";
+	    document.body.appendChild(link);
+	    link.click();
+	    document.body.removeChild(link);
 	}
-
-	var fileName 	= "CSV";
-	fileName 		+= ReportTitle.replace(/ /g,"_");
-	var uri 		= 'data:text/csv;charset=utf-8,' + escape(CSV);
-	var link 		= document.createElement("a");
-	link.href 		= uri;
-	link.style 		= "visibility:hidden";
-	link.download 	= fileName + ".csv";
-	document.body.appendChild(link);
-	link.click();
-	document.body.removeChild(link);
 }

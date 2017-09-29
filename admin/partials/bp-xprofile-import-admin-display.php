@@ -17,7 +17,12 @@
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="bpxp-admin-container">
 	<h1><?php _e('Import CSV File Data' , BPXP_TEXT_DOMAIN); ?></h1>
-
+		<div class="" id="csv_header_error">
+			<p class="bpxp-error-message bpxp-message">
+			<?php _e('Sorry CVS file did not imported. Please remove all extra rows from csv file. CSV file must have column name in first row eg. user_login , user_pass, user_email, user_role' , BPXP_TEXT_DOMAIN); ?>
+			<a href="javascript:void(0)" id="bpxp_header_close">x</a>
+			</p>
+		</div>
 		<div class="bpxp-admin-row bpxp-limit">
 			<div class="bpxp-admin-3 bpxp-admin-label">
 				<label for="bpxp_xprofile_fields"><?php _e('CSV Chunk Limit', BPXP_TEXT_DOMAIN);?></label>

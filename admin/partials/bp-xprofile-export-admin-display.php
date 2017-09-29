@@ -34,10 +34,7 @@ if(!empty($bpxp_xprofile_fields)){
 }?>
 <div class="bpxp-admin-container">
 	<h1><?php _e('Export Buddypress Members Data' , BPXP_TEXT_DOMAIN); ?></h1>
-	<div class="bpxp-admin-row bpxp-notice">
-	<p id="bpxp_export_message" class="bpxp-message"></p>
-	</div>
-	<div class="bpxp-admin-row">
+	<div id="bpxp_export_fields" class="bpxp-admin-row">
 		<div class="bpxp-admin-3 bpxp-admin-label">
 			<label for="bpxp_user_xprofile"><?php _e('Select Users', BPXP_TEXT_DOMAIN);?></label>
 		</div>
@@ -77,7 +74,7 @@ if(!empty($bpxp_xprofile_fields)){
 		<div class="bpxp-admin-3">
 			<div class="bpxp-multiselect">
 				<div class="bpxp-selectBox">
-					<select>
+					<select id="bpxp_xprofile_group">
 						<option value=""><?php _e("Select Fields Group" , BPXP_TEXT_DOMAIN ); ?></option>
 					</select>
 				<div class="bpxp-overSelect bpxp-fieldsgroup"></div>
@@ -110,7 +107,7 @@ if(!empty($bpxp_xprofile_fields)){
 		<div class="bpxp-admin-3">
 			<div class="bpxp-multiselect">
 				<div class="bpxp-selectBox">
-					<select>
+					<select id="bpxp_xprofile_filed">
 						<option value=""><?php _e("Select xProfile Fields" , BPXP_TEXT_DOMAIN ); ?></option>
 					</select>
 				<div class="bpxp-overSelect bpxp-xprofile"></div>

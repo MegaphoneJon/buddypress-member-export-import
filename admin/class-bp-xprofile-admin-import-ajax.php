@@ -267,7 +267,8 @@ class Bp_Xprofile_Import_Admin_Ajax {
 								if($fieldsKey == 'group_name' && !empty($fieldsValue)){
 									$grpName = '';
 									$grpName = $this->bpxpd_add_members_to_group($fieldsValue , $bpxp_userID);
-									if(!in_array($grpName , $bpxp_grp_msg)){
+									
+									if(!in_array($grpName , $bpxp_grp_msg) && !empty($grpName)){
 										$bpxp_grp_msg[] = $grpName;
 									}
 								}							
@@ -284,7 +285,10 @@ class Bp_Xprofile_Import_Admin_Ajax {
 					}
 				}
 			}
-			$this->bpxp_import_grp_admin_notice($bpxp_grp_msg);
+			
+			if(!empty($bpxp_grp_msg)){
+				$this->bpxp_import_grp_admin_notice($bpxp_grp_msg);
+			}
 			$this->bpxp_import_admin_notice($bpxp_import_update_message,'user_update');
 			$this->bpxp_import_admin_notice($bpxp_import_error_message,'user_exists');
 			$this->bpxp_import_admin_notice($bpxp_import_success_message,'user_create');
@@ -292,8 +296,15 @@ class Bp_Xprofile_Import_Admin_Ajax {
 		die;
 	}
 
-	
-	function bpxp_import_grp_admin_notice($bpxpNotice){
+	/**
+	* Display admin notice related to member group on import
+	*
+	* @since    1.0.0
+	* @access   public
+	* @author   Wbcom Designs
+	* @param 	$bpxpNotice
+	*/
+	public function bpxp_import_grp_admin_notice($bpxpNotice){
 		if(!empty($bpxpNotice)){
 			if(is_array($bpxpNotice)){
 				foreach($bpxpNotice as $key => $notice){
@@ -313,9 +324,10 @@ class Bp_Xprofile_Import_Admin_Ajax {
 	* @since    1.0.0
 	* @access   public
 	* @author   Wbcom Designs
-	* @return   string 
+	* @param 	$bpxpNotice admin notice error
+	* @param 	$bpxpType error type
 	*/
-	function bpxp_import_admin_notice($bpxpNotice , $bpxpType){
+	public function bpxp_import_admin_notice($bpxpNotice , $bpxpType){
 		if(!empty($bpxpType)){
 			$bpxpMsg 		= '';
 			$containerCls 	= '';
@@ -366,7 +378,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 	* @since    1.0.0
 	* @access   public
 	* @author   Wbcom Designs
-	* @return   string 
+	* @param 	$bpxp_pass  update member password
 	*/
 	public function bpxp_update_user_password($bpxp_pass){
 		if(!empty($bpxp_pass)){
@@ -382,12 +394,13 @@ class Bp_Xprofile_Import_Admin_Ajax {
 	}
 
 	/**
-	* Add created user into group 
+	* Add member's in buddypress groups 
 	*
 	* @since    1.0.0
 	* @access   public
 	* @author   Wbcom Designs
-	* @return   string 
+	* @param 	$bpxpcsvGroups group name
+	* @param 	$memberID group id 
 	*/
 	public function bpxpd_add_members_to_group($bpxpcsvGroups , $memberID){
 		$groupMsg = '';
@@ -417,7 +430,6 @@ class Bp_Xprofile_Import_Admin_Ajax {
 				}
 			}
 		}
-	 
 	}
 
 	/**
