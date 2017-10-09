@@ -17,6 +17,7 @@
  * Plugin URI:        https://wbcomdesigns.com/contact/
  * Description:       Buddypress Member Export Import plugin bring you feature to export Buddypress members and x-profile fields data into CSV file and import buddypress members from CSV file.
  
+ *
  * Version:           1.0.0
  * Author:            Wbcom Designs
  * Author URI:        www.wbcomdesigns.com
