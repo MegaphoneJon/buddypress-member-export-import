@@ -23,7 +23,10 @@
 			<a href="javascript:void(0)" id="bpxp_header_close">x</a>
 			</p>
 		</div>
+
+		
 		<div class="bpxp-admin-row bpxp-limit">
+			<?php do_action('bpxp_before_import_limit'); ?>
 			<div class="bpxp-admin-3 bpxp-admin-label">
 				<label for="bpxp_xprofile_fields"><?php _e('CSV Chunk Limit', BPXP_TEXT_DOMAIN);?></label>
 			</div>
@@ -31,8 +34,10 @@
 				<input type="number" name="bpxp_set_member_limit" id="bpxp_set_member_limit" value="<?php _e(10 , BPXP_TEXT_DOMAIN); ?>" />
 				<p class="description"><?php _e('This is the number of rows in the CSV file that get grouped by the value that is saved above, eg. 10. This means that the complete number of rows will be chunked and processed.', BPXP_TEXT_DOMAIN); ?></p>
 			</div>
+			<?php do_action('bpxp_after_import_limit'); ?>
 		</div>
 
+		<?php do_action('bpxp_before_import_file'); ?>
 		<div class="bpxp-admin-row" id="upload_csv">
 			<div class="bpxp-admin-3 bpxp-admin-label">
 				<label for="bpxp_xprofile_fields"><?php _e('Uploade CSV File', BPXP_TEXT_DOMAIN);?></label>
@@ -45,6 +50,7 @@
 			</div>
 		</div>
 
+		<?php do_action('bpxp_before_import_update_user'); ?>
 		<div class="bpxp-admin-row">
 			<div class="bpxp-admin-3 bpxp-admin-label">
 				<label for="bpxp_update_user"><?php _e('Update Users Data', BPXP_TEXT_DOMAIN);?></label>
@@ -63,6 +69,7 @@
 			<img src="<?php echo $bpxp_import_spinner;?>" class="bpxp-admin-button-spinner" />
 			</div>
 		</div>
+		<?php do_action('bpxp_after_import_button'); ?>
 
 		<div class="bpxp-admin-row">
 		<p><?php _e( "<b> Note: </b> Please remove all extra rows from csv file. CSV file must have column name in first row." , BPXP_TEXT_DOMAIN); ?></p>

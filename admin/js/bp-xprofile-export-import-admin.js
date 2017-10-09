@@ -165,6 +165,7 @@
 				bpxpj_counter++;
 			}
 		}
+		jQuery('.bpxp-admin-button-spinner').css('display' , 'block');
        	return false;
 	});
 
@@ -228,7 +229,7 @@
 
 	
 
-    jQuery(document).on('click' , '.bpxp-all-selected' , function(){
+    jQuery(document).on('click' , '.bpxp-export' , function(){
     	jQuery('#bpxp_user_xprofile').removeClass('bpxp-error-border');
     	jQuery('#bpxp_export_message').hide();
     });

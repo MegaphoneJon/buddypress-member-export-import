@@ -34,6 +34,8 @@ if(!empty($bpxp_xprofile_fields)){
 }?>
 <div class="bpxp-admin-container">
 	<h1><?php _e('Export Buddypress Members Data' , BPXP_TEXT_DOMAIN); ?></h1>
+
+	<?php do_action('bpxp_before_export_select_user'); ?>
 	<div id="bpxp_export_fields" class="bpxp-admin-row">
 		<div class="bpxp-admin-3 bpxp-admin-label">
 			<label for="bpxp_user_xprofile"><?php _e('Select Users', BPXP_TEXT_DOMAIN);?></label>
@@ -48,14 +50,14 @@ if(!empty($bpxp_xprofile_fields)){
 				</div>
 				<div class="bpxp-checkboxes" id="bpxp_all_user_checkbox">
 					<label for="bpxp_all_user">
-						<input type="checkbox" class="bpxp-all-selected" name="bpxp_bpmember[]" value="bpxp-all-user"/>
+						<input type="checkbox" class="bpxp-all-selected bpxp-export" name="bpxp_bpmember[]" value="bpxp-all-user"/>
 						<?php _e('All Users', BPXP_TEXT_DOMAIN); ?>
 					</label>
 					<?php 
 					if(!empty($bpxp_user)){
 						foreach($bpxp_user as $bpxp_admin_data => $bpxp_admin_value){ ?>
 							<label for="<?php echo $bpxp_admin_value->data->user_login; ?>">
-								<input type="checkbox" name="bpxp_bpmember[]" value="<?php echo $bpxp_admin_value->data->ID; ?>"/>
+								<input type="checkbox" class="bpxp-export" name="bpxp_bpmember[]" value="<?php echo $bpxp_admin_value->data->ID; ?>"/>
 								<?php _e($bpxp_admin_value->data->display_name, BPXP_TEXT_DOMAIN); ?>
 							</label><?php
 						} 
@@ -67,6 +69,9 @@ if(!empty($bpxp_xprofile_fields)){
 			</p>
 		</div>
 	</div>
+	<?php do_action('bpxp_after_export_select_user'); ?>
+
+	<?php do_action('bpxp_before_export_fields_group'); ?>
 	<div class="bpxp-admin-row">
 		<div class="bpxp-admin-3 bpxp-admin-label">
 			<label for="bpxp_fields_group"><?php _e('Fields Group', BPXP_TEXT_DOMAIN);?></label>
@@ -100,6 +105,9 @@ if(!empty($bpxp_xprofile_fields)){
 			</p>
 		</div>
 	</div>
+	<?php do_action('bpxp_after_export_fields_group'); ?>
+
+	<?php do_action('bpxp_before_export_prof_fields'); ?>
 	<div class="bpxp-admin-row">
 		<div class="bpxp-admin-3 bpxp-admin-label">
 			<label for="bpxp_xprofile_fields"><?php _e('Select xProfile Fields', BPXP_TEXT_DOMAIN);?></label>
@@ -126,10 +134,13 @@ if(!empty($bpxp_xprofile_fields)){
 			<img src="<?php echo $bpxp_spinner;?>" class="bpxp-admin-settings-spinner" />
 		</div>
 	</div>
+	<?php do_action('bpxp_after_export_prof_fields'); ?>
+
 	<div class="bpxp-admin-row">
 		<div class="bpxp-admin-3">
 			<input type="submit" name="bpxp_export_xprofile_data" id="bpxp_export_xprofile_data" class="bpxp-admin-control button button-primary"  value="<?php _e('Export' , BPXP_TEXT_DOMAIN); ?>" />
 		</div>
+		<?php do_action('bpxp_after_export_buttons'); ?>
 		<div class="bpxp-admin-3">
 		</div>
 	</div>
