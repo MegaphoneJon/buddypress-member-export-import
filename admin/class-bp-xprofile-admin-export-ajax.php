@@ -153,10 +153,25 @@ class Bp_Xprofile_Export_Admin_Ajax {
 				$bpxp_fieldsData = array();
 				foreach($bpxp_xpro_fieldsName as $bpxp_field){
 					$bpxp_value = bp_get_profile_field_data('field='.$bpxp_field.'&user_id='.$bpxp_user);
+					if (strpos($bpxp_value, '<a href=') === 0) {
+						$result = '';
+						preg_match_all('/<a[^>]+href=([\'"])(?<href>.+?)\1[^>]*>/i', $bpxp_value, $result);
+						if(!empty($result['href'][0]) && strpos($result['href'][0], 'www') !== false ){
+							$bpxp_value = $result['href'][0];
+						}else{
+							$bpxp_value = '';
+						}
+					}
+
+					if(is_array($bpxp_value)){
+						$bpxp_value = implode(" -*- ",$bpxp_value);
+					}
+					$bpxp_value 	= preg_replace('/[.,]/', '', $bpxp_value);
 					$bpxp_fieldsData[$bpxp_field] = $bpxp_value;
 				}
 				$bpxp_exportFields[$bpxp_user] = $bpxp_fieldsData;	
 			}
+			
 			if(!empty($bpxp_exprot_data)){
 				ksort($bpxp_exprot_data);
 			}

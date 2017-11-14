@@ -66,6 +66,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 			$bpxp_header 	= array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxp_csv_header']) );
 			/* Get xprofile fields group and fields name */
 			$bpxp_map_xprofile 	= BP_XProfile_Group::get( array( 'fetch_fields' => true	) );
+
 			$bpxp_fields_group = array();
 			if(!empty($bpxp_map_xprofile)){
 				$bpxp_fields_group = array();
@@ -74,7 +75,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 					$bpxp_fields_group[$bpxp_mapValue->name] = $bpxp_mapValue->name;
 					if(!empty($bpxp_mapValue->fields)){
 						foreach($bpxp_mapValue->fields as $bpxp_fieldsData){
-							$bpxp_profile_fields[] = $bpxp_fieldsData->name;
+							$bpxp_profile_fields[$bpxp_fieldsData->id] = $bpxp_fieldsData->name;
 						}
 						$bpxp_fields_group[$bpxp_mapValue->name] = $bpxp_profile_fields;
 					}
@@ -98,9 +99,10 @@ class Bp_Xprofile_Import_Admin_Ajax {
 					foreach($bpxp_fields as $bpxpKey => $bpxp_currentFields){
 						$tempName = strtolower( str_replace(' ', '_', trim($bpxp_currentFields)));
 						$currentGroup .= '<tr class="bpxp-group-fields"><td>'.$bpxp_currentFields;
-						$currentGroup .='<input type="hidden" name="'.$tempName.'" class="bpxp_current_fields" value=""/></td>';
+						$currentGroup .= '</td>';
 						if(!empty($bpxp_header)){
 							$currentGroup .= '<td>';
+							$currentGroup .= '<input type="hidden" name="'.$bpxpKey.'" class="bpxp_current_fields" value=""/>';
 							$currentGroup .= '<select class="bpxp_csv_fields">';
 							$currentGroup .= '<option value="">--- Select CSV Fields---</option>';
 							foreach($bpxp_header as $bpxp_headerVal){
@@ -137,16 +139,6 @@ class Bp_Xprofile_Import_Admin_Ajax {
 			$bpxp_AllGroup = array();
 			$flage = false;
 			$bpxp_update_user = sanitize_text_field($_POST['bpxpj_update_user']);
-
-			/* Get current xprofile fields */
-			$bpxp_fields_index = $this->bpxp_get_current_xprofile_name();
-
-			if(!empty($bpxp_fields_index)){
-				$bpxp_fields_maping = array();
-				foreach($bpxp_fields_index as $fields_index){
-					$bpxp_fields_maping[$fields_index] = sanitize_text_field($_POST[$fields_index]);
-				}
-			}
 			
 			$bpxp_members_data 	= '';
 			if(!empty($_POST['bpxp_csv_file'])){
@@ -255,6 +247,10 @@ class Bp_Xprofile_Import_Admin_Ajax {
 									$id = wp_update_user( array( 'ID' => $bpxp_userID, 'role' => $fieldsValue ) );
 								}
 						
+								if($fieldsKey == 'avatar_path' && !empty($fieldsValue)){
+									update_user_meta( $bpxp_userID , 'author_avatar', $fieldsValue);
+								}
+
 								/* update user meta usre nice name */ 
 								if($fieldsKey == 'user_nicename' && !empty($fieldsValue)){
 									wp_update_user( array( 'ID' => $bpxp_userID, 'user_nicename', $fieldsValue)); 
@@ -274,15 +270,17 @@ class Bp_Xprofile_Import_Admin_Ajax {
 								}							
 							}
 						}
+
+						/* update user xprofile fields */
+						if(!empty($bpxp_userArr)){
+							$bpxp_xprofielID = $this->bpxp_update_user_xprofile_fields($bpxp_userArr , $_POST['bpxpj_field'] , $bpxp_user);
+						}
+						
+						if(!empty($bpxp_pass)){
+							$this->bpxp_update_user_password($bpxp_pass);
+						}
 					}
-					/* update user xprofile fields */
-					if(!empty($bpxp_userArr)){
-						$bpxp_xprofielID = $this->bpxp_update_user_xprofile_fields($bpxp_userArr , $bpxp_fields_maping , $bpxp_user);
-					}
-					
-					if(!empty($bpxp_pass)){
-						$this->bpxp_update_user_password($bpxp_pass);
-					}
+
 				}
 			}
 			
@@ -433,30 +431,6 @@ class Bp_Xprofile_Import_Admin_Ajax {
 	}
 
 	/**
-	* Get current xprofile fields name
-	*
-	* @since    1.0.0
-	* @access   public
-	* @author   Wbcom Designs
-	* @return   Array  Return all xprofile fields
-	*/
-	public function bpxp_get_current_xprofile_name(){
-		$bpxp_current_fields 	= BP_XProfile_Group::get( array( 'fetch_fields' => true	) );
-		$bpxp_fieldsName = array();
-		if(!empty($bpxp_current_fields)){
-			foreach($bpxp_current_fields as $bpxpKey => $bpxpValue){
-				if(!empty($bpxpValue->fields)){
-					foreach($bpxpValue->fields as $bpxpData){
-						$bpxptemp = $bpxpData->name;
-						$bpxp_fieldsName[] =  strtolower( str_replace(' ', '_', trim($bpxptemp)));
-					}
-				}
-			}
-		}
-		return $bpxp_fieldsName; 
-	}
-
-	/**
 	* Update user xprofile fields
 	*
 	* @since    1.0.0
@@ -468,11 +442,24 @@ class Bp_Xprofile_Import_Admin_Ajax {
 		if(!empty($bpxpID) && !empty($bpxpxfields)){
 			foreach($bpxpID as $key => $id){
 				foreach($bpxpxfields as $fieldkey => $fieldval){
-					$tempVal = '';
-					$xprKey = strtolower( str_replace( '_', ' ', trim($fieldkey)));
-					if(array_key_exists($xprKey , $bpxpExpFeilds)){
+					$fieldval   = sanitize_text_field($fieldval);
+					$tempVal 	= '';
+					$xprKey 	= strtolower( str_replace( '_', ' ', trim($fieldval)));
+
+
+					if(array_key_exists($xprKey , $bpxpExpFeilds)){ 
 						$tempVal = $bpxpExpFeilds[$xprKey];
-						xprofile_set_field_data($xprKey , $id , $tempVal);
+						/* check if multi select or checkbox value */
+						if( strpos( $tempVal , '-*-' ) !== false ) {
+							$tempVal = explode('-*-' , $tempVal);
+						}
+
+						$field = new BP_XProfile_Field( $fieldkey);
+
+						if($field->type == 'datebox'){
+							$tempVal = date('Y-m-d' , strtotime($tempVal )) .' 00:00:00 ';
+						}
+						xprofile_set_field_data($fieldkey , $id , $tempVal);
 					}
 				}
 			}

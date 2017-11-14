@@ -132,6 +132,11 @@
 
 	jQuery(document).on('click' , "#bpxp_import_xprofile_data" , function(e){
 		jQuery('.bpxp-admin-button-spinner').css('display' , 'block');
+		var bpxpj_field = {};
+		jQuery('.bpxp_current_fields').each(function(){
+			bpxpj_field[jQuery(this).attr('name')] =  jQuery(this).val();
+		});
+		
 		if(bpxpj_csvData != ''){
 			var bpxpj_update_user = '';
 			if(jQuery('input[name="bpxp_update_user"]:checked').length > 0){
@@ -152,7 +157,8 @@
 				    'action'    		: 'bpxp_import_csv_data',
 				    'bpxp_csv_file'		: chunk_csv_data,
 				    'bpxpj_update_user' : bpxpj_update_user,
-				    'bpxpj_counter' 	: bpxpj_counter                              
+				    'bpxpj_counter' 	: bpxpj_counter,
+				    'bpxpj_field' 		: bpxpj_field                              
 				    },
 				    function(response) {
 				       	console.log(response);
@@ -232,6 +238,14 @@
     jQuery(document).on('click' , '.bpxp-export' , function(){
     	jQuery('#bpxp_user_xprofile').removeClass('bpxp-error-border');
     	jQuery('#bpxp_export_message').hide();
+    });
+
+    /*---------------------------------------------------
+     Add xprofile fields name into CSV profile fields 
+    ------------------------------------------------------*/
+    jQuery(document).on('change' , '.bpxp_csv_fields' , function(){
+    	var fields = jQuery(this).find(":selected").text();
+    	jQuery(this).prev().val(fields);
     });
 
 	/*--------------------------------------------------------------
