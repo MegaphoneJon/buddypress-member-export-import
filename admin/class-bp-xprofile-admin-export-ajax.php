@@ -65,11 +65,11 @@ class Bp_Xprofile_Export_Admin_Ajax {
 				if (in_array("all-fields-group", $bpxp_field_group_id)){
 					$bpxp_all_xprofile_fields 	= BP_XProfile_Group::get( array( 'fetch_fields' => true	) );
 					if(!empty($bpxp_all_xprofile_fields)){
-						$bpxp_set_fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected"/>All X-Profile Fields</label>';
+						$bpxp_set_fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>All X-Profile Fields</label>';
 						foreach($bpxp_all_xprofile_fields as $bpxp_fieldsKey => $bpxp_fieldsValue){
 							if(!empty($bpxp_fieldsValue->fields)){
 								foreach($bpxp_fieldsValue->fields as $bpxp_fieldsData){ 
-								$bpxp_set_fields .= '<label for="'.$bpxp_fieldsData->name.'"><input type="checkbox" name="bpxp_xprofile_fields[]" value="'.$bpxp_fieldsData->name.'"/>'.$bpxp_fieldsData->name.'</label>';
+								$bpxp_set_fields .= '<label for="'.$bpxp_fieldsData->name.'"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="'.$bpxp_fieldsData->name.'"/>'.$bpxp_fieldsData->name.'</label>';
 								}
 							}
 						}
@@ -84,11 +84,11 @@ class Bp_Xprofile_Export_Admin_Ajax {
 					}
 					$bpxp_get_xprofile_fields 	= BP_XProfile_Group::get( array( 'fetch_fields' => true	) );
 					if(!empty($bpxp_get_xprofile_fields)){
-						$bpxp_set_fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected"/>All X-Profile Fields</label>';
+						$bpxp_set_fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>All X-Profile Fields</label>';
 						foreach($bpxp_get_xprofile_fields as $bpxp_fieldsKey => $bpxp_fieldsValue){
 							if(!empty($bpxp_fieldsValue->fields) && in_array($bpxp_fieldsValue->id , $bpxp_gid)){
 								foreach($bpxp_fieldsValue->fields as $bpxp_fieldsData){ 
-								$bpxp_set_fields .= '<label for="'.$bpxp_fieldsData->name.'"><input type="checkbox" name="bpxp_xprofile_fields[]" value="'.$bpxp_fieldsData->name.'"/>'.$bpxp_fieldsData->name.'</label>';
+								$bpxp_set_fields .= '<label for="'.$bpxp_fieldsData->name.'"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="'.$bpxp_fieldsData->name.'"/>'.$bpxp_fieldsData->name.'</label>';
 								}
 							}
 						}
@@ -122,19 +122,19 @@ class Bp_Xprofile_Export_Admin_Ajax {
 					$bpxp_members_data = get_userdata($bpxp_ID);
 					if(!empty($bpxp_members_data)){
 						foreach($bpxp_members_data as $members){
-							$bpxp_memberData['ID'] 				= $bpxp_members_data->data->ID;
+							$bpxp_memberData['Members'] 				= $bpxp_members_data->data->ID;
 							$bpxp_memberData['user_login'] 		= $bpxp_members_data->data->user_login;
 							$bpxp_memberData['user_pass'] 		= $bpxp_members_data->data->user_pass;
 							$bpxp_memberData['user_nicename']	= $bpxp_members_data->data->user_nicename;
 							$bpxp_memberData['user_email'] 		= $bpxp_members_data->data->user_email;
 							$bpxp_memberData['user_url'] 		= $bpxp_members_data->data->user_url;
 							$bpxp_memberData['user_registered'] = $bpxp_members_data->data->user_registered;
-							$bpxp_memberData['user_status'] 	= $bpxp_members_data->data->user_status;
+							//$bpxp_memberData['user_status'] 	= $bpxp_members_data->data->user_status;
 							$bpxp_memberData['display_name'] 	= $bpxp_members_data->data->display_name;
 							$bpxp_memberData['user_role'] 		= $bpxp_members_data->roles[0];
 						}
 					}
-					$bpxp_memberData['avatar_path'] = get_avatar_url($bpxp_ID);
+					//$bpxp_memberData['avatar_path'] = get_avatar_url($bpxp_ID);
 					if( bp_is_active('groups')){
 						$bpxp_usersGroup = BP_Groups_Member::get_group_ids($bpxp_ID);
 						if(!empty($bpxp_usersGroup)){
@@ -164,9 +164,9 @@ class Bp_Xprofile_Export_Admin_Ajax {
 					}
 
 					if(is_array($bpxp_value)){
-						$bpxp_value = implode(" -*- ",$bpxp_value);
+						$bpxp_value = implode(" - ",$bpxp_value);
 					}
-					$bpxp_value 	= preg_replace('/[.,]/', '', $bpxp_value);
+					$bpxp_value 	= preg_replace('/[,]/', '', $bpxp_value);
 					$bpxp_fieldsData[$bpxp_field] = $bpxp_value;
 				}
 				$bpxp_exportFields[$bpxp_user] = $bpxp_fieldsData;	

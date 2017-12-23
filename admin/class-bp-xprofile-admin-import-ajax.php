@@ -139,27 +139,32 @@ class Bp_Xprofile_Import_Admin_Ajax {
 			$bpxp_AllGroup = array();
 			$flage = false;
 			$bpxp_update_user = sanitize_text_field($_POST['bpxpj_update_user']);
-			
+
+			$bpxp_members_data 	= '';
 			$bpxp_members_data 	= '';
 			if(!empty($_POST['bpxp_csv_file'])){
 				$bpxp_members_data = $_POST['bpxp_csv_file'];
+				if( count($bpxp_members_data[0]) == 1 ) {
+					unset( $bpxp_members_data[0] );
+				}
 			}
-			 
-				
+
 			$bpxp_data_value 	= array();
 			$bpxp_data_key 		= array();
 			$bpxp_counter 		= 0;
 			if(!empty($bpxp_members_data)){
 				if($_POST['bpxpj_counter'] == 0){
 					foreach($bpxp_members_data as $bpxp_member){
-						foreach($bpxp_member as $data){
-							if($bpxp_counter == 0){
-								$bpxp_data_key[] = sanitize_text_field($data);
-							}else{
-								$bpxp_data_value[$bpxp_counter][] = sanitize_text_field($data);
+						if(count($bpxp_member) > 1){
+							foreach($bpxp_member as $data){
+								if($bpxp_counter == 0){
+									$bpxp_data_key[] = sanitize_text_field($data);
+								}else{
+									$bpxp_data_value[$bpxp_counter][] = sanitize_text_field($data);
+								}
 							}
+							$bpxp_counter++;
 						}
-						$bpxp_counter++;
 					}
 					
 					if(in_array("user_email", $bpxp_data_key) && in_array("user_login", $bpxp_data_key)){
@@ -181,14 +186,15 @@ class Bp_Xprofile_Import_Admin_Ajax {
 					$bpxp_data_key = get_option('bpxp_csv_headers' , true);	
 				}
 			}
+			
 			/* Combine csv header as key and row data as value */
 			$bpxp_users_data 		= array();
-
 			if(!empty($bpxp_data_value)){
 				foreach($bpxp_data_value as $bpxp_array){
 					$bpxp_users_data[] 	= array_combine($bpxp_data_key, $bpxp_array);
 				}
 			}
+
 			/* Import member data and create users */
 			if(!empty($bpxp_users_data)){
 
@@ -262,7 +268,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 								/* Create password */
 								if($fieldsKey == 'group_name' && !empty($fieldsValue)){
 									$grpName = '';
-									$grpName = $this->bpxpd_add_members_to_group($fieldsValue , $bpxp_userID);
+									$grpName = $this->bpxp_add_members_to_group($fieldsValue , $bpxp_userID);
 									
 									if(!in_array($grpName , $bpxp_grp_msg) && !empty($grpName)){
 										$bpxp_grp_msg[] = $grpName;
@@ -280,7 +286,6 @@ class Bp_Xprofile_Import_Admin_Ajax {
 							$this->bpxp_update_user_password($bpxp_pass);
 						}
 					}
-
 				}
 			}
 			
@@ -400,8 +405,11 @@ class Bp_Xprofile_Import_Admin_Ajax {
 	* @param 	$bpxpcsvGroups group name
 	* @param 	$memberID group id 
 	*/
-	public function bpxpd_add_members_to_group($bpxpcsvGroups , $memberID){
-		$groupMsg = '';
+	public function bpxp_add_members_to_group($bpxpcsvGroups , $memberID){
+		$groupMsg 	= '';
+		$date 		= date('Y-m-d h:i:m');
+		update_user_meta($memberID , 'last_activity' , $date );
+		
 		if (!empty($bpxpcsvGroups) && strpos($bpxpcsvGroups , " - ") !== false) {
 			$bpxpGrpArr = explode(" - ",$bpxpcsvGroups);
 			foreach($bpxpGrpArr as $grp){
@@ -430,6 +438,33 @@ class Bp_Xprofile_Import_Admin_Ajax {
 		}
 	}
 
+
+	
+
+	/**
+	* Get current xprofile fields name
+	*
+	* @since    1.0.0
+	* @access   public
+	* @author   Wbcom Designs
+	* @return   Array  Return all xprofile fields
+	*/
+	/*public function bpxp_get_current_xprofile_name(){
+		$bpxp_current_fields 	= BP_XProfile_Group::get( array( 'fetch_fields' => true	) );
+		$bpxp_fieldsName = array();
+		if(!empty($bpxp_current_fields)){
+			foreach($bpxp_current_fields as $bpxpKey => $bpxpValue){
+				if(!empty($bpxpValue->fields)){
+					foreach($bpxpValue->fields as $bpxpData){
+						$bpxptemp = $bpxpData->name;
+						$bpxp_fieldsName[] =  strtolower( str_replace(' ', '_', trim($bpxptemp)));
+					}
+				}
+			}
+		}
+		return $bpxp_fieldsName; 
+	}*/
+
 	/**
 	* Update user xprofile fields
 	*
@@ -438,28 +473,28 @@ class Bp_Xprofile_Import_Admin_Ajax {
 	* @author   Wbcom Designs
 	*/
 	public function bpxp_update_user_xprofile_fields($bpxpID , $bpxpxfields , $bpxpExpFeilds){
-		$bpxpExpFeilds = array_change_key_case($bpxpExpFeilds, CASE_LOWER);
+		//$bpxpExpFeilds = array_change_key_case($bpxpExpFeilds, CASE_LOWER);
 		if(!empty($bpxpID) && !empty($bpxpxfields)){
 			foreach($bpxpID as $key => $id){
 				foreach($bpxpxfields as $fieldkey => $fieldval){
 					$fieldval   = sanitize_text_field($fieldval);
 					$tempVal 	= '';
-					$xprKey 	= strtolower( str_replace( '_', ' ', trim($fieldval)));
-
-
-					if(array_key_exists($xprKey , $bpxpExpFeilds)){ 
-						$tempVal = $bpxpExpFeilds[$xprKey];
-						/* check if multi select or checkbox value */
-						if( strpos( $tempVal , '-*-' ) !== false ) {
-							$tempVal = explode('-*-' , $tempVal);
-						}
-
+				
+					if(array_key_exists($fieldval , $bpxpExpFeilds)){ 
+						$tempVal = $bpxpExpFeilds[$fieldval];
+						
 						$field = new BP_XProfile_Field( $fieldkey);
 
+						/* check if date type value */
 						if($field->type == 'datebox'){
-							$tempVal = date('Y-m-d' , strtotime($tempVal )) .' 00:00:00 ';
+							$tempVal = date('Y-m-d' , strtotime($tempVal)).' 00:00:00';
+						} 
+
+						/* check if multi select or checkbox value */
+						if( strpos( $tempVal , '-' ) !== false && $field->type != 'datebox') {
+							$tempVal = explode(' - ' , $tempVal);						
 						}
-						xprofile_set_field_data($fieldkey , $id , $tempVal);
+						xprofile_set_field_data($fieldkey , $id , $tempVal );
 					}
 				}
 			}

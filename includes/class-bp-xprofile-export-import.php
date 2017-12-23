@@ -177,6 +177,7 @@ class Bp_Xprofile_Export_Import {
 		$this->loader->add_action( 'wp_ajax_bpxp_get_export_xprofile_fields', $export_admin, 'bpxp_get_xprofile_fields');
 		/* add action for exprot member data */
 		$this->loader->add_action( 'wp_ajax_bpxp_export_xprofile_data', $export_admin, 'bpxp_export_member_data');
+		//$this->loader->add_action( 'wp_ajax_bpxp_export_xprofile_data', $export_admin, 'add_action( 'admin_init', 'bbg_csv_export' );');
 	}
 
 	/**

@@ -44,6 +44,43 @@
 	 	}
 	 });
 	 
+
+	 /*----------------------------------------------------------------
+	unchecked select all if any checkbox is uncheck in select member 
+	------------------------------------------------------------------*/
+	jQuery(document).on('change', '.bpxp-single-member' , function(){
+		if(this.checked == false){
+			jQuery(".bpxp-all-member")[0].checked = false;
+		}
+		if (jQuery('.bpxp-single-member:checked').length == jQuery('.bpxp-single-member').length ){ 
+			jQuery(".bpxp-all-member")[0].checked = true; 
+		}
+	});
+
+	/*----------------------------------------------------------------------
+	unchecked select all if any checkbox is uncheck in select fields group  
+	------------------------------------------------------------------------*/
+	jQuery(document).on('change', '.bpxp-single-group' , function(){
+		if(this.checked == false){
+			jQuery(".bpxp-all-group")[0].checked = false;
+		}
+		if (jQuery('.bpxp-single-group:checked').length == jQuery('.bpxp-single-group').length ){ 
+			jQuery(".bpxp-all-group")[0].checked = true; 
+		}
+	});
+
+	/*----------------------------------------------------------------------
+	unchecked select all if any checkbox is uncheck in select profile fields  
+	------------------------------------------------------------------------*/
+	jQuery(document).on('change', '.bpxp-single-profile' , function(){
+		if(this.checked == false){
+			jQuery(".bpxp-all-profile")[0].checked = false;
+		}
+		if (jQuery('.bpxp-single-profile:checked').length == jQuery('.bpxp-single-profile').length ){ 
+			jQuery(".bpxp-all-profile")[0].checked = true; 
+		}
+	});
+
 	/*--------------------------------------------------------------
 	  Send ajax request to get xprofile fields by group id 
 	--------------------------------------------------------------*/
@@ -99,12 +136,14 @@
 			bpxpj_reader.onload = function(e) {
 				var bpxpj_csvHeader 	= e.target.result.split("\n");
 				var bpxpj_headerVal		= bpxpj_csvHeader[0].split(",");
+				
 				if (jQuery.inArray('user_email', bpxpj_headerVal) != -1 && jQuery.inArray('user_login', bpxpj_headerVal) != -1)
 				{
 					for(var i = 0 ; i < bpxpj_csvHeader.length; i++){
-					var temp = bpxpj_csvHeader[i].split(",");
-					bpxpj_csvData.push(temp);
+						var temp = bpxpj_csvHeader[i].split(",");
+						bpxpj_csvData.push(temp);
 					}
+					console.log(bpxpj_csvData);
 					jQuery('.bpxp-admin-settings-spinner').css('display' , 'block');
 					jQuery.post(
 		            bpxp_ajax_url.ajaxurl,
@@ -130,6 +169,43 @@
 	});
 
 
+
+	var bpxpj_req_counter 	= 0;
+	/*var bpxpj_chunk_size 	= 10;*/
+	var bpxpj_index_pointer = 0;
+	var bpxpj_no_more_request = false;
+	function bpxpj_send_chunk_csv_data( bpxpj_field, bpxpj_update_user , bpxpj_chunk_size ) {
+		var chunk_csv_data = bpxpj_csvData.slice( bpxpj_index_pointer , bpxpj_index_pointer + bpxpj_chunk_size );
+		jQuery.post(
+			bpxp_ajax_url.ajaxurl,
+			{
+				'action'    		: 'bpxp_import_csv_data',
+				'bpxp_csv_file'		: chunk_csv_data,
+				'bpxpj_update_user' : bpxpj_update_user,
+				'bpxpj_counter' 	: bpxpj_req_counter,
+				'bpxpj_field' 		: bpxpj_field                              
+			},
+			function(response) {
+				jQuery('.bpxp-limit').before(response);
+				jQuery('.bpxp-maping').remove();
+				
+				bpxpj_req_counter++;
+				bpxpj_index_pointer += bpxpj_chunk_size;
+
+				if( bpxpj_csvData.length <= bpxpj_index_pointer ) {
+					bpxpj_no_more_request = true;
+				}
+
+				if( !bpxpj_no_more_request ) {
+					bpxpj_send_chunk_csv_data( bpxpj_field, bpxpj_update_user , bpxpj_chunk_size);
+				}
+				else {
+					jQuery('.bpxp-admin-button-spinner').css('display' , 'none');
+				}                  
+			}
+		);
+	}
+
 	jQuery(document).on('click' , "#bpxp_import_xprofile_data" , function(e){
 		jQuery('.bpxp-admin-button-spinner').css('display' , 'block');
 		var bpxpj_field = {};
@@ -146,30 +222,8 @@
 
 			var i , j , chunk_csv_data;
 
-			var bpxpj_counter = 0;
-
-			for ( i = 0, j = bpxpj_csvData.length; i < j; i += tempChunk ){
-				jQuery('.bpxp-admin-button-spinner').css('display' , 'block');
-			    chunk_csv_data = bpxpj_csvData.slice( i , i + tempChunk);
-			    jQuery.post(
-				bpxp_ajax_url.ajaxurl,
-				    {
-				    'action'    		: 'bpxp_import_csv_data',
-				    'bpxp_csv_file'		: chunk_csv_data,
-				    'bpxpj_update_user' : bpxpj_update_user,
-				    'bpxpj_counter' 	: bpxpj_counter,
-				    'bpxpj_field' 		: bpxpj_field                              
-				    },
-				    function(response) {
-				       	console.log(response);
-				       	jQuery('.bpxp-limit').before(response);
-				       	jQuery('.bpxp-maping').remove(); 
-				       	//alert(tempChunk + 'Member data import do you want import another ' + tempChunk);
-				       	jQuery('.bpxp-admin-button-spinner').css('display' , 'none');                      
-				    }
-				);
-				bpxpj_counter++;
-			}
+			bpxpj_send_chunk_csv_data( bpxpj_field, bpxpj_update_user , tempChunk );
+			return;
 		}
 		jQuery('.bpxp-admin-button-spinner').css('display' , 'block');
        	return false;
@@ -276,24 +330,23 @@
 
 })( jQuery );
 
-
 function JSONToCSVConvertor(JSONData){
 	var allData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
 	var dataText = "";    
 	var rowText = "";
-	var fileName = "Member-data"; 
-	dataText += fileName + '\r\n'; 
+	var fileName = "Member-data";
+	 
 	for (var index in allData[0]) {
 	    rowText += index + ',';
 	}
-	rowText = rowText.slice(0, -1);
+
 	dataText += rowText + '\r\n';
 
 	for (var i = 0; i < allData.length; i++) {
 	    var rowText = "";
 
 	    for (var index in allData[i]) {
-	        rowText += '"' + allData[i][index] + '",';
+	        rowText += '' + allData[i][index] + ',';
 	    }
 
 	    rowText.slice(0, rowText.length - 1);

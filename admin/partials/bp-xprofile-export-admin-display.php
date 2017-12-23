@@ -50,14 +50,14 @@ if(!empty($bpxp_xprofile_fields)){
 				</div>
 				<div class="bpxp-checkboxes" id="bpxp_all_user_checkbox">
 					<label for="bpxp_all_user">
-						<input type="checkbox" class="bpxp-all-selected bpxp-export" name="bpxp_bpmember[]" value="bpxp-all-user"/>
+						<input type="checkbox" class="bpxp-all-selected bpxp-all-member bpxp-export" name="bpxp_bpmember[]" value="bpxp-all-user"/>
 						<?php _e('All Users', BPXP_TEXT_DOMAIN); ?>
 					</label>
 					<?php 
 					if(!empty($bpxp_user)){
 						foreach($bpxp_user as $bpxp_admin_data => $bpxp_admin_value){ ?>
 							<label for="<?php echo $bpxp_admin_value->data->user_login; ?>">
-								<input type="checkbox" class="bpxp-export" name="bpxp_bpmember[]" value="<?php echo $bpxp_admin_value->data->ID; ?>"/>
+								<input type="checkbox" class="bpxp-export bpxp-single-member" name="bpxp_bpmember[]" value="<?php echo $bpxp_admin_value->data->ID; ?>"/>
 								<?php _e($bpxp_admin_value->data->display_name, BPXP_TEXT_DOMAIN); ?>
 							</label><?php
 						} 
@@ -86,14 +86,14 @@ if(!empty($bpxp_xprofile_fields)){
 				</div>
 				<div class="bpxp-checkboxes">
 					<label for="all-fields-group">
-						<input type="checkbox" name="bpxp_field_group[]" value="all-fields-group" class="bpxp-all-selected"/>
+						<input type="checkbox" name="bpxp_field_group[]" value="all-fields-group" class="bpxp-all-selected bpxp-all-group"/>
 						<?php _e('All Fields Group' , BPXP_TEXT_DOMAIN); ?>
 					</label>
 					<?php 
 					if(!empty($bpxp_fields_group)){
 						foreach($bpxp_fields_group as $bpxp_group_id => $bpxp_group_data){ ?>
 							<label for="<?php echo $bpxp_group_data; ?>">
-								<input type="checkbox" name="bpxp_field_group[]" value="<?php echo $bpxp_group_id; ?>"/>
+								<input type="checkbox" class="bpxp-single-group" name="bpxp_field_group[]" value="<?php echo $bpxp_group_id; ?>"/>
 								<?php _e($bpxp_group_data , BPXP_TEXT_DOMAIN); ?>
 							</label><?php
 						} 
