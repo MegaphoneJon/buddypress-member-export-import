@@ -130,15 +130,14 @@ class Bp_Xprofile_Import_Admin_Ajax {
 	*/
 	public function bpxp_import_csv_member_data() {
 		/**
-		 * This function is import csv data into database.
-		 */
-
+		* This function is import csv data into database.
+		*/
 		if(isset($_POST['action']) && $_POST['action'] == 'bpxp_import_csv_data'){
 			set_time_limit(0);
-			$member_grp_msg = array();
-			$bpxp_AllGroup = array();
+			$member_grp_msg 	= array();
+			$bpxp_AllGroup 		= array();
 			$flage = false;
-			$bpxp_update_user = sanitize_text_field($_POST['bpxpj_update_user']);
+			$bpxp_update_user 	= sanitize_text_field($_POST['bpxpj_update_user']);
 
 			$bpxp_members_data 	= '';
 			$bpxp_members_data 	= '';
@@ -232,6 +231,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 										$bpxp_ext_user = get_user_by('email', $fieldsValue );
 										if(!empty($bpxp_ext_user)){
 											$bpxp_userID = $bpxp_ext_user->data->ID;
+											$bpxp_userArr[$bpxp_userID ] = $bpxp_userID;
 											$bpxp_import_update_message[] = $fieldsValue;
 										}
 									}else{
@@ -437,33 +437,6 @@ class Bp_Xprofile_Import_Admin_Ajax {
 			}
 		}
 	}
-
-
-	
-
-	/**
-	* Get current xprofile fields name
-	*
-	* @since    1.0.0
-	* @access   public
-	* @author   Wbcom Designs
-	* @return   Array  Return all xprofile fields
-	*/
-	/*public function bpxp_get_current_xprofile_name(){
-		$bpxp_current_fields 	= BP_XProfile_Group::get( array( 'fetch_fields' => true	) );
-		$bpxp_fieldsName = array();
-		if(!empty($bpxp_current_fields)){
-			foreach($bpxp_current_fields as $bpxpKey => $bpxpValue){
-				if(!empty($bpxpValue->fields)){
-					foreach($bpxpValue->fields as $bpxpData){
-						$bpxptemp = $bpxpData->name;
-						$bpxp_fieldsName[] =  strtolower( str_replace(' ', '_', trim($bpxptemp)));
-					}
-				}
-			}
-		}
-		return $bpxp_fieldsName; 
-	}*/
 
 	/**
 	* Update user xprofile fields
