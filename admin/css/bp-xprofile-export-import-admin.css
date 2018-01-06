@@ -4,22 +4,22 @@
  */
 
 .bpxp-admin-container{
- 	width:90%;
- 	float:left;
- 	background-color:#fff;
+	width:90%;
+	float:left;
+	background-color:#fff;
  }
 
 .bpxp-admin-container h1{
 	border-bottom: 1px solid hsl(0, 0%, 95%);
-    line-height: 40px;
-    margin: 0;
-    padding: 20px;
+	line-height: 40px;
+	margin: 0;
+	padding: 20px;
 }
 
 .bpxp-admin-container .bpxp-admin-row{
 	float: left;
-    padding: 20px 10px;
-    width: 100%;
+	padding: 20px 10px;
+	width: 100%;
 }
 
 .bpxp-admin-container .bpxp-admin-3{
@@ -93,7 +93,7 @@
 
 #bpxp_header_close{
  color: hsl(0, 0%, 100%);
-    float: right;
+	float: right;
 }
 .bpxp-message{
   border-radius: 3px;

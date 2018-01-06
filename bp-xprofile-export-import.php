@@ -16,7 +16,7 @@
  * Plugin Name:       Buddypress Member Export Import
  * Plugin URI:        https://wbcomdesigns.com/contact/
  * Description:       Buddypress Member Export Import plugin bring you feature to export Buddypress members and x-profile fields data into CSV file and import buddypress members from CSV file.
- 
+
  *
  * Version:           1.0.0
  * Author:            Wbcom Designs
@@ -28,47 +28,49 @@
  */
 
 
-if (!defined('ABSPATH')) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 
 	/**
 	* Constants used in the plugin
 	*/
-	define('BPXP_PLUGIN_PATH', plugin_dir_path(__FILE__));
-	define('BPXP_PLUGIN_URL', plugin_dir_url(__FILE__));
-	define('BPXP_TEXT_DOMAIN', 'bp-xprofile-export-import');
-	
-if ( !function_exists( 'bpxp_plugins_files' ) ) {
+	define( 'BPXP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+	define( 'BPXP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+	define( 'BPXP_TEXT_DOMAIN', 'bp-xprofile-export-import' );
+
+if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 
 	add_action( 'plugins_loaded', 'bpxp_plugins_files' );
 
 	/**
-	* Include requir files
-	*
-	* @author 	Wbcom Designs
-	* @since    1.0.0
-	*/
-	function bpxp_plugins_files(){
-		if (!in_array('buddypress/bp-loader.php', apply_filters('active_plugins', get_option('active_plugins')))) {
+	 * Include requir files
+	 *
+	 * @author   Wbcom Designs
+	 * @since    1.0.0
+	 */
+	function bpxp_plugins_files() {
+		if ( ! in_array( 'buddypress/bp-loader.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 			add_action( 'admin_notices', 'bpxp_admin_notice' );
-		}else{
+		} else {
 			bpxp_run_bp_xprofile_export_import();
 		}
 	}
 }
 
-if ( !function_exists( 'bpxp_admin_notice' ) ) {
+if ( ! function_exists( 'bpxp_admin_notice' ) ) {
 	/**
-	* Display admin notice
-	*
-	* @author 	Wbcom Designs
-	* @since    1.0.0
-	*/
+	 * Display admin notice
+	 *
+	 * @author   Wbcom Designs
+	 * @since    1.0.0
+	 */
 	function bpxp_admin_notice() {
-	    ?>
-	    <div class="error notice is-dismissible">
-	        <p><?php _e( 'The <b>Buddypress Member Export Import </b> plugin requires <b>Buddypress</b> plugin to be installed and active', BPXP_TEXT_DOMAIN ); ?></p>
-	    </div>
-	    <?php
+		?>
+		<div class="error notice is-dismissible">
+			<p><?php _e( 'The <b>Buddypress Member Export Import </b> plugin requires <b>Buddypress</b> plugin to be installed and active', BPXP_TEXT_DOMAIN ); ?></p>
+		</div>
+		<?php
 	}
 }
 

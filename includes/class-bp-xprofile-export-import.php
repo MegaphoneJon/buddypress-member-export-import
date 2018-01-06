@@ -30,22 +30,22 @@
 class Bp_Xprofile_Export_Import {
 
 	/**
-	* The loader that's responsible for maintaining and registering all hooks that power
-	* the plugin.
-	*
-	* @since    1.0.0
-	* @access   protected
-	* @var      Bp_Xprofile_Export_Import_Loader    $loader    Maintains and registers all hooks for the plugin.
-	*/
+	 * The loader that's responsible for maintaining and registering all hooks that power
+	 * the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      Bp_Xprofile_Export_Import_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 */
 	protected $loader;
 
 	/**
-	* The unique identifier of this plugin.
-	*
-	* @since    1.0.0
-	* @access   protected
-	* @var      string    $plugin_name    The string used to uniquely identify this plugin.
-	*/
+	 * The unique identifier of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 */
 	protected $plugin_name;
 
 	/**
@@ -69,7 +69,7 @@ class Bp_Xprofile_Export_Import {
 	public function __construct() {
 
 		$this->plugin_name = 'bp-xprofile-export-import';
-		$this->version = '1.0.0';
+		$this->version     = '1.0.0';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -114,13 +114,13 @@ class Bp_Xprofile_Export_Import {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-bp-xprofile-export-import-admin.php';
 
 		/**
-		* The class responsible for defining all actions for ajax that occur in the 
+		* The class responsible for defining all actions for ajax that occur in the
 		* admin area.
 		*/
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-bp-xprofile-admin-export-ajax.php';
 
 		/**
-		* The class responsible for defining all actions for ajax that occur in the 
+		* The class responsible for defining all actions for ajax that occur in the
 		* admin area.
 		*/
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-bp-xprofile-admin-import-ajax.php';
@@ -163,9 +163,9 @@ class Bp_Xprofile_Export_Import {
 	}
 
 	/**
-	 * Register all of the hooks related to the admin area export member ajax 
+	 * Register all of the hooks related to the admin area export member ajax
 	 * functionality of the plugin.
-	 * 
+	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
@@ -174,16 +174,16 @@ class Bp_Xprofile_Export_Import {
 		$export_admin = new Bp_Xprofile_Export_Admin_Ajax( $this->get_plugin_name(), $this->get_version() );
 
 		/*	add action to set xprofile fields type */
-		$this->loader->add_action( 'wp_ajax_bpxp_get_export_xprofile_fields', $export_admin, 'bpxp_get_xprofile_fields');
+		$this->loader->add_action( 'wp_ajax_bpxp_get_export_xprofile_fields', $export_admin, 'bpxp_get_xprofile_fields' );
 		/* add action for exprot member data */
-		$this->loader->add_action( 'wp_ajax_bpxp_export_xprofile_data', $export_admin, 'bpxp_export_member_data');
-		//$this->loader->add_action( 'wp_ajax_bpxp_export_xprofile_data', $export_admin, 'add_action( 'admin_init', 'bbg_csv_export' );');
+		$this->loader->add_action( 'wp_ajax_bpxp_export_xprofile_data', $export_admin, 'bpxp_export_member_data' );
+		// $this->loader->add_action( 'wp_ajax_bpxp_export_xprofile_data', $export_admin, 'add_action( 'admin_init', 'bbg_csv_export' );');
 	}
 
 	/**
-	 * Register all of the hooks related to the admin area export member ajax 
+	 * Register all of the hooks related to the admin area export member ajax
 	 * functionality of the plugin.
-	 * 
+	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
@@ -191,9 +191,9 @@ class Bp_Xprofile_Export_Import {
 
 		$plugin_admin = new Bp_Xprofile_Import_Admin_Ajax( $this->get_plugin_name(), $this->get_version() );
 		/* Ajax request for add maping fields */
-		$this->loader->add_action( 'wp_ajax_bpxp_import_header_fields', $plugin_admin, 'bpxp_import_csv_header_fields');
+		$this->loader->add_action( 'wp_ajax_bpxp_import_header_fields', $plugin_admin, 'bpxp_import_csv_header_fields' );
 		/* import csv data */
-		$this->loader->add_action( 'wp_ajax_bpxp_import_csv_data', $plugin_admin, 'bpxp_import_csv_member_data');
+		$this->loader->add_action( 'wp_ajax_bpxp_import_csv_data', $plugin_admin, 'bpxp_import_csv_member_data' );
 	}
 
 	/**
