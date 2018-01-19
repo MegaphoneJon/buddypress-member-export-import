@@ -95,7 +95,7 @@ class Bp_Xprofile_Export_Admin_Ajax {
 					}
 				}
 			}
-			_e( $bpxp_set_fields, BPXP_TEXT_DOMAIN );
+			_e( $bpxp_set_fields, 'bp-xprofile-export-import' );
 			die;
 		}
 	}

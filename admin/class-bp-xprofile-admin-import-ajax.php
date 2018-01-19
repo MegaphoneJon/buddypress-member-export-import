@@ -116,7 +116,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 				$currentGroup .= '<br/><tr><td colspan="2"><p class="description"> <b>Note:</b> Select xProfile Fields from above to insert value for xProfile Fileds. If the fields that exist in the CSV file do not exist in your website, in that case the fields processing will be skipped, otherwise you need to create those fields..</p></td></tr>';
 				$currentGroup .= '</table></div>';
 			}
-			_e( $currentGroup, BPXP_TEXT_DOMAIN );
+			_e( $currentGroup, 'bp-xprofile-export-import' );
 			die;
 		}
 	}
@@ -170,7 +170,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 						update_option( 'bpxp_csv_headers', $bpxp_data_key );
 					} else {
 						echo '<div class="bpxp-error-data">';
-						_e( '<p class="bpxp-error-message bpxp-message">Sorry CVS file did not imported. There are some errors in CSV column name please correct them and try again. Some columns in CSV are required, eg. user_login , user_pass, user_email, user_role.<a href="javascript:void(0)" class="bpxp-close">x</a></p></p>', BPXP_TEXT_DOMAIN );
+						_e( '<p class="bpxp-error-message bpxp-message">Sorry CVS file did not imported. There are some errors in CSV column name please correct them and try again. Some columns in CSV are required, eg. user_login , user_pass, user_email, user_role.<a href="javascript:void(0)" class="bpxp-close">x</a></p></p>', 'bp-xprofile-export-import' );
 						echo '</div>';
 						exit;
 					}
@@ -328,7 +328,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 				foreach ( $bpxpNotice as $key => $notice ) {
 					echo '<div class="bpxp-error-data">';
 					echo '<p class="bpxp-error-message bpxp-message">';
-					_e( 'Profile field group ' . $notice . ' does not exist! ', BPXP_TEXT_DOMAIN );
+					_e( 'Profile field group ' . $notice . ' does not exist! ', 'bp-xprofile-export-import' );
 					echo '<a href="javascript:void(0)" class="bpxp-close">x</a></p>';
 					echo '</div>';
 				}
@@ -380,7 +380,7 @@ class Bp_Xprofile_Import_Admin_Ajax {
 					foreach ( $bpxpNotice as $key => $notice ) {
 						echo '<div class="' . $containerCls . '">';
 						echo '<p class="' . $boxCls . '">';
-						_e( $notice . ' ' . $bpxpMsg, BPXP_TEXT_DOMAIN );
+						_e( $notice . ' ' . $bpxpMsg, 'bp-xprofile-export-import' );
 						echo '<a href="javascript:void(0)" class="bpxp-close">x</a></p>';
 						echo '</div>';
 					}

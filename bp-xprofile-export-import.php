@@ -37,7 +37,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	*/
 	define( 'BPXP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 	define( 'BPXP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-	define( 'BPXP_TEXT_DOMAIN', 'bp-xprofile-export-import' );
 
 if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 
@@ -68,7 +67,7 @@ if ( ! function_exists( 'bpxp_admin_notice' ) ) {
 	function bpxp_admin_notice() {
 		?>
 		<div class="error notice is-dismissible">
-			<p><?php _e( 'The <b>Buddypress Member Export Import </b> plugin requires <b>Buddypress</b> plugin to be installed and active', BPXP_TEXT_DOMAIN ); ?></p>
+			<p><?php _e( 'The <b>Buddypress Member Export Import </b> plugin requires <b>Buddypress</b> plugin to be installed and active', 'bp-xprofile-export-import' ); ?></p>
 		</div>
 		<?php
 	}
