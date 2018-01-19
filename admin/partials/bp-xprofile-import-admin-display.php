@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Provide a admin area view for Import X-Profile fields data.
  *
@@ -23,37 +22,6 @@
 			<a href="javascript:void(0)" id="bpxp_header_close">x</a>
 			</p>
 		</div>
-		<?php
-		/*
-		<div class="bpxp-admin-row bpxp-limit">
-			<?php do_action('bpxp_before_import_limit'); ?>
-			<div class="bpxp-admin-3 bpxp-admin-label">
-				<label for="bpxp_xprofile_fields">
-					<?php _e('Password Type', 'bp-xprofile-export-import');?>
-				</label>
-			</div>
-			<div class="bpxp-admin-3">
-				<label for="bpxp_set_password_type">
-				<input type="radio" name="bpxp_set_password_type" id="bpxp_set_password_type" value="auto-generate" />
-				<?php _e(' Auto generate ', 'bp-xprofile-export-import');?>
-				</label>
-
-				<label for="bpxp_set_password_type">
-				<input type="radio" name="bpxp_set_password_type" id="bpxp_set_password_type" value="encript-form" />
-				<?php _e(' Encript form ', 'bp-xprofile-export-import');?>
-				</label>
-
-				<label for="bpxp_set_password_type">
-				<input type="radio" name="bpxp_set_password_type" id="bpxp_set_password_type" value="simple-password" />
-				<?php _e(' Allready encripted  ', 'bp-xprofile-export-import');?>
-				</label>
-				<p class="description"><?php _e('This is the number of rows in the CSV file that get grouped by the value that is saved above, eg. 10. This means that the complete number of rows will be chunked and processed.', 'bp-xprofile-export-import'); ?>
-				</p>
-			</div>
-			<?php do_action('bpxp_after_import_limit'); ?>
-		</div>
-		*/
-?>
 
 		<div class="bpxp-admin-row bpxp-limit">
 			<?php do_action( 'bpxp_before_import_limit' ); ?>

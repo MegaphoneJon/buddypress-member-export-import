@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -126,11 +125,9 @@ class Bp_Xprofile_Export_Import_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/bp-xprofile-export-import-admin.css', array(), $this->version, 'all' );
 
 	}
-
 
 	/**
 	 * Register the JavaScript for the admin area.

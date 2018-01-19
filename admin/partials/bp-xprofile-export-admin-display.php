@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Provide a admin area view for Export X-Profile fields data.
  *
@@ -20,13 +19,13 @@ $bpxp_xprofile_fields = BP_XProfile_Group::get( array( 'fetch_fields' => true ) 
 $bpxp_fields_group    = array();
 if ( ! empty( $bpxp_xprofile_fields ) ) {
 	$bpxp_profile_fields = array();
-	foreach ( $bpxp_xprofile_fields as $bpxp_fieldsKey => $bpxp_fieldsValue ) {
-		$bpxp_fields_group[ $bpxp_fieldsValue->id ] = $bpxp_fieldsValue->name;
-		if ( ! empty( $bpxp_fieldsValue->fields ) ) {
-			foreach ( $bpxp_fieldsValue->fields as $bpxp_fieldsData ) {
+	foreach ( $bpxp_xprofile_fields as $bpxp_fields_key => $bpxp_fields_value ) {
+		$bpxp_fields_group[ $bpxp_fields_value->id ] = $bpxp_fields_value->name;
+		if ( ! empty( $bpxp_fields_value->fields ) ) {
+			foreach ( $bpxp_fields_value->fields as $bpxp_fields_data ) {
 				$bpxp_profile_fields[] = array(
-					'name' => $bpxp_fieldsData->name,
-					'id'   => $bpxp_fieldsData->id,
+					'name' => $bpxp_fields_data->name,
+					'id'   => $bpxp_fields_data->id,
 				);
 			}
 		}

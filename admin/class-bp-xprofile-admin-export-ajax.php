@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -66,10 +65,10 @@ class Bp_Xprofile_Export_Admin_Ajax {
 					$bpxp_all_xprofile_fields = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
 					if ( ! empty( $bpxp_all_xprofile_fields ) ) {
 						$bpxp_set_fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>All X-Profile Fields</label>';
-						foreach ( $bpxp_all_xprofile_fields as $bpxp_fieldsKey => $bpxp_fieldsValue ) {
-							if ( ! empty( $bpxp_fieldsValue->fields ) ) {
-								foreach ( $bpxp_fieldsValue->fields as $bpxp_fieldsData ) {
-									$bpxp_set_fields .= '<label for="' . $bpxp_fieldsData->name . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . $bpxp_fieldsData->name . '"/>' . $bpxp_fieldsData->name . '</label>';
+						foreach ( $bpxp_all_xprofile_fields as $bpxp_fields_key => $bpxp_fields_value ) {
+							if ( ! empty( $bpxp_fields_value->fields ) ) {
+								foreach ( $bpxp_fields_value->fields as $bpxp_fields_data ) {
+									$bpxp_set_fields .= '<label for="' . $bpxp_fields_data->name . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . $bpxp_fields_data->name . '"/>' . $bpxp_fields_data->name . '</label>';
 								}
 							}
 						}
@@ -85,10 +84,10 @@ class Bp_Xprofile_Export_Admin_Ajax {
 					$bpxp_get_xprofile_fields = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
 					if ( ! empty( $bpxp_get_xprofile_fields ) ) {
 						$bpxp_set_fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>All X-Profile Fields</label>';
-						foreach ( $bpxp_get_xprofile_fields as $bpxp_fieldsKey => $bpxp_fieldsValue ) {
-							if ( ! empty( $bpxp_fieldsValue->fields ) && in_array( $bpxp_fieldsValue->id, $bpxp_gid ) ) {
-								foreach ( $bpxp_fieldsValue->fields as $bpxp_fieldsData ) {
-									$bpxp_set_fields .= '<label for="' . $bpxp_fieldsData->name . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . $bpxp_fieldsData->name . '"/>' . $bpxp_fieldsData->name . '</label>';
+						foreach ( $bpxp_get_xprofile_fields as $bpxp_fields_key => $bpxp_fields_value ) {
+							if ( ! empty( $bpxp_fields_value->fields ) && in_array( $bpxp_fields_value->id, $bpxp_gid ) ) {
+								foreach ( $bpxp_fields_value->fields as $bpxp_fields_data ) {
+									$bpxp_set_fields .= '<label for="' . $bpxp_fields_data->name . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . $bpxp_fields_data->name . '"/>' . $bpxp_fields_data->name . '</label>';
 								}
 							}
 						}
@@ -99,8 +98,9 @@ class Bp_Xprofile_Export_Admin_Ajax {
 			die;
 		}
 	}
+
 	/**
-	 * Create CSV file of xprofile fields data
+	 * Create CSV file of xprofile fields data.
 	 *
 	 * @since    1.0.0
 	 * @access   public
@@ -108,16 +108,16 @@ class Bp_Xprofile_Export_Admin_Ajax {
 	 */
 	public function bpxp_export_member_data() {
 		if ( isset( $_POST['action'] ) && $_POST['action'] == 'bpxp_export_xprofile_data' ) {
-			$bpxp_bpmemberID      = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_bpmember'] ) );
-			$bpxp_field_groupID   = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_field_group'] ) );
+			$bpxp_bpmember_id      = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_bpmember'] ) );
+			$bpxp_field_group_id   = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_field_group'] ) );
 			$bpxp_xpro_fieldsName = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_xprofile_fields'] ) );
-			$bpxp_bpmemberID      = $this->bpxp_remove_array_value( $bpxp_bpmemberID, 'user_id' );
-			$bpxp_field_groupID   = $this->bpxp_remove_array_value( $bpxp_field_groupID, 'group_id' );
+			$bpxp_bpmember_id      = $this->bpxp_remove_array_value( $bpxp_bpmember_id, 'user_id' );
+			$bpxp_field_group_id   = $this->bpxp_remove_array_value( $bpxp_field_group_id, 'group_id' );
 			$bpxp_xpro_fieldsName = $this->bpxp_remove_array_value( $bpxp_xpro_fieldsName, 'fields_name' );
 			$bpxp_exprot_data     = array();
 			$bpxp_user_group      = array();
-			if ( ! empty( $bpxp_bpmemberID ) ) {
-				foreach ( $bpxp_bpmemberID as $bpxp_ID ) {
+			if ( ! empty( $bpxp_bpmember_id ) ) {
+				foreach ( $bpxp_bpmember_id as $bpxp_ID ) {
 					$bpxp_memberData   = array();
 					$bpxp_members_data = get_userdata( $bpxp_ID );
 					if ( ! empty( $bpxp_members_data ) ) {
@@ -149,8 +149,8 @@ class Bp_Xprofile_Export_Admin_Ajax {
 			* Store X-Profile data according to user and fields
 			*/
 			$bpxp_exportFields = array();
-			foreach ( $bpxp_bpmemberID as $bpxp_user ) {
-				$bpxp_fieldsData = array();
+			foreach ( $bpxp_bpmember_id as $bpxp_user ) {
+				$bpxp_fields_data = array();
 				foreach ( $bpxp_xpro_fieldsName as $bpxp_field ) {
 					$bpxp_value = bp_get_profile_field_data( 'field=' . $bpxp_field . '&user_id=' . $bpxp_user );
 					if ( strpos( $bpxp_value, '<a href=' ) === 0 ) {
@@ -167,9 +167,9 @@ class Bp_Xprofile_Export_Admin_Ajax {
 						$bpxp_value = implode( ' - ', $bpxp_value );
 					}
 					$bpxp_value                     = preg_replace( '/[,]/', '', $bpxp_value );
-					$bpxp_fieldsData[ $bpxp_field ] = $bpxp_value;
+					$bpxp_fields_data[ $bpxp_field ] = $bpxp_value;
 				}
-				$bpxp_exportFields[ $bpxp_user ] = $bpxp_fieldsData;
+				$bpxp_exportFields[ $bpxp_user ] = $bpxp_fields_data;
 			}
 
 			if ( ! empty( $bpxp_exprot_data ) ) {
