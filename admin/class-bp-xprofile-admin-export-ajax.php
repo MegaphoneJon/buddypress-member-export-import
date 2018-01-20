@@ -19,7 +19,7 @@
  * @subpackage Bp_Xprofile_Export_Import/admin
  * @author     Wbcom Designs <admin@gmail.com>
  */
-class Bp_Xprofile_Export_Admin_Ajax {
+class Bp_Xprofile_Admin_Export_Ajax {
 	/**
 	 * The ID of this plugin.
 	 *
@@ -49,26 +49,35 @@ class Bp_Xprofile_Export_Admin_Ajax {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 	}
+
 	/**
-	 * Set Buddypress member fields
+	 * Set Buddypress member fields.
 	 *
 	 * @since    1.0.0
 	 * @access   public
 	 * @author   Wbcom Designs
 	 */
 	public function bpxp_get_xprofile_fields() {
-		if ( isset( $_POST['action'] ) && $_POST['action'] == 'bpxp_get_export_xprofile_fields' ) {
+
+		if ( isset($_POST['action']) && sanitize_text_field($_POST['action']) === 'bpxp_get_export_xprofile_fields' ) {
+
+			/**
+			* Check ajax nonce security.
+			*/
+			check_ajax_referer( 'bpxp_ajax_request', 'bpxp_fields_nonce' );
+
 			$bpxp_field_group_id = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxp_field_group_id'] ) );
+
 			if ( ! empty( $bpxp_field_group_id ) ) {
-				$bpxp_set_fields = '';
-				if ( in_array( 'all-fields-group', $bpxp_field_group_id ) ) {
+				$fields = '';
+				if ( in_array( 'all-fields-group', $bpxp_field_group_id, true) ) {
 					$bpxp_all_xprofile_fields = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
 					if ( ! empty( $bpxp_all_xprofile_fields ) ) {
-						$bpxp_set_fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>All X-Profile Fields</label>';
+						$fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>All X-Profile Fields</label>';
 						foreach ( $bpxp_all_xprofile_fields as $bpxp_fields_key => $bpxp_fields_value ) {
 							if ( ! empty( $bpxp_fields_value->fields ) ) {
 								foreach ( $bpxp_fields_value->fields as $bpxp_fields_data ) {
-									$bpxp_set_fields .= '<label for="' . $bpxp_fields_data->name . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . $bpxp_fields_data->name . '"/>' . $bpxp_fields_data->name . '</label>';
+									$fields .= '<label for="' . $bpxp_fields_data->name . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . $bpxp_fields_data->name . '"/>' . $bpxp_fields_data->name . '</label>';
 								}
 							}
 						}
@@ -83,18 +92,19 @@ class Bp_Xprofile_Export_Admin_Ajax {
 					}
 					$bpxp_get_xprofile_fields = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
 					if ( ! empty( $bpxp_get_xprofile_fields ) ) {
-						$bpxp_set_fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>All X-Profile Fields</label>';
+						$fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>All X-Profile Fields</label>';
 						foreach ( $bpxp_get_xprofile_fields as $bpxp_fields_key => $bpxp_fields_value ) {
-							if ( ! empty( $bpxp_fields_value->fields ) && in_array( $bpxp_fields_value->id, $bpxp_gid ) ) {
+							if ( ! empty( $bpxp_fields_value->fields ) && in_array( $bpxp_fields_value->id, $bpxp_gid, true ) ) {
 								foreach ( $bpxp_fields_value->fields as $bpxp_fields_data ) {
-									$bpxp_set_fields .= '<label for="' . $bpxp_fields_data->name . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . $bpxp_fields_data->name . '"/>' . $bpxp_fields_data->name . '</label>';
+									$fields .= '<label for="' . $bpxp_fields_data->name . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . $bpxp_fields_data->name . '"/>' . $bpxp_fields_data->name . '</label>';
 								}
 							}
 						}
 					}
 				}
 			}
-			_e( $bpxp_set_fields, 'bp-xprofile-export-import' );
+
+			echo sprintf( __( '%s', 'bp-xprofile-export-import'), $fields);
 			die;
 		}
 	}
@@ -107,69 +117,76 @@ class Bp_Xprofile_Export_Admin_Ajax {
 	 * @author   Wbcom Designs
 	 */
 	public function bpxp_export_member_data() {
-		if ( isset( $_POST['action'] ) && $_POST['action'] == 'bpxp_export_xprofile_data' ) {
+		if ( isset( $_POST['action'] ) && sanitize_text_field($_POST['action']) === 'bpxp_export_xprofile_data' ) {
+
+			/**
+			* Check ajax nonce security.
+			*/
+			check_ajax_referer( 'bpxp_ajax_request', 'bpxp_members_nonce' );
 			$bpxp_bpmember_id      = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_bpmember'] ) );
 			$bpxp_field_group_id   = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_field_group'] ) );
-			$bpxp_xpro_fieldsName = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_xprofile_fields'] ) );
+			$bpxp_xpro_fields_name = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_xprofile_fields'] ) );
 			$bpxp_bpmember_id      = $this->bpxp_remove_array_value( $bpxp_bpmember_id, 'user_id' );
 			$bpxp_field_group_id   = $this->bpxp_remove_array_value( $bpxp_field_group_id, 'group_id' );
-			$bpxp_xpro_fieldsName = $this->bpxp_remove_array_value( $bpxp_xpro_fieldsName, 'fields_name' );
+			$bpxp_xpro_fields_name = $this->bpxp_remove_array_value( $bpxp_xpro_fields_name, 'fields_name' );
 			$bpxp_exprot_data     = array();
 			$bpxp_user_group      = array();
 			if ( ! empty( $bpxp_bpmember_id ) ) {
-				foreach ( $bpxp_bpmember_id as $bpxp_ID ) {
-					$bpxp_memberData   = array();
-					$bpxp_members_data = get_userdata( $bpxp_ID );
+				foreach ( $bpxp_bpmember_id as $bpxp_id ) {
+					$bpxp_member_data   = array();
+					$bpxp_members_data = get_userdata( $bpxp_id );
 					if ( ! empty( $bpxp_members_data ) ) {
 						foreach ( $bpxp_members_data as $members ) {
-							$bpxp_memberData['Members']         = $bpxp_members_data->data->ID;
-							$bpxp_memberData['user_login']      = $bpxp_members_data->data->user_login;
-							$bpxp_memberData['user_pass']       = $bpxp_members_data->data->user_pass;
-							$bpxp_memberData['user_nicename']   = $bpxp_members_data->data->user_nicename;
-							$bpxp_memberData['user_email']      = $bpxp_members_data->data->user_email;
-							$bpxp_memberData['user_url']        = $bpxp_members_data->data->user_url;
-							$bpxp_memberData['user_registered'] = $bpxp_members_data->data->user_registered;
-							// $bpxp_memberData['user_status']   = $bpxp_members_data->data->user_status;
-							$bpxp_memberData['display_name'] = $bpxp_members_data->data->display_name;
-							$bpxp_memberData['user_role']    = $bpxp_members_data->roles[0];
+							$bpxp_member_data['Members']         = $bpxp_members_data->data->ID;
+							$bpxp_member_data['user_login']      = $bpxp_members_data->data->user_login;
+							$bpxp_member_data['user_pass']       = $bpxp_members_data->data->user_pass;
+							$bpxp_member_data['user_nicename']   = $bpxp_members_data->data->user_nicename;
+							$bpxp_member_data['user_email']      = $bpxp_members_data->data->user_email;
+							$bpxp_member_data['user_url']        = $bpxp_members_data->data->user_url;
+							$bpxp_member_data['user_registered'] = $bpxp_members_data->data->user_registered;
+							$bpxp_member_data['display_name'] 	 = $bpxp_members_data->data->display_name;
+							$bpxp_member_data['user_role']    	 = $bpxp_members_data->roles[0];
 						}
 					}
-					$bpxp_memberData['avatar_path'] = get_avatar_url( $bpxp_ID );
+					$bpxp_member_data['avatar_path'] = get_avatar_url( $bpxp_id );
 					if ( bp_is_active( 'groups' ) ) {
-						$bpxp_usersGroup = BP_Groups_Member::get_group_ids( $bpxp_ID );
-						if ( ! empty( $bpxp_usersGroup ) ) {
-							$bpxp_groups_data            = $this->bpxp_get_group_data( $bpxp_usersGroup );
-							$bpxp_user_group[ $bpxp_ID ] = $bpxp_groups_data;
+						$bpxp_users_group = BP_Groups_Member::get_group_ids( $bpxp_id );
+						if ( ! empty( $bpxp_users_group ) ) {
+							$bpxp_groups_data            = $this->bpxp_get_group_data( $bpxp_users_group );
+							$bpxp_user_group[ $bpxp_id ] = $bpxp_groups_data;
 						}
 					}
-					$bpxp_exprot_data[ $bpxp_ID ] = $bpxp_memberData;
+					$bpxp_exprot_data[ $bpxp_id ] = $bpxp_member_data;
 				}
 			}
-			/**
-			* Store X-Profile data according to user and fields
-			*/
-			$bpxp_exportFields = array();
-			foreach ( $bpxp_bpmember_id as $bpxp_user ) {
-				$bpxp_fields_data = array();
-				foreach ( $bpxp_xpro_fieldsName as $bpxp_field ) {
-					$bpxp_value = bp_get_profile_field_data( 'field=' . $bpxp_field . '&user_id=' . $bpxp_user );
-					if ( strpos( $bpxp_value, '<a href=' ) === 0 ) {
-						$result = '';
-						preg_match_all( '/<a[^>]+href=([\'"])(?<href>.+?)\1[^>]*>/i', $bpxp_value, $result );
-						if ( ! empty( $result['href'][0] ) && strpos( $result['href'][0], 'www' ) !== false ) {
-							$bpxp_value = $result['href'][0];
-						} else {
-							$bpxp_value = '';
-						}
-					}
 
-					if ( is_array( $bpxp_value ) ) {
-						$bpxp_value = implode( ' - ', $bpxp_value );
+			/**
+			* Store X-Profile data according to user and fields.
+			*/
+			$bpxp_export_fields = array();
+			if( !empty( $bpxp_bpmember_id ) ){
+				foreach ( $bpxp_bpmember_id as $bpxp_user ) {
+					$bpxp_fields_data = array();
+					foreach ( $bpxp_xpro_fields_name as $bpxp_field ) {
+						$bpxp_value = bp_get_profile_field_data( 'field=' . $bpxp_field . '&user_id=' . $bpxp_user );
+						if ( strpos( $bpxp_value, '<a href=' ) === 0 ) {
+							$result = '';
+							preg_match_all( '/<a[^>]+href=([\'"])(?<href>.+?)\1[^>]*>/i', $bpxp_value, $result );
+							if ( ! empty( $result['href'][0] ) && strpos( $result['href'][0], 'www' ) !== false ) {
+								$bpxp_value = $result['href'][0];
+							} else {
+								$bpxp_value = '';
+							}
+						}
+
+						if ( is_array( $bpxp_value ) ) {
+							$bpxp_value = implode( ' - ', $bpxp_value );
+						}
+						$bpxp_value                     = preg_replace( '/[,]/', '', $bpxp_value );
+						$bpxp_fields_data[ $bpxp_field ] = $bpxp_value;
 					}
-					$bpxp_value                     = preg_replace( '/[,]/', '', $bpxp_value );
-					$bpxp_fields_data[ $bpxp_field ] = $bpxp_value;
+					$bpxp_export_fields[ $bpxp_user ] = $bpxp_fields_data;
 				}
-				$bpxp_exportFields[ $bpxp_user ] = $bpxp_fields_data;
 			}
 
 			if ( ! empty( $bpxp_exprot_data ) ) {
@@ -178,105 +195,111 @@ class Bp_Xprofile_Export_Admin_Ajax {
 			if ( ! empty( $bpxp_user_group ) ) {
 				ksort( $bpxp_user_group );
 			}
-			if ( ! empty( $bpxp_exportFields ) ) {
-				ksort( $bpxp_exportFields );
+			if ( ! empty( $bpxp_export_fields ) ) {
+				ksort( $bpxp_export_fields );
 			}
-			$bpxp_export_users = $this->bpxp_merge_users_data( $bpxp_exprot_data, $bpxp_user_group, $bpxp_exportFields );
+			$bpxp_export_users = $this->bpxp_merge_users_data( $bpxp_exprot_data, $bpxp_user_group, $bpxp_export_fields );
 		}
-		echo json_encode( $bpxp_export_users );
+		echo wp_json_encode( $bpxp_export_users );
 		die;
 	}
+
 	/**
-	 * Remove extra value from array
+	 * Remove extra value from array.
 	 *
 	 * @since    1.0.0
 	 * @access   public
 	 * @author   Wbcom Designs
-	 * @param    Array $arrayData csv data
-	 * @param    Array $arrayType csv data type
-	 * @return   Array  Remove extra header fields from CSV
+	 * @param    Array $array_data csv data.
+	 * @param    Array $array_type csv data type.
+	 * @return   Array  Remove extra header fields from CSV.
 	 */
-	public function bpxp_remove_array_value( $arrayData, $arrayType ) {
+	public function bpxp_remove_array_value( $array_data, $array_type ) {
 		$bpxp_id_index = '';
-		switch ( $arrayType ) {
+		switch ( $array_type ) {
 			case 'user_id':
-				if ( ! empty( $arrayData ) ) {
-					$bpxp_id_index = array_search( 'bpxp-all-user', $arrayData );
+				if ( ! empty( $array_data ) ) {
+					$bpxp_id_index = array_search( 'bpxp-all-user', $array_data , true);
 					if ( $bpxp_id_index == 'bpxp-all-user' ) {
-						unset( $arrayData[ $bpxp_id_index ] );
+						unset( $array_data[ $bpxp_id_index ] );
 					}
-					return $arrayData;
+					return $array_data;
 				}
 				break;
 			case 'group_id':
-				if ( ! empty( $arrayData ) ) {
-					$bpxp_id_index = array_search( 'all-fields-group', $arrayData );
+				if ( ! empty( $array_data ) ) {
+					$bpxp_id_index = array_search( 'all-fields-group', $array_data );
 					if ( $bpxp_id_index == 'all-fields-group' ) {
-						unset( $arrayData[ $bpxp_id_index ] );
+						unset( $array_data[ $bpxp_id_index ] );
 					}
-					return $arrayData;
+					return $array_data;
 				}
 				break;
 			case 'fields_name':
-				if ( ! empty( $arrayData ) ) {
-					$bpxp_id_index = array_search( 'all-xprofile-fields', $arrayData );
+				if ( ! empty( $array_data ) ) {
+					$bpxp_id_index = array_search( 'all-xprofile-fields', $array_data );
 					if ( $bpxp_id_index == 'all-xprofile-fields' ) {
-						unset( $arrayData[ $bpxp_id_index ] );
+						unset( $array_data[ $bpxp_id_index ] );
 					}
-					return $arrayData;
+					return $array_data;
 				}
 				break;
 			default:
-				return $arrayData;
+				return $array_data;
 		}
 	}
+
 	/**
-	 * Get user's group data info and return array
+	 * Get user's group data info and return array.
 	 *
 	 * @since    1.0.0
 	 * @access   public
 	 * @author   Wbcom Designs
-	 * @param    array $groupID group id
-	 * @return   Array  $bpxp_members_group Return user group data details
+	 * @param    array $group_id group id.
+	 * @return   Array $bpxp_members_group Return user group data details.
 	 */
-	public function bpxp_get_group_data( $groupID ) {
-		if ( ! empty( $groupID ) ) {
+	public function bpxp_get_group_data( $group_id ) {
+		if ( ! empty( $group_id ) ) {
 			$bpxp_members_group = array();
-			$tempName           = array();
-			if ( ! empty( $groupID['groups'] ) ) {
-				foreach ( $groupID['groups'] as $id ) {
+			$temp_name           = array();
+			if ( ! empty( $group_id['groups'] ) ) {
+				foreach ( $group_id['groups'] as $id ) {
 					$bpxp_groups  = groups_get_group( array( 'group_id' => $id ) );
-					$groupCreater = get_userdata( $bpxp_groups->creator_id );
-					$tempName[]   = $bpxp_groups->name;
+					$group_creater = get_userdata( $bpxp_groups->creator_id );
+					$temp_name[]   = $bpxp_groups->name;
 				}
 			}
-			$bpxp_members_group['group_name'] = implode( ' - ', $tempName );
+			$bpxp_members_group['group_name'] = implode( ' - ', $temp_name );
 		}
 		return $bpxp_members_group;
 	}
+
 	/**
 	 * Merge user data into single array.
 	 *
 	 * @since    1.0.0
 	 * @access   public
 	 * @author   Wbcom Designs
-	 * @return   Array    Return users data for export csv
+	 * @param    array    $first_array    contains members data.
+	 * @param    array    $second_array   contains xprofile fields data.
+	 * @param    array    $third_array    contains groups data.
+	 * @return   Array    Return users data for export csv.
 	 */
-	public function bpxp_merge_users_data( $firstArray, $secondArray, $thirdArray ) {
-		$bpxp_export_File = array();
-		if ( ! empty( $firstArray ) && ! empty( $thirdArray ) && ! empty( $secondArray ) ) {
-			foreach ( $firstArray as $index => $value ) {
-				$result             = array_merge( $value, $thirdArray[ $index ], $secondArray[ $index ] );
-				$bpxp_export_File[] = $result;
+	public function bpxp_merge_users_data( $first_array, $second_array, $third_array ) {
+		$bpxp_export_file = array();
+		if ( ! empty( $first_array ) && ! empty( $third_array ) && ! empty( $second_array ) ) {
+			foreach ( $first_array as $index => $value ) {
+				$result             = array_merge( $value, $third_array[ $index ], $second_array[ $index ] );
+				$bpxp_export_file[] = $result;
 			}
-		} elseif ( ! empty( $firstArray ) && ! empty( $thirdArray ) ) {
-			foreach ( $firstArray as $index => $value ) {
-				$result             = array_merge( $value, $thirdArray[ $index ] );
-				$bpxp_export_File[] = $result;
+		} elseif ( ! empty( $first_array ) && ! empty( $third_array ) ) {
+			foreach ( $first_array as $index => $value ) {
+				$result             = array_merge( $value, $third_array[ $index ] );
+				$bpxp_export_file[] = $result;
 			}
 		} else {
-				$bpxp_export_File[] = $firstArray;
+				$bpxp_export_file[] = $first_array;
 		}
-		return $bpxp_export_File;
+		return $bpxp_export_file;
 	}
 }

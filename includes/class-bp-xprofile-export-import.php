@@ -140,7 +140,7 @@ class Bp_Xprofile_Export_Import {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Bp_Xprofile_Export_Import_i18n();
+		$plugin_i18n = new Bp_Xprofile_Export_Import_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 	}
@@ -171,7 +171,7 @@ class Bp_Xprofile_Export_Import {
 	 */
 	private function define_admin_export_ajax_hooks() {
 
-		$export_admin = new Bp_Xprofile_Export_Admin_Ajax( $this->get_plugin_name(), $this->get_version() );
+		$export_admin = new Bp_Xprofile_Admin_Export_Ajax( $this->get_plugin_name(), $this->get_version() );
 
 		/*	add action to set xprofile fields type */
 		$this->loader->add_action( 'wp_ajax_bpxp_get_export_xprofile_fields', $export_admin, 'bpxp_get_xprofile_fields' );
@@ -189,7 +189,7 @@ class Bp_Xprofile_Export_Import {
 	 */
 	private function define_admin_import_ajax_hooks() {
 
-		$plugin_admin = new Bp_Xprofile_Import_Admin_Ajax( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Bp_Xprofile_Admin_Import_Ajax( $this->get_plugin_name(), $this->get_version() );
 		/* Ajax request for add maping fields */
 		$this->loader->add_action( 'wp_ajax_bpxp_import_header_fields', $plugin_admin, 'bpxp_import_csv_header_fields' );
 		/* import csv data */
