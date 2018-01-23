@@ -47,7 +47,7 @@ if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 	 * @since    1.0.0
 	 */
 	function bpxp_plugins_files() {
-		if ( ! in_array( 'buddypress/bp-loader.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		if ( ! in_array( 'buddypress/bp-loader.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
 			add_action( 'admin_notices', 'bpxp_admin_notice' );
 		} else {
 			bpxp_run_bp_xprofile_export_import();
@@ -65,7 +65,7 @@ if ( ! function_exists( 'bpxp_admin_notice' ) ) {
 	function bpxp_admin_notice() {
 		?>
 		<div class="error notice is-dismissible">
-			<p><?php _e( 'The <b>Buddypress Member Export Import </b> plugin requires <b>Buddypress</b> plugin to be installed and active', 'bp-xprofile-export-import' ); ?></p>
+			<p><?php esc_html_e( 'The Buddypress Member Export Import plugin requires Buddypress plugin to be installed and active', 'bp-xprofile-export-import' ); ?></p>
 		</div>
 		<?php
 	}

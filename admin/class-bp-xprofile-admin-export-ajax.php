@@ -28,6 +28,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
 	private $plugin_name;
+
 	/**
 	 * The version of this plugin.
 	 *
@@ -63,7 +64,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 		*/
 		check_ajax_referer( 'bpxp_ajax_request', 'bpxp_fields_nonce' );
 
-		if (sanitize_text_field( wp_unslash( $_POST['action'] ) ) === 'bpxp_get_export_xprofile_fields' ) {
+		if ( isset( $_POST['action'] ) && 'bpxp_get_export_xprofile_fields' === $_POST['action'] ) {
 			$bpxp_field_group_id = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxp_field_group_id'] ) );
 
 			if ( ! empty( $bpxp_field_group_id ) ) {
@@ -119,7 +120,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 		* Check ajax nonce security.
 		*/
 		check_ajax_referer( 'bpxp_ajax_request', 'bpxp_members_nonce' );
-		if ( sanitize_text_field( wp_unslash( $_POST['action'] ) ) === 'bpxp_export_xprofile_data' ) {
+		if ( isset( $_POST['action'] ) && 'bpxp_export_xprofile_data' === $_POST['action'] ) {
 			$bpxp_bpmember_id      = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_bpmember'] ) );
 			$bpxp_field_group_id   = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_field_group'] ) );
 			$bpxp_xpro_fields_name = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_xprofile_fields'] ) );
