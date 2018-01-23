@@ -72,11 +72,11 @@ class Bp_Xprofile_Admin_Export_Ajax {
 				if ( in_array( 'all-fields-group', $bpxp_field_group_id, true ) ) {
 					$bpxp_all_xprofile_fields = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
 					if ( ! empty( $bpxp_all_xprofile_fields ) ) {
-						$fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>All X-Profile Fields</label>';
+						$fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>' . esc_html( 'All X-Profile Fields', 'bp-xprofile-export-import' ) . '</label>';
 						foreach ( $bpxp_all_xprofile_fields as $bpxp_fields_key => $bpxp_fields_value ) {
 							if ( ! empty( $bpxp_fields_value->fields ) ) {
 								foreach ( $bpxp_fields_value->fields as $bpxp_fields_data ) {
-									$fields .= '<label for="' . $bpxp_fields_data->name . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . $bpxp_fields_data->name . '"/>' . $bpxp_fields_data->name . '</label>';
+									$fields .= '<label for="' . esc_attr( $bpxp_fields_data->name ) . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . esc_html( $bpxp_fields_data->name ) . '"/>' . esc_html( $bpxp_fields_data->name, 'bp-xprofile-export-import' ) . '</label>';
 								}
 							}
 						}
@@ -91,11 +91,11 @@ class Bp_Xprofile_Admin_Export_Ajax {
 					}
 					$bpxp_get_xprofile_fields = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
 					if ( ! empty( $bpxp_get_xprofile_fields ) ) {
-						$fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>All X-Profile Fields</label>';
+						$fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>' . esc_html( 'All X-Profile Fields', 'bp-xprofile-export-import' ) . '</label>';
 						foreach ( $bpxp_get_xprofile_fields as $bpxp_fields_key => $bpxp_fields_value ) {
 							if ( ! empty( $bpxp_fields_value->fields ) && in_array( $bpxp_fields_value->id, $bpxp_gid ) ) {
 								foreach ( $bpxp_fields_value->fields as $bpxp_fields_data ) {
-									$fields .= '<label for="' . $bpxp_fields_data->name . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . $bpxp_fields_data->name . '"/>' . $bpxp_fields_data->name . '</label>';
+									$fields .= '<label for="' . esc_attr( $bpxp_fields_data->name ) . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . esc_html( $bpxp_fields_data->name ) . '"/>' . esc_html( $bpxp_fields_data->name, 'bp-xprofile-export-import' ) . '</label>';
 								}
 							}
 						}
@@ -103,7 +103,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 				}
 			}
 
-			echo sprintf( __( '%s', 'bp-xprofile-export-import'), $fields );
+			echo $fields;
 			die;
 		}
 	}
@@ -218,7 +218,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 			case 'user_id':
 				if ( ! empty( $array_data ) ) {
 					$bpxp_id_index = array_search( 'bpxp-all-user', $array_data, true );
-					if ( $bpxp_id_index == 'bpxp-all-user' ) {
+					if ( 'bpxp-all-user' == $bpxp_id_index ) {
 						unset( $array_data[ $bpxp_id_index ] );
 					}
 					return $array_data;
@@ -227,7 +227,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 			case 'group_id':
 				if ( ! empty( $array_data ) ) {
 					$bpxp_id_index = array_search( 'all-fields-group', $array_data, true );
-					if ( $bpxp_id_index == 'all-fields-group' ) {
+					if ( 'all-fields-group' == $bpxp_id_index ) {
 						unset( $array_data[ $bpxp_id_index ] );
 					}
 					return $array_data;
@@ -236,7 +236,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 			case 'fields_name':
 				if ( ! empty( $array_data ) ) {
 					$bpxp_id_index = array_search( 'all-xprofile-fields', $array_data, true );
-					if ( $bpxp_id_index == 'all-xprofile-fields' ) {
+					if ( 'all-xprofile-fields' == $bpxp_id_index ) {
 						unset( $array_data[ $bpxp_id_index ] );
 					}
 					return $array_data;
