@@ -1,9 +1,8 @@
 <?php
-
 /**
- * The plugin bootstrap file
+ * The plugin bootstrap file.
  *
- * This file is read by WordPress to generate the plugin information in the plugin
+ * This file is read by WordPress to generate the plugin information in the plugin.
  * admin area. This file also includes all of the dependencies used by the plugin,
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
@@ -27,16 +26,15 @@
  * Domain Path:       /languages
  */
 
-
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit;
 }
 
-	/**
-	* Constants used in the plugin
-	*/
-	define( 'BPXP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-	define( 'BPXP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+/**
+* Constants used in the plugin.
+*/
+define( 'BPXP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'BPXP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 

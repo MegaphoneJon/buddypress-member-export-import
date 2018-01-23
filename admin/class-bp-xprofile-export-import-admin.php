@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -126,11 +125,9 @@ class Bp_Xprofile_Export_Import_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/bp-xprofile-export-import-admin.css', array(), $this->version, 'all' );
 
 	}
-
 
 	/**
 	 * Register the JavaScript for the admin area.
@@ -153,6 +150,6 @@ class Bp_Xprofile_Export_Import_Admin {
 		 * class.
 		 */
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/bp-xprofile-export-import-admin.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script( $this->plugin_name, 'bpxp_ajax_url', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+		wp_localize_script( $this->plugin_name, 'bpxp_ajax_url', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) , 'ajax_nonce' => wp_create_nonce('bpxp_ajax_request') ) );
 	}
 }

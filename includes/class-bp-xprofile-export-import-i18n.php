@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Define the internationalization functionality
+ * Define the internationalization functionality.
  *
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
@@ -24,7 +23,7 @@
  * @subpackage Bp_Xprofile_Export_Import/includes
  * @author     Wbcom Designs <admin@gmail.com>
  */
-class Bp_Xprofile_Export_Import_i18n {
+class Bp_Xprofile_Export_Import_I18n {
 
 
 	/**
