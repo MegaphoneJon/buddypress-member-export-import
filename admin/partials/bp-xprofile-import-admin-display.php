@@ -15,7 +15,7 @@
 ?>
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="bpxp-admin-container">
-	<h1><?php _e( 'Import CSV File Data', 'bp-xprofile-export-import' ); ?></h1>
+	<h1><?php esc_html_e( 'Import CSV File Data', 'bp-xprofile-export-import' ); ?></h1>
 		<div class="" id="csv_header_error">
 			<p class="bpxp-error-message bpxp-message">
 			<?php esc_html_e( 'Sorry CVS file did not imported. Please remove all extra rows from csv file. CSV file must have column name in first row eg. user_login , user_pass, user_email, user_role', 'bp-xprofile-export-import' ); ?>
@@ -26,10 +26,10 @@
 		<div class="bpxp-admin-row bpxp-limit">
 			<?php do_action( 'bpxp_before_import_limit' ); ?>
 			<div class="bpxp-admin-3 bpxp-admin-label">
-				<label for="bpxp_xprofile_fields"><?php _e( 'CSV Chunk Limit', 'bp-xprofile-export-import' ); ?></label>
+				<label for="bpxp_xprofile_fields"><?php echo esc_html( 'CSV Chunk Limit', 'bp-xprofile-export-import' ); ?></label>
 			</div>
 			<div class="bpxp-admin-3">
-				<input type="number" name="bpxp_set_member_limit" id="bpxp_set_member_limit" value="<?php esc_html_e( 10, 'bp-xprofile-export-import' ); ?>" />
+				<input type="number" name="bpxp_set_member_limit" id="bpxp_set_member_limit" value="<?php echo esc_html( 10, 'bp-xprofile-export-import' ); ?>" />
 				<p class="description"><?php esc_html_e( 'This is the number of rows in the CSV file that get grouped by the value that is saved above, eg. 10. This means that the complete number of rows will be chunked and processed.', 'bp-xprofile-export-import' ); ?></p>
 			</div>
 			<?php do_action( 'bpxp_after_import_limit' ); ?>
@@ -44,7 +44,7 @@
 				<input type="file" name="bpxp_import_file" id="bpxp_import_file" value="" />
 			</div>
 			<div class="bpxp-admin-3">
-				<img src="<?php echo $bpxp_import_spinner; ?>" class="bpxp-admin-settings-spinner" />
+				<img src="<?php echo esc_html( $bpxp_import_spinner ); ?>" class="bpxp-admin-settings-spinner" />
 			</div>
 		</div>
 
@@ -64,12 +64,12 @@
 				<input type="submit" name="bpxp_import_xprofile_data" id="bpxp_import_xprofile_data" class="bpxp-admin-control button button-primary"  value="<?php esc_html_e( 'Import', 'bp-xprofile-export-import' ); ?>" />
 			</div>
 			<div class="bpxp-admin-3">
-			<img src="<?php echo $bpxp_import_spinner; ?>" class="bpxp-admin-button-spinner" />
+			<img src="<?php echo esc_html( $bpxp_import_spinner ); ?>" class="bpxp-admin-button-spinner" />
 			</div>
 		</div>
 		<?php do_action( 'bpxp_after_import_button' ); ?>
 
 		<div class="bpxp-admin-row">
-		<p><?php esc_html_e( '<b> Note: </b> Please remove all extra rows from csv file. CSV file must have column name in first row.', 'bp-xprofile-export-import' ); ?></p>
+		<p><?php esc_html_e( 'Note: Please remove all extra rows from csv file. CSV file must have column name in first row.', 'bp-xprofile-export-import' ); ?></p>
 		</div>
 </div>

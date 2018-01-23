@@ -106,7 +106,8 @@
 				bpxp_ajax_url.ajaxurl,
 				{
 					'action'    			: 'bpxp_get_export_xprofile_fields',
-					'bpxp_field_group_id'	: bpxp_field_group_id
+					'bpxp_field_group_id'	: bpxp_field_group_id,
+					'bpxp_fields_nonce' 	: bpxp_ajax_url.ajax_nonce
 				},
 				function(response) {
 					jQuery( '#bpxp_xprofile_fileds_data' ).html( response );
@@ -165,7 +166,8 @@
 							bpxp_ajax_url.ajaxurl,
 							{
 								'action'    			: 'bpxp_import_header_fields',
-								'bpxp_csv_header'		: bpxpj_headerVal
+								'bpxp_csv_header'		: bpxpj_headerVal,
+								'bpxp_header_nonce' 	: bpxp_ajax_url.ajax_nonce
 							},
 							function(response) {
 								console.log( response );
@@ -198,7 +200,8 @@
 				'bpxp_csv_file'		: chunk_csv_data,
 				'bpxpj_update_user' : bpxpj_update_user,
 				'bpxpj_counter' 	: bpxpj_req_counter,
-				'bpxpj_field' 		: bpxpj_field
+				'bpxpj_field' 		: bpxpj_field,
+				'bpxp_csv_nonce' 	: bpxp_ajax_url.ajax_nonce
 			},
 			function(response) {
 				jQuery( '.bpxp-limit' ).before( response );
@@ -305,7 +308,8 @@
 						'action'    			: 'bpxp_export_xprofile_data',
 						'bpxpj_bpmember'		: bpxpj_bpmember,
 						'bpxpj_field_group'		: bpxpj_field_group,
-						'bpxpj_xprofile_fields'	: bpxpj_xprofile_fields
+						'bpxpj_xprofile_fields'	: bpxpj_xprofile_fields,
+						'bpxp_members_nonce' 	: bpxp_ajax_url.ajax_nonce
 					},
 					function(response) {
 						console.log( response );

@@ -66,16 +66,16 @@ class Bp_Xprofile_Admin_Import_Ajax {
 		*/
 		check_ajax_referer( 'bpxp_ajax_request', 'bpxp_header_nonce' );
 
-		if ( sanitize_text_field( wp_unslash( $_POST['action'] ) ) !== '' && sanitize_text_field( wp_unslash( $_POST['action'] ) ) === 'bpxp_import_header_fields' ) {
+		if ( sanitize_text_field( wp_unslash( $_POST['action'] ) ) === 'bpxp_import_header_fields' ) {
 			$bpxp_header = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxp_csv_header'] ) );
-			/* Get xprofile fields group and fields name */
+			/* Get xprofile fields group and fields name. */
 			$bpxp_map_xprofile = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
 
 			$bpxp_fields_group = array();
 			if ( ! empty( $bpxp_map_xprofile ) ) {
 				$bpxp_fields_group = array();
 				foreach ( $bpxp_map_xprofile as $bpxp_mapfields_key => $bpxp_map_value ) {
-					$bpxp_profile_fields = array();
+					$bpxp_profile_fields                        = array();
 					$bpxp_fields_group[ $bpxp_map_value->name ] = $bpxp_map_value->name;
 					if ( ! empty( $bpxp_map_value->fields ) ) {
 						foreach ( $bpxp_map_value->fields as $bpxp_fields_data ) {
@@ -137,19 +137,18 @@ class Bp_Xprofile_Admin_Import_Ajax {
 		* This function is import csv data into database.
 		*/
 		check_ajax_referer( 'bpxp_ajax_request', 'bpxp_csv_nonce' );
-
-		if ( sanitize_text_field( wp_unslash( $_POST['action'] ) ) !== '' && sanitize_text_field( wp_unslash( $_POST['action'] ) ) === 'bpxp_import_csv_data' ) {
+		if (sanitize_text_field( wp_unslash( $_POST['action'] ) ) === 'bpxp_import_csv_data' ) {
 			set_time_limit( 0 );
-			$member_grp_msg = array();
-			$bpxp_all_group = array();
-			$flage          = false;
-			$length = 12;
+			$member_grp_msg                 = array();
+			$bpxp_all_group                 = array();
+			$flage                          = false;
+			$length                         = 12;
 			$include_standard_special_chars = false;
-			$bpxp_update_user = sanitize_text_field( wp_unslash( $_POST['bpxpj_update_user'] ) );
-			$bpxp_members_data = '';
+			$bpxp_update_user               = sanitize_text_field( wp_unslash( $_POST['bpxpj_update_user'] ) );
+			$bpxp_members_data              = '';
 			if ( ! empty( $_POST['bpxp_csv_file'] ) ) {
 				$bpxp_members_data = $_POST['bpxp_csv_file'];
-				if ( count( $bpxp_members_data[0] ) === 1 ) {
+				if ( count( $bpxp_members_data[0] ) == 1 ) {
 					unset( $bpxp_members_data[0] );
 				}
 			}
@@ -158,7 +157,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 			$bpxp_data_key   = array();
 			$bpxp_counter    = 0;
 			if ( ! empty( $bpxp_members_data ) ) {
-				if ( sanitize_text_field( wp_unslash( $_POST['bpxpj_counter'] ) ) === 0 ) {
+				if ( sanitize_text_field( wp_unslash( $_POST['bpxpj_counter'] ) ) == 0 ) {
 					foreach ( $bpxp_members_data as $bpxp_member ) {
 						if ( count( $bpxp_member ) > 1 ) {
 							foreach ( $bpxp_member as $data ) {
@@ -172,11 +171,13 @@ class Bp_Xprofile_Admin_Import_Ajax {
 						}
 					}
 
-					if ( in_array( 'user_email', $bpxp_data_key, true ) && in_array( 'user_login', $bpxp_data_key, true ) ) {
+					if ( in_array( 'user_email', $bpxp_data_key, true ) && in_array( 'user_login', $bpxp_data_key) ) {
 						update_option( 'bpxp_csv_headers', $bpxp_data_key );
 					} else {
 						echo '<div class="bpxp-error-data">';
-						_e( '<p class="bpxp-error-message bpxp-message">Sorry CVS file did not imported. There are some errors in CSV column name please correct them and try again. Some columns in CSV are required, eg. user_login , user_pass, user_email, user_role.<a href="javascript:void(0)" class="bpxp-close">x</a></p></p>', 'bp-xprofile-export-import' );
+						echo '<p class="bpxp-error-message bpxp-message">';
+						esc_html_e( 'Sorry CVS file did not imported. There are some errors in CSV column name please correct them and try again. Some columns in CSV are required, eg. user_login , user_pass, user_email, user_role.', 'bp-xprofile-export-import' );
+						echo '<a href="javascript:void(0)" class="bpxp-close">x</a></p>';
 						echo '</div>';
 						exit;
 					}
@@ -225,19 +226,19 @@ class Bp_Xprofile_Admin_Import_Ajax {
 								if ( empty( $user_id ) && email_exists( $fields_value ) === false ) {
 									$bpxp_password = wp_generate_password( $length, $include_standard_special_chars );
 
-									$user_email                    = $fields_value;
+									$user_email                     = $fields_value;
 									$bpxp_user_id                   = wp_create_user( $user_name, $bpxp_password, $user_email );
-									$bpxp_user_arr[ $bpxp_user_id ]  = $bpxp_user_id;
-									$bpxp_import_success_message[] = $fields_value;
+									$bpxp_user_arr[ $bpxp_user_id ] = $bpxp_user_id;
+									$bpxp_import_success_message[]  = $fields_value;
 								} else {
 									/* update existing user */
 
 									if ( $bpxp_update_user == 'update-users' ) {
 										$bpxp_ext_user = get_user_by( 'email', $fields_value );
 										if ( ! empty( $bpxp_ext_user ) ) {
-											$bpxp_user_id                  = $bpxp_ext_user->data->ID;
+											$bpxp_user_id                   = $bpxp_ext_user->data->ID;
 											$bpxp_user_arr[ $bpxp_user_id ] = $bpxp_user_id;
-											$bpxp_import_update_message[] = $fields_value;
+											$bpxp_import_update_message[]   = $fields_value;
 										}
 									} else {
 										$bpxp_import_error_message[] = $fields_value;
@@ -332,9 +333,10 @@ class Bp_Xprofile_Admin_Import_Ajax {
 		if ( ! empty( $bpxp_notice ) ) {
 			if ( is_array( $bpxp_notice ) ) {
 				foreach ( $bpxp_notice as $key => $notice ) {
+					$message = 'Profile field group ' . $notice . ' does not exist! ';
 					echo '<div class="bpxp-error-data">';
 					echo '<p class="bpxp-error-message bpxp-message">';
-					_e( 'Profile field group ' . $notice . ' does not exist! ', 'bp-xprofile-export-import' );
+					echo esc_html( $message, 'bp-xprofile-export-import' );
 					echo '<a href="javascript:void(0)" class="bpxp-close">x</a></p>';
 					echo '</div>';
 				}
@@ -385,9 +387,10 @@ class Bp_Xprofile_Admin_Import_Ajax {
 				if ( is_array( $bpxp_notice ) ) {
 					$groups = ' ';
 					foreach ( $bpxp_notice as $key => $notice ) {
-						echo '<div class="' . $container_cls . '">';
-						echo '<p class="' . $box_cls . '">';
-						_e( $notice . ' ' . $bpxp_msg, 'bp-xprofile-export-import' );
+						$message = $notice . ' ' . $bpxp_msg;
+						echo '<div class="' . esc_attr( $container_cls ) . '">';
+						echo '<p class="' . esc_attr( $box_cls ) . '">';
+						echo sprintf( esc_html( '%s', 'bp-xprofile-export-import' ), esc_html( $message ) );
 						echo '<a href="javascript:void(0)" class="bpxp-close">x</a></p>';
 						echo '</div>';
 					}
@@ -433,7 +436,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 	 */
 	public function bpxp_add_members_to_group( $bpxpcsv_groups, $member_id ) {
 		$group_msg = '';
-		$date     = date( 'Y-m-d h:i:m' );
+		$date      = date( 'Y-m-d h:i:m' );
 		update_user_meta( $member_id, 'last_activity', $date );
 
 		if ( ! empty( $bpxpcsv_groups ) && strpos( $bpxpcsv_groups, ' - ' ) !== false ) {
@@ -441,7 +444,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 			foreach ( $bpxp_group_array as $grp ) {
 				if ( ! empty( $grp ) ) {
 					$grp_slug = strtolower( $grp );
-					$group_id   = BP_Groups_Group::group_exists( $grp_slug );
+					$group_id = BP_Groups_Group::group_exists( $grp_slug );
 					if ( ! empty( $group_id ) && ! empty( $member_id ) ) {
 						groups_join_group( $group_id, $member_id );
 					} else {
@@ -453,7 +456,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 		} else {
 			if ( ! empty( $bpxpcsv_groups ) ) {
 				$grp_slug = strtolower( $bpxpcsv_groups );
-				$group_id   = BP_Groups_Group::group_exists( $grp_slug );
+				$group_id = BP_Groups_Group::group_exists( $grp_slug );
 				if ( ! empty( $group_id ) && ! empty( $member_id ) ) {
 					groups_join_group( $group_id, $member_id );
 				} else {
@@ -478,8 +481,8 @@ class Bp_Xprofile_Admin_Import_Ajax {
 		if ( ! empty( $bpxp_id ) && ! empty( $bpxpxfields ) ) {
 			foreach ( $bpxp_id as $key => $id ) {
 				foreach ( $bpxpxfields as $fieldkey => $fieldval ) {
-					$fieldval = sanitize_text_field( $fieldval );
-					$temp_value  = '';
+					$fieldval   = sanitize_text_field( $fieldval );
+					$temp_value = '';
 
 					if ( array_key_exists( $fieldval, $bpxp_exp_feilds ) ) {
 						$temp_value = $bpxp_exp_feilds[ $fieldval ];
