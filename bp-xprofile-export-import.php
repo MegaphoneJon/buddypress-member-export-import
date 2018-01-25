@@ -36,6 +36,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'BPXP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'BPXP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
+if ( ! function_exists( 'bpxp_admin_page_link' ) ) {
+
+	/**
+	 * Add setting link.
+	 *
+	 * @author   Wbcom Designs
+	 * @since    1.0.0
+	 * @param    string $links contain plugin setting link.
+	 */
+	function bpxp_admin_page_link( $links ) {
+		$bpxp_links = array(
+			'<a href="' . admin_url( 'admin.php?page=bpxp-member-export' ) . '">' . __( 'Settings', 'bp-xprofile-export-import' ) . '</a>',
+			'<a href="https://wbcomdesigns.com/contact/" target="_blank">' . __( 'Support', 'bp-xprofile-export-import' ) . '</a>',
+		);
+		return array_merge( $links, $bpxp_links );
+	}
+}
+
 if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 
 	add_action( 'plugins_loaded', 'bpxp_plugins_files' );
@@ -50,6 +68,7 @@ if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 		if ( ! in_array( 'buddypress/bp-loader.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
 			add_action( 'admin_notices', 'bpxp_admin_notice' );
 		} else {
+			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bpxp_admin_page_link' );
 			bpxp_run_bp_xprofile_export_import();
 		}
 	}
