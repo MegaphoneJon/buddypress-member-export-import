@@ -289,7 +289,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 									);
 								}
 								/* Create password */
-								if ( 'group_name' == $fields_key && ! empty( $fields_value ) ) {
+								if ( 'group_slug' == $fields_key && ! empty( $fields_value ) ) {
 									$grp_name = '';
 									$grp_name = $this->bpxp_add_members_to_group( $fields_value, $bpxp_user_id );
 
@@ -445,8 +445,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 			$bpxp_group_array = explode( ' - ', $bpxpcsv_groups );
 			foreach ( $bpxp_group_array as $grp ) {
 				if ( ! empty( $grp ) ) {
-					$grp_slug = strtolower( $grp );
-					$group_id = BP_Groups_Group::group_exists( $grp_slug );
+					$group_id = BP_Groups_Group::group_exists( $grp );
 					if ( ! empty( $group_id ) && ! empty( $member_id ) ) {
 						groups_join_group( $group_id, $member_id );
 					} else {

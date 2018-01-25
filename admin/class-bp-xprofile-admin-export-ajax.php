@@ -102,7 +102,6 @@ class Bp_Xprofile_Admin_Export_Ajax {
 					}
 				}
 			}
-
 			echo $fields;
 			die;
 		}
@@ -264,10 +263,10 @@ class Bp_Xprofile_Admin_Export_Ajax {
 				foreach ( $group_id['groups'] as $id ) {
 					$bpxp_groups   = groups_get_group( array( 'group_id' => $id ) );
 					$group_creater = get_userdata( $bpxp_groups->creator_id );
-					$temp_name[]   = $bpxp_groups->name;
+					$temp_name[]   = $bpxp_groups->slug;
 				}
 			}
-			$bpxp_members_group['group_name'] = implode( ' - ', $temp_name );
+			$bpxp_members_group['group_slug'] = implode( ' - ', $temp_name );
 		}
 		return $bpxp_members_group;
 	}
