@@ -265,6 +265,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 								}
 
 								if ( 'avatar_path' == $fields_key && ! empty( $fields_value ) ) {
+									$this->bpxp_upload_member_avatar($fields_value, $bpxp_user_id);
 									update_user_meta( $bpxp_user_id, 'author_avatar', $fields_value );
 								}
 
@@ -321,6 +322,64 @@ class Bp_Xprofile_Admin_Import_Ajax {
 			$this->bpxp_import_admin_notice( $bpxp_import_success_message, 'user_create' );
 		}
 		die;
+	}
+
+
+	/**
+	 * Import user data.
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @author   Wbcom Designs
+	 * @param    string $url contain export member's avatar url path.
+	 * @param    int    $id import member id.
+	 */
+	public function bpxp_upload_member_avatar( $url, $id ) {
+
+		if ( strpos( $url, '/' ) ) {
+			$fn       = explode( '/', $url );
+			$filename = array_pop( $fn );
+		}
+		$path_parts = pathinfo( $url );
+		if ( ! preg_match( '/png|gif|jpg|jpeg|bmp|PNG|GIF|JPG|JPEG|BMP/', $filename ) ) {
+			return;
+		}
+
+		$prefix       = explode( '-', $filename );
+		$upload_dir   = wp_upload_dir();
+		$avt_dir      = $upload_dir['basedir'] . '/avatars';
+		$user_dirname = $upload_dir['basedir'] . '/avatars/' . $id;
+		if ( ! file_exists( $avt_dir ) ) {
+			wp_mkdir_p( $avt_dir );
+			if ( ! file_exists( $user_dirname ) ) {
+				wp_mkdir_p( $user_dirname );
+			}
+		} else {
+			if ( ! file_exists( $user_dirname ) ) {
+				wp_mkdir_p( $user_dirname );
+			}
+		}
+
+		header( 'Content-Type: image/jpeg' );
+		header( 'Content-Type: image/png' );
+		$ch = curl_init();
+		curl_setopt( $ch, CURLOPT_URL, $url );
+		curl_setopt( $ch, CURLOPT_HEADER, false );
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
+		curl_setopt( $ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.1 Safari/537.11' );
+		$res     = curl_exec( $ch );
+		$rescode = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
+		curl_close( $ch );
+
+		$thumb  = $user_dirname . '/' . $prefix[0] . '-bpthumb.' . $path_parts['extension'];
+		$full   = $user_dirname . '/' . $filename;
+		$file_1 = fopen( $thumb, 'w+' );
+		$file_2 = fopen( $full, 'w+' );
+		fputs( $file_1, $res );
+		fputs( $file_2, $res );
+		fclose( $file_1 );
+		fclose( $file_2 );
 	}
 
 	/**
