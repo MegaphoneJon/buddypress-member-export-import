@@ -12,7 +12,7 @@
  * @package           Bp_Xprofile_Export_Import
  *
  * @wordpress-plugin
- * Plugin Name:       Buddypress Member Export Import
+ * Plugin Name:       BuddyPress Member Export Import
  * Plugin URI:        https://wbcomdesigns.com/contact/
  * Description:       Buddypress Member Export Import plugin bring you feature to export Buddypress members and x-profile fields data into CSV file and import buddypress members from CSV file.
 
