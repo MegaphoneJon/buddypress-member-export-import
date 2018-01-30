@@ -1,4 +1,4 @@
-=== Buddypress Member Export Import ===
+=== BuddyPress Member Export Import ===
 Contributors: vapvarun,wbcomdesigns
 Donate link: www.wbcomdesigns.com
 Tags: export, import, users, members, buddypress, x-profile, user-data, avatar.
