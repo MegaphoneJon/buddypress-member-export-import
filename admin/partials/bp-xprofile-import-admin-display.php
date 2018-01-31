@@ -35,6 +35,17 @@
 			<?php do_action( 'bpxp_after_import_limit' ); ?>
 		</div>
 
+		<div class="bpxp-admin-row">
+			<div class="bpxp-admin-3 bpxp-admin-label">
+				<label for="bpxp_xprofile_fields"><?php echo esc_html( ' Password ', 'bp-xprofile-export-import' ); ?></label>
+			</div>
+			<div class="bpxp-admin-3">
+				<input type="checkbox" name="bpxp_set_password_encrypted" id="bpxp_set_password_encrypted" value="<?php echo esc_html( 'bpxp-set-encrypt', 'bp-xprofile-export-import' ); ?>" checked />
+				<span><?php esc_html_e( 'Enable checkbox to encrypt password', 'bp-xprofile-export-import' ); ?></span>
+				<p class="description"><?php esc_html_e( 'Please confirm your password is already ecrypted or you need encrypted your password?', 'bp-xprofile-export-import' ); ?></p>
+			</div>
+		</div>
+
 		<?php do_action( 'bpxp_before_import_file' ); ?>
 		<div class="bpxp-admin-row" id="upload_csv">
 			<div class="bpxp-admin-3 bpxp-admin-label">

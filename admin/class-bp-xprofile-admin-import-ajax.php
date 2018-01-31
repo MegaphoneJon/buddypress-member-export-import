@@ -119,6 +119,21 @@ class Bp_Xprofile_Admin_Import_Ajax {
 					}
 				}
 				$current_group .= '<br/><tr><td colspan="2"><p class="description"> <b> ' . esc_html( 'Note:', 'bp-xprofile-export-import' ) . '</b>' . esc_html( ' Select xProfile Fields from above to insert value for xProfile Fileds. If the fields that exist in the CSV file do not exist in your website, in that case the fields processing will be skipped, otherwise you need to create those fields..', 'bp-xprofile-export-import' ) . '</p></td></tr>';
+
+				$user_meta = array( 'user_nicename', 'user_registered', 'display_name' );
+				$current_group .= '<tr><th> User Meta </th><th> CSV Column </th></tr>';
+				foreach ( $user_meta as $meta ) {
+					if ( ! empty( $bpxp_header ) ) {
+						$current_group .= '<tr><td>' . $meta . '</td><td>';
+						$current_group .= '<input type="hidden" name="' . esc_html( $meta ) . '" class="bpxp_current_fields" value=""/>';
+						$current_group .= '<select class="bpxp_csv_fields">';
+						$current_group .= '<option value="">' . esc_html( '--- Select CSV Fields---', 'bp-xprofile-export-import' ) . '</option>';
+						foreach ( $bpxp_header as $bpxp_header_val ) {
+							$current_group .= '<option value="' . esc_html( $bpxp_header_val ) . '">' . esc_html( $bpxp_header_val, 'bp-xprofile-export-import' ) . '</option>';
+						}
+						$current_group .= '<select></td></tr>';
+					}
+				}
 				$current_group .= '</table></div>';
 			}
 			echo $current_group;
@@ -146,6 +161,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 			$length                         = 12;
 			$include_standard_special_chars = false;
 			$bpxp_update_user               = sanitize_text_field( wp_unslash( $_POST['bpxpj_update_user'] ) );
+			$pass_encrypte                  = sanitize_text_field( wp_unslash( $_POST['pass_encrypte'] ) );
 			$bpxp_members_data              = '';
 			if ( ! empty( $_POST['bpxp_csv_file'] ) ) {
 				$bpxp_members_data = wp_unslash( $_POST['bpxp_csv_file'] );
@@ -222,7 +238,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 								$user_name = $fields_value;
 							}
 							/* Create user if not exists */
-							if ( 'user_email' == $fields_key  && ! empty( $fields_value ) ) {
+							if ( 'user_email' == $fields_key && ! empty( $fields_value ) ) {
 								$bpxp_user_id = '';
 								if ( empty( $user_id ) && email_exists( $fields_value ) === false ) {
 									$bpxp_password = wp_generate_password( $length, $include_standard_special_chars );
@@ -265,30 +281,28 @@ class Bp_Xprofile_Admin_Import_Ajax {
 								}
 
 								if ( 'avatar_path' == $fields_key && ! empty( $fields_value ) ) {
-									$this->bpxp_upload_member_avatar($fields_value, $bpxp_user_id);
+									$this->bpxp_upload_member_avatar( $fields_value, $bpxp_user_id );
 									update_user_meta( $bpxp_user_id, 'author_avatar', $fields_value );
 								}
 
 								/* update user meta usre nice name */
-								if ( 'user_nicename' == $fields_key && ! empty( $fields_value ) ) {
+								/*if ( 'user_nicename' == $fields_key && ! empty( $fields_value ) ) {
 									wp_update_user(
 										array(
 											'ID' => $bpxp_user_id,
-											'user_nicename',
-											$fields_value,
+											'user_nicename' => 'simple',
 										)
 									);
-								}
+								}*/
 								/* update user meta display name */
-								if ( 'display_name' == $fields_key && ! empty( $fields_value ) ) {
+								/*if ( 'display_name' == $fields_key && ! empty( $fields_value ) ) {
 									wp_update_user(
 										array(
 											'ID' => $bpxp_user_id,
-											'display_name',
-											$fields_value,
+											'display_name' => 'simple',
 										)
 									);
-								}
+								}*/
 								/* Create password */
 								if ( 'group_slug' == $fields_key && ! empty( $fields_value ) ) {
 									$grp_name = '';
@@ -308,7 +322,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 						}
 
 						if ( ! empty( $bpxp_pass ) ) {
-							$this->bpxp_update_user_password( $bpxp_pass );
+							$this->bpxp_update_user_password( $bpxp_pass , $pass_encrypte );
 						}
 					}
 				}
@@ -467,23 +481,47 @@ class Bp_Xprofile_Admin_Import_Ajax {
 	 * @access   public
 	 * @author   Wbcom Designs
 	 * @param    string $bpxp_pass  update member password.
+	 * @param    string $pass_encrypte  contain option value for encrypt password.
 	 */
-	public function bpxp_update_user_password( $bpxp_pass ) {
+	public function bpxp_update_user_password( $bpxp_pass, $pass_encrypte ) {
 		if ( ! empty( $bpxp_pass ) ) {
 			global $wpdb;
 			$usertbl = $wpdb->prefix . 'users';
 			foreach ( $bpxp_pass as $id => $pass ) {
-				$wpdb->update(
-					$usertbl, array(
-						'user_pass'           => $pass,
-						'user_activation_key' => '',
-					), array( 'ID' => $id )
-				);
-				wp_cache_delete( $id, 'users' );
-				$date = date( 'Y-m-d h:i:m' );
-				update_user_meta( $id, 'last_activity', $date );
+				if ( ! empty( $pass ) ) {
+					if ( ! empty( $pass_encrypte ) ) {
+						$pass = $this->bpxp_hash_password( $pass );
+					}
+					$wpdb->update(
+						$usertbl, array(
+							'user_pass'           => $pass,
+							'user_activation_key' => '',
+						), array( 'ID' => $id )
+					);
+					wp_cache_delete( $id, 'users' );
+					$date = date( 'Y-m-d h:i:m' );
+					update_user_meta( $id, 'last_activity', $date );
+				}
 			}
 		}
+	}
+
+	/**
+	 * Function bpxp_update_user_password Add user's password from CSV.
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @author   Wbcom Designs
+	 * @param    string $password encrypt member password.
+	 * @return   string $password retrun ecrypted password.
+	 */
+	public function bpxp_hash_password( $password ) {
+		global $wp_hasher;
+		if ( empty( $wp_hasher ) ) {
+			require_once ABSPATH . WPINC . '/class-phpass.php';
+			$wp_hasher = new PasswordHash( 8, true );
+		}
+		return $wp_hasher->HashPassword( trim( $password ) );
 	}
 
 	/**
@@ -543,6 +581,16 @@ class Bp_Xprofile_Admin_Import_Ajax {
 				foreach ( $bpxpxfields as $fieldkey => $fieldval ) {
 					$fieldval   = $fieldval;
 					$temp_value = '';
+
+					if ( array_key_exists( $fieldval, $bpxp_exp_feilds ) ) {
+						/* update user meta usre nice name */
+						wp_update_user(
+							array(
+								'ID' => $id,
+								$fieldkey => $bpxp_exp_feilds[ $fieldval ],
+							)
+						);
+					}
 
 					if ( array_key_exists( $fieldval, $bpxp_exp_feilds ) ) {
 						$temp_value = $bpxp_exp_feilds[ $fieldval ];
