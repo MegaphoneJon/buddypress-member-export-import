@@ -47,6 +47,9 @@ Go to Admin menu and click  "/Members Data->Members Import" page. Upload CSV fil
 
 == Changelog ==
 
+= 1.0.1 =
+* Enhancement - Added support for user meta fields mapping.
+
 = 1.0.0 =
 * Initial release.
 
