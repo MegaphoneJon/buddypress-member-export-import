@@ -147,3 +147,6 @@ tr.bpxp-group-fields{
 .bpxp-error-border{
    border-color: hsl(0, 100%, 50%);
 }
+select.bpxp_csv_fields{
+	min-width:175px;
+}

@@ -145,7 +145,10 @@ class Bp_Xprofile_Admin_Export_Ajax {
 							$bpxp_member_data['user_role']       = $bpxp_members_data->roles[0];
 						}
 					}
-					$bpxp_member_data['avatar_path'] = get_avatar_url( $bpxp_id );
+					$bpxp_member_data['nickname']    = get_user_meta( $bpxp_id, 'nickname', true );
+					$bpxp_member_data['first_name']  = get_user_meta( $bpxp_id, 'first_name', true );
+					$bpxp_member_data['last_name']   = get_user_meta( $bpxp_id, 'last_name', true );
+					$bpxp_member_data['description'] = get_user_meta( $bpxp_id, 'description', true );
 					if ( bp_is_active( 'groups' ) ) {
 						$bpxp_users_group = BP_Groups_Member::get_group_ids( $bpxp_id );
 						if ( ! empty( $bpxp_users_group ) ) {

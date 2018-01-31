@@ -67,7 +67,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 		check_ajax_referer( 'bpxp_ajax_request', 'bpxp_header_nonce' );
 
 		if ( isset( $_POST['action'] ) && 'bpxp_import_header_fields' === $_POST['action'] ) {
-			$bpxp_header =  array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxp_csv_header'] ) );
+			$bpxp_header = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxp_csv_header'] ) );
 			/* Get xprofile fields group and fields name. */
 			$bpxp_map_xprofile = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
 
@@ -107,9 +107,19 @@ class Bp_Xprofile_Admin_Import_Ajax {
 						$current_group .= '</td>';
 						if ( ! empty( $bpxp_header ) ) {
 							$current_group .= '<td>';
-							$current_group .= '<input type="hidden" name="' . esc_html( $bpxp_key ) . '" class="bpxp_current_fields" value=""/>';
+							if ( in_array( $bpxp_current_fields, $bpxp_header ) ) {
+								$current_group .= '<input type="hidden" name="' . esc_html( $bpxp_key ) . '" class="bpxp_current_fields" value="' . esc_html( $bpxp_current_fields ) . '"/>';
+							} else {
+								$current_group .= '<input type="hidden" name="' . esc_html( $bpxp_key ) . '" class="bpxp_current_fields" value=""/>';
+							}
+							//$current_group .= '<input type="hidden" name="' . esc_html( $bpxp_key ) . '" class="bpxp_current_fields" value=""/>';
 							$current_group .= '<select class="bpxp_csv_fields">';
+						//	$current_group .= '<option value="">' . esc_html( '--- Select CSV Fields---', 'bp-xprofile-export-import' ) . '</option>';
+						if ( in_array( $bpxp_current_fields, $bpxp_header ) ) {
+							$current_group .= '<option value="' . esc_html( $bpxp_current_fields ) . '" selected >' . esc_html( $bpxp_current_fields, 'bp-xprofile-export-import' ) . '</option>';
+						} else {
 							$current_group .= '<option value="">' . esc_html( '--- Select CSV Fields---', 'bp-xprofile-export-import' ) . '</option>';
+						}
 							foreach ( $bpxp_header as $bpxp_header_val ) {
 								$current_group .= '<option value="' . esc_html( $bpxp_header_val ) . '">' . esc_html( $bpxp_header_val, 'bp-xprofile-export-import' ) . '</option>';
 							}
@@ -120,15 +130,25 @@ class Bp_Xprofile_Admin_Import_Ajax {
 				}
 				$current_group .= '<br/><tr><td colspan="2"><p class="description"> <b> ' . esc_html( 'Note:', 'bp-xprofile-export-import' ) . '</b>' . esc_html( ' Select xProfile Fields from above to insert value for xProfile Fileds. If the fields that exist in the CSV file do not exist in your website, in that case the fields processing will be skipped, otherwise you need to create those fields..', 'bp-xprofile-export-import' ) . '</p></td></tr>';
 
-				$user_meta = array( 'user_nicename', 'user_registered', 'display_name' );
+				$user_meta = array( 'user_nicename', 'display_name', 'nickname', 'first_name', 'last_name', 'description' );
 				$current_group .= '<tr><th> User Meta </th><th> CSV Column </th></tr>';
 				foreach ( $user_meta as $meta ) {
 					if ( ! empty( $bpxp_header ) ) {
 						$current_group .= '<tr><td>' . $meta . '</td><td>';
-						$current_group .= '<input type="hidden" name="' . esc_html( $meta ) . '" class="bpxp_current_fields" value=""/>';
+						if ( in_array( $meta, $bpxp_header ) ) {
+							$current_group .= '<input type="hidden" name="' . esc_html( $meta ) . '" class="bpxp_current_fields" value="' . esc_html( $meta ) . '"/>';
+						} else {
+							$current_group .= '<input type="hidden" name="' . esc_html( $meta ) . '" class="bpxp_current_fields" value=""/>';
+						}
+
 						$current_group .= '<select class="bpxp_csv_fields">';
-						$current_group .= '<option value="">' . esc_html( '--- Select CSV Fields---', 'bp-xprofile-export-import' ) . '</option>';
+						if ( in_array( $meta, $bpxp_header ) ) {
+							$current_group .= '<option value="' . esc_html( $meta ) . '" selected >' . esc_html( $meta, 'bp-xprofile-export-import' ) . '</option>';
+						} else {
+							$current_group .= '<option value="">' . esc_html( '--- Select CSV Fields---', 'bp-xprofile-export-import' ) . '</option>';
+						}
 						foreach ( $bpxp_header as $bpxp_header_val ) {
+
 							$current_group .= '<option value="' . esc_html( $bpxp_header_val ) . '">' . esc_html( $bpxp_header_val, 'bp-xprofile-export-import' ) . '</option>';
 						}
 						$current_group .= '<select></td></tr>';
@@ -577,6 +597,10 @@ class Bp_Xprofile_Admin_Import_Ajax {
 	 */
 	public function bpxp_update_user_xprofile_fields( $bpxp_id, $bpxpxfields, $bpxp_exp_feilds ) {
 		if ( ! empty( $bpxp_id ) && ! empty( $bpxpxfields ) ) {
+			echo '<pre> fields ';
+			print_r($bpxpxfields);
+			echo '<pre> x fields ';
+			print_r($bpxp_exp_feilds);
 			foreach ( $bpxp_id as $key => $id ) {
 				foreach ( $bpxpxfields as $fieldkey => $fieldval ) {
 					$fieldval   = $fieldval;
@@ -596,7 +620,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 						$temp_value = $bpxp_exp_feilds[ $fieldval ];
 
 						$field = new BP_XProfile_Field( $fieldkey );
-
+						echo ' id ' . $id . ' $fieldval ' . $fieldval . ' $temp_value ' . $temp_value . '<br/>';
 						/* check if date type value */
 						if ( 'datebox' == $field->type ) {
 							$temp_value = date( 'Y-m-d', strtotime( $temp_value ) ) . ' 00:00:00';

@@ -193,6 +193,10 @@
 	var bpxpj_no_more_request = false;
 	function bpxpj_send_chunk_csv_data( bpxpj_field, bpxpj_update_user , bpxpj_chunk_size ) {
 		var chunk_csv_data = bpxpj_csvData.slice( bpxpj_index_pointer , bpxpj_index_pointer + bpxpj_chunk_size );
+		var pass_encrypt = '';
+		if (jQuery( 'input[name="bpxp_set_password_encrypted"]:checked' ).length > 0) {
+			pass_encrypt = jQuery('#bpxp_set_password_encrypted').val();
+		}
 		jQuery.post(
 			bpxp_ajax_url.ajaxurl,
 			{
@@ -201,6 +205,7 @@
 				'bpxpj_update_user' : bpxpj_update_user,
 				'bpxpj_counter' 	: bpxpj_req_counter,
 				'bpxpj_field' 		: bpxpj_field,
+				'pass_encrypte'   : pass_encrypt,
 				'bpxp_csv_nonce' 	: bpxp_ajax_url.ajax_nonce
 			},
 			function(response) {
