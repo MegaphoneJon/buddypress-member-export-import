@@ -55,57 +55,6 @@ class Bp_Xprofile_Export_Import_Admin {
 	}
 
 	/**
-	 * Register admin menu page for plugin
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 * @author   Wbcom Designs
-	 */
-	public function bpxp_admin_menu() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Bp_Xprofile_Export_Import_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Bp_Xprofile_Export_Import_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-		add_menu_page( 'Members Data', 'Members Data', 'manage_options', 'bpxp-member-export', array( $this, 'bpxp_dashboard_page' ), 'dashicons-download' );
-		add_submenu_page( 'bpxp-member-export', 'Members Export', 'Members Export', 'manage_options', 'bpxp-member-export' );
-		add_submenu_page(
-			'bpxp-member-export', 'Members Import', 'Members Import',
-			'manage_options', 'bpxp-member-import', array( $this, 'bpxp_import_data_page' )
-		);
-
-	}
-
-	/**
-	 * Display Admin menu page export into CSV fields
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 * @author   Wbcom Designs
-	 */
-	public function bpxp_dashboard_page() {
-		include BPXP_PLUGIN_PATH . 'admin/partials/bp-xprofile-export-admin-display.php';
-	}
-
-	/**
-	 * Display Admin menu subpage content.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 * @author   Wbcom Designs
-	 */
-	public function bpxp_import_data_page() {
-		include BPXP_PLUGIN_PATH . 'admin/partials/bp-xprofile-import-admin-display.php';
-	}
-
-	/**
 	 * Register the stylesheets for the admin area.
 	 *
 	 * @since    1.0.0
@@ -150,6 +99,139 @@ class Bp_Xprofile_Export_Import_Admin {
 		 * class.
 		 */
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/bp-xprofile-export-import-admin.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script( $this->plugin_name, 'bpxp_ajax_url', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ), 'ajax_nonce' => wp_create_nonce( 'bpxp_ajax_request' ) ) );
+		wp_localize_script(
+			$this->plugin_name,
+			'bpxp_ajax_url',
+			array(
+				'ajaxurl'    => admin_url( 'admin-ajax.php' ),
+				'ajax_nonce' => wp_create_nonce( 'bpxp_ajax_request' ),
+			)
+		);
 	}
+
+
+	/**
+	 * Register admin menu page for plugin
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @author   Wbcom Designs
+	 */
+	public function bpxp_admin_menu() {
+
+		/**
+		 * This function is provided for demonstration purposes only.
+		 *
+		 * An instance of this class should be passed to the run() function
+		 * defined in Bp_Xprofile_Export_Import_Loader as all of the hooks are defined
+		 * in that particular class.
+		 *
+		 * The Bp_Xprofile_Export_Import_Loader will then create the relationship
+		 * between the defined hooks and the functions defined in this
+		 * class.
+		 */
+
+		if ( empty( $GLOBALS['admin_page_hooks']['wbcomplugins'] ) ) {
+			add_menu_page( esc_html__( 'WB Plugins', 'buddypress-profile-pro' ), esc_html__( 'WB Plugins', 'buddypress-profile-pro' ), 'manage_options', 'wbcomplugins', array( $this, 'bp_xprofile_import_export_settings_page' ), 'dashicons-lightbulb', 59 );
+			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'buddypress-profile-pro' ), esc_html__( 'General', 'buddypress-profile-pro' ), 'manage_options', 'wbcomplugins' );
+		}
+		add_submenu_page( 'wbcomplugins', esc_html__( 'BuddyPress Member Export Import', 'buddypress-profile-pro' ), esc_html__( 'BP XProfile Import Export', 'buddypress-profile-pro' ), 'manage_options', 'bpxp-member-export-import', array( $this, 'bp_xprofile_import_export_settings_page' ) );
+
+	}
+
+
+	/**
+	 * Callback function for bp resume manager settings page.
+	 *
+	 * @since    1.0.0
+	 * @param    string $current       The current tab.
+	 */
+	public function bp_xprofile_import_export_settings_page( $current = 'general' ) {
+		$current = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'general';
+		?>
+	<div class="wrap">
+	<div class="blpro-header">
+		<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
+		<h1 class="wbcom-plugin-heading">
+			<?php esc_html_e( 'BuddyPress Profile Pro Settings', 'buddypress-profile-pro' ); ?>
+		</h1>
+	</div>
+	<div class="wbcom-admin-settings-page">
+		<?php
+
+		$bpxp_tabs = array(
+			'members_export' => __( 'Members Export', 'buddypress-profile-pro' ),
+			'members_import' => __( 'Members Import', 'buddypress-profile-pro' ),
+		);
+
+		$tab_html = '<div class="wbcom-tabs-section"><h2 class="nav-tab-wrapper">';
+		foreach ( $bpxp_tabs as $bpxp_tab => $bpxp_name ) {
+			$class     = ( $bpxp_tab == $current ) ? 'nav-tab-active' : '';
+			$tab_html .= '<a class="nav-tab ' . $class . '" href="admin.php?page=bpxp-member-export-import&tab=' . $bpxp_tab . '">' . $bpxp_name . '</a>';
+		}
+		$tab_html .= '</h2></div>';
+		echo $tab_html;
+		$this->bpxp_options_page();
+		echo '</div>'; /* closing of div class wbcom-admin-settings-page */
+		echo '</div>'; /* closing div class wrap */
+	}
+
+	/**
+	 * Get desired options page file at admin settings end.
+	 *
+	 * @return [type] [description]
+	 */
+	public function bpxp_options_page() {
+		if ( isset( $_GET['tab'] ) ) {
+			$bpxp_tab = sanitize_text_field( $_GET['tab'] );
+		} else {
+			$bpxp_tab = 'members_export';
+		}
+
+		$this->bpxp_include_admin_setting_tabs( $bpxp_tab );
+	}
+
+	/**
+	 * Include setting template.
+	 *
+	 * @param string $bpxp_tab
+	 */
+	function bpxp_include_admin_setting_tabs( $bpxp_tab ) {
+		switch ( $bpxp_tab ) {
+			case 'members_export':
+				$this->bpxp_export_data_page();
+				break;
+			case 'members_import':
+				$this->bpxp_import_data_page();
+				break;
+			default:
+				$this->bpxp_export_data_page();
+				break;
+		}
+	}
+
+	/**
+	 * Display Admin menu page export into CSV fields
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @author   Wbcom Designs
+	 */
+	public function bpxp_export_data_page() {
+		include BPXP_PLUGIN_PATH . 'admin/partials/bp-xprofile-export-admin-display.php';
+	}
+
+	/**
+	 * Display Admin menu subpage content.
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @author   Wbcom Designs
+	 */
+	public function bpxp_import_data_page() {
+		include BPXP_PLUGIN_PATH . 'admin/partials/bp-xprofile-import-admin-display.php';
+	}
+
+
+
 }

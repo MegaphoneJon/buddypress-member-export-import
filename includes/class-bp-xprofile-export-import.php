@@ -114,6 +114,11 @@ class Bp_Xprofile_Export_Import {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-bp-xprofile-export-import-admin.php';
 
 		/**
+		* The class responsible for wbcom wrapper.
+		*/
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wbcom/wbcom-admin-settings.php';
+
+		/**
 		* The class responsible for defining all actions for ajax that occur in the
 		* admin area.
 		*/
