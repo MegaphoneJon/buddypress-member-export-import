@@ -130,6 +130,11 @@ class Bp_Xprofile_Export_Import {
 		*/
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-bp-xprofile-admin-import-ajax.php';
 
+		/**
+		* The class responsible easy updation of plugin.
+		*/
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'edd-license/edd-plugin-license.php';
+
 		$this->loader = new Bp_Xprofile_Export_Import_Loader();
 
 	}
