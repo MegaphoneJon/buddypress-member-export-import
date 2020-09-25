@@ -109,6 +109,11 @@ class Bp_Xprofile_Export_Import {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-bp-xprofile-export-import-i18n.php';
 
 		/**
+		* The class responsible for add top header pages of wbcom plugin and additional features.
+		*/
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wbcom/wbcom-admin-settings.php';
+
+		/**
 		* The class responsible for defining all actions that occur in the admin area.
 		*/
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-bp-xprofile-export-import-admin.php';
