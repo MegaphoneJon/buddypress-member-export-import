@@ -131,11 +131,11 @@ class Bp_Xprofile_Export_Import_Admin {
 		 */
 
 		if ( empty( $GLOBALS['admin_page_hooks']['wbcomplugins'] ) ) {
-			add_menu_page( esc_html__( 'WB Plugins', 'buddypress-profile-pro' ), esc_html__( 'WB Plugins', 'buddypress-profile-pro' ), 'manage_options', 'wbcomplugins', array( $this, 'bpxp_member_export_import_settings_page' ), 'dashicons-lightbulb', 59 );
-			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'buddypress-profile-pro' ), esc_html__( 'General', 'buddypress-profile-pro' ), 'manage_options', 'wbcomplugins' );
+			add_menu_page( esc_html__( 'WB Plugins', 'bp-xprofile-export-import' ), esc_html__( 'WB Plugins', 'bp-xprofile-export-import' ), 'manage_options', 'wbcomplugins', array( $this, 'bpxp_member_export_import_settings_page' ), 'dashicons-lightbulb', 59 );
+			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'bp-xprofile-export-import' ), esc_html__( 'General', 'bp-xprofile-export-import' ), 'manage_options', 'wbcomplugins' );
 		}
 
-		add_submenu_page( 'wbcomplugins', esc_html__( 'BuddyPress Member Export Import Setting Page', 'buddypress-profile-pro' ), esc_html__( 'BP Member Export Import', 'buddypress-profile-pro' ), 'manage_options', 'bpxp-member-export-import', array( $this, 'bpxp_member_export_import_settings_page' ) );
+		add_submenu_page( 'wbcomplugins', esc_html__( 'BuddyPress Member Export Import Setting Page', 'bp-xprofile-export-import' ), esc_html__( 'BP Member Export Import', 'bp-xprofile-export-import' ), 'manage_options', 'bpxp-member-export-import', array( $this, 'bpxp_member_export_import_settings_page' ) );
 
 	}
 
@@ -153,14 +153,14 @@ class Bp_Xprofile_Export_Import_Admin {
 		<div class="blpro-header">
 			<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 			<h1 class="wbcom-plugin-heading">
-				<?php esc_html_e( 'BuddyPress Member Export Import Settings', 'buddypress-profile-pro' ); ?>
+				<?php esc_html_e( 'BuddyPress Member Export Import Settings', 'bp-xprofile-export-import' ); ?>
 			</h1>
 		</div>
 		<div class="wbcom-admin-settings-page">
 		<?php
 		$bpxp_tabs = array(
-			'members_export' => __( 'Members Export', 'buddypress-profile-pro' ),
-			'members_import' => __( 'Members Import', 'buddypress-profile-pro' ),
+			'members_export' => __( 'Members Export', 'bp-xprofile-export-import' ),
+			'members_import' => __( 'Members Import', 'bp-xprofile-export-import' ),
 		);
 
 		$tab_html = '<div class="wbcom-tabs-section"><h2 class="nav-tab-wrapper">';
