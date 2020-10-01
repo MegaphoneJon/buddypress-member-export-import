@@ -3,8 +3,8 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: www.wbcomdesigns.com
 Tags: export, import, users, members, buddypress, x-profile, user-data, avatar.
 Requires at least: 3.0.1
-Tested up to: 4.9.2
-Stable tag: 1.0.1
+Tested up to: 5.5.1
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
