@@ -58,7 +58,7 @@ if ( ! function_exists( 'bpxp_admin_page_link' ) ) {
 	 */
 	function bpxp_admin_page_link( $links ) {
 		$bpxp_links = array(
-			'<a href="' . admin_url( 'admin.php?page=bpxp-member-export' ) . '">' . __( 'Settings', 'bp-xprofile-export-import' ) . '</a>',
+			'<a href="' . admin_url( 'admin.php?page=bpxp-member-export-import' ) . '">' . __( 'Settings', 'bp-xprofile-export-import' ) . '</a>',
 			'<a href="https://wbcomdesigns.com/contact/" target="_blank">' . __( 'Support', 'bp-xprofile-export-import' ) . '</a>',
 		);
 		return array_merge( $links, $bpxp_links );
