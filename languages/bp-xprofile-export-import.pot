@@ -1,34 +1,70 @@
-# Copyright (C) 2020
+# Copyright (C) 2020 
 # This file is distributed under the same license as the  package.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-28 11:14:01+00:00\n"
+"POT-Creation-Date: 2020-10-09 13:14:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Varun Dubey\n"
-"Language-Team: Wbcom Designs\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 0.4.9\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Country: United States\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: "
-"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
-"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
-"X-Generator: grunt-wp-i18n1.0.1\n"
+"Last-Translator: Varun Dubey\n"
+"Language-Team: Wbcom Designs\n"
+
+#: admin/class-bp-xprofile-admin-export-ajax.php:75
+#: admin/class-bp-xprofile-admin-export-ajax.php:94
+msgid "All X-Profile Fields"
+msgstr ""
+
+#: admin/class-bp-xprofile-admin-import-ajax.php:99
+msgid "Current xProfile Group Fields"
+msgstr ""
+
+#: admin/class-bp-xprofile-admin-import-ajax.php:100
+msgid "Exported xProfile Group Fields"
+msgstr ""
+
+#: admin/class-bp-xprofile-admin-import-ajax.php:119
+#: admin/class-bp-xprofile-admin-import-ajax.php:146
+msgid "--- Select CSV Fields---"
+msgstr ""
+
+#: admin/class-bp-xprofile-admin-import-ajax.php:129
+msgid "Note:"
+msgstr ""
+
+#: admin/class-bp-xprofile-admin-import-ajax.php:129
+msgid ""
+" Select xProfile Fields from above to insert value for xProfile Fileds. If "
+"the fields that exist in the CSV file do not exist in your website, in that "
+"case the fields processing will be skipped, otherwise you need to create "
+"those fields.."
+msgstr ""
 
 #: admin/class-bp-xprofile-admin-import-ajax.php:214
 msgid ""
 "Sorry CVS file did not imported. There are some errors in CSV column name "
 "please correct them and try again. Some columns in CSV are required, eg. "
 "user_login , user_pass, user_email, user_role."
+msgstr ""
+
+#: admin/class-bp-xprofile-admin-import-ajax.php:467
+msgid "%s"
 msgstr ""
 
 #: admin/class-bp-xprofile-export-import-admin.php:134
@@ -167,7 +203,6 @@ msgstr ""
 #: admin/wbcom/templates/wbcom-license-page.php:20
 #: admin/wbcom/templates/wbcom-license-page.php:33
 #: admin/wbcom/templates/wbcom-license-page.php:70
-#: edd-license/edd-plugin-license.php:325
 msgid "Product"
 msgstr ""
 
@@ -175,7 +210,6 @@ msgstr ""
 #: admin/wbcom/templates/wbcom-license-page.php:21
 #: admin/wbcom/templates/wbcom-license-page.php:34
 #: admin/wbcom/templates/wbcom-license-page.php:71
-#: edd-license/edd-plugin-license.php:326
 msgid "Version"
 msgstr ""
 
@@ -183,7 +217,6 @@ msgstr ""
 #: admin/wbcom/templates/wbcom-license-page.php:22
 #: admin/wbcom/templates/wbcom-license-page.php:35
 #: admin/wbcom/templates/wbcom-license-page.php:72
-#: edd-license/edd-plugin-license.php:327
 msgid "Key"
 msgstr ""
 
@@ -191,7 +224,6 @@ msgstr ""
 #: admin/wbcom/templates/wbcom-license-page.php:23
 #: admin/wbcom/templates/wbcom-license-page.php:36
 #: admin/wbcom/templates/wbcom-license-page.php:73
-#: edd-license/edd-plugin-license.php:328
 msgid "Status"
 msgstr ""
 
@@ -199,14 +231,12 @@ msgstr ""
 #: admin/wbcom/templates/wbcom-license-page.php:24
 #: admin/wbcom/templates/wbcom-license-page.php:37
 #: admin/wbcom/templates/wbcom-license-page.php:74
-#: edd-license/edd-plugin-license.php:329
 msgid "Action"
 msgstr ""
 
 #: admin/wbcom/templates/wbcom-license-page.php:48
 #: admin/wbcom/templates/wbcom-license-page.php:57
 #: admin/wbcom/templates/wbcom-license-page.php:65
-#: edd-license/edd-plugin-license.php:347
 msgid "Deactivate License"
 msgstr ""
 
@@ -734,53 +764,37 @@ msgid ""
 "installed and active"
 msgstr ""
 
-#: edd-license/EDD_BPXPEI_Plugin_Updater.php:202
-msgid "There is a new version of %1$s available. %2$sView version %3$s details%4$s."
+#: bpxp-update-checker/Puc/v4p10/Plugin/Ui.php:54
+msgid "View details"
 msgstr ""
 
-#: edd-license/EDD_BPXPEI_Plugin_Updater.php:210
-msgid ""
-"There is a new version of %1$s available. %2$sView version %3$s details%4$s "
-"or %5$supdate now%6$s."
+#: bpxp-update-checker/Puc/v4p10/Plugin/Ui.php:82
+msgid "More information about %s"
 msgstr ""
 
-#: edd-license/EDD_BPXPEI_Plugin_Updater.php:400
-msgid "You do not have permission to install plugin updates"
+#: bpxp-update-checker/Puc/v4p10/Plugin/Ui.php:133
+msgid "Check for updates"
 msgstr ""
 
-#: edd-license/EDD_BPXPEI_Plugin_Updater.php:400
-msgid "Error"
+#: bpxp-update-checker/Puc/v4p10/Plugin/Ui.php:230
+msgid "Unknown update checker status \"%s\""
 msgstr ""
 
-#: edd-license/edd-plugin-license.php:94 edd-license/edd-plugin-license.php:130
-#: edd-license/edd-plugin-license.php:203
-msgid "An error occurred, please try again."
+#: bpxp-update-checker/Puc/v4p10/Vcs/PluginUpdateChecker.php:100
+msgid "There is no changelog available."
 msgstr ""
 
-#: edd-license/edd-plugin-license.php:103
-msgid "Your license key expired on %s."
+#: bpxp-update-checker/Puc/v4p10/Plugin/Ui.php:220
+msgctxt "the plugin title"
+msgid "The %s plugin is up to date."
 msgstr ""
 
-#: edd-license/edd-plugin-license.php:109
-msgid "Your license key has been disabled."
+#: bpxp-update-checker/Puc/v4p10/Plugin/Ui.php:222
+msgctxt "the plugin title"
+msgid "A new version of the %s plugin is available."
 msgstr ""
 
-#: edd-license/edd-plugin-license.php:113
-msgid "Invalid license."
-msgstr ""
-
-#: edd-license/edd-plugin-license.php:118
-msgid "Your license is not active for this URL."
-msgstr ""
-
-#: edd-license/edd-plugin-license.php:122
-msgid "This appears to be an invalid license key for %s."
-msgstr ""
-
-#: edd-license/edd-plugin-license.php:126
-msgid "Your license key has reached its activation limit."
-msgstr ""
-
-#: edd-license/edd-plugin-license.php:352
-msgid "Activate License"
+#: bpxp-update-checker/Puc/v4p10/Plugin/Ui.php:224
+msgctxt "the plugin title"
+msgid "Could not determine if updates are available for %s."
 msgstr ""
