@@ -4,7 +4,7 @@ Donate link: www.wbcomdesigns.com
 Tags: export, import, users, members, buddypress, x-profile, user-data, avatar.
 Requires at least: 3.0.1
 Tested up to: 5.5.1
-Stable tag: 1.0.0
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,10 @@ Go to Admin menu and click  "/Members Data->Members Import" page. Upload CSV fil
 7. Notice when importing.
 
 == Changelog ==
+
+= 1.0.2 =
+* Compatibilty with WordPress version 5.5.1 and BuddyPress version 6.3.0.
+* Fixed: Escaping function.
 
 = 1.0.1 =
 * Enhancement - Added support for user meta fields mapping.
