@@ -410,7 +410,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 					$message = 'Profile field group ' . $notice . ' does not exist! ';
 					echo '<div class="bpxp-error-data">';
 					echo '<p class="bpxp-error-message bpxp-message">';
-					echo esc_html( $message, 'bp-xprofile-export-import' );
+					echo esc_html__( $message, 'bp-xprofile-export-import' );
 					echo '<a href="javascript:void(0)" class="bpxp-close">x</a></p>';
 					echo '</div>';
 				}
@@ -464,7 +464,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 						$message = $notice . ' ' . $bpxp_msg;
 						echo '<div class="' . esc_attr( $container_cls ) . '">';
 						echo '<p class="' . esc_attr( $box_cls ) . '">';
-						echo sprintf( esc_html( '%s', 'bp-xprofile-export-import' ), esc_html( $message ) );
+						echo sprintf( esc_html__( '%s', 'bp-xprofile-export-import' ), $message );
 						echo '<a href="javascript:void(0)" class="bpxp-close">x</a></p>';
 						echo '</div>';
 					}

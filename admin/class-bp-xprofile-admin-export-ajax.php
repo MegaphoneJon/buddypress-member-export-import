@@ -72,11 +72,11 @@ class Bp_Xprofile_Admin_Export_Ajax {
 				if ( in_array( 'all-fields-group', $bpxp_field_group_id, true ) ) {
 					$bpxp_all_xprofile_fields = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
 					if ( ! empty( $bpxp_all_xprofile_fields ) ) {
-						$fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>' . esc_html( 'All X-Profile Fields', 'bp-xprofile-export-import' ) . '</label>';
+						$fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>' . esc_html__( 'All X-Profile Fields', 'bp-xprofile-export-import' ) . '</label>';
 						foreach ( $bpxp_all_xprofile_fields as $bpxp_fields_key => $bpxp_fields_value ) {
 							if ( ! empty( $bpxp_fields_value->fields ) ) {
 								foreach ( $bpxp_fields_value->fields as $bpxp_fields_data ) {
-									$fields .= '<label for="' . esc_attr( $bpxp_fields_data->name ) . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . esc_html( $bpxp_fields_data->name ) . '"/>' . esc_html( $bpxp_fields_data->name, 'bp-xprofile-export-import' ) . '</label>';
+									$fields .= '<label for="' . esc_attr( $bpxp_fields_data->name ) . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . esc_attr( $bpxp_fields_data->name ) . '"/>' . esc_html__( $bpxp_fields_data->name, 'bp-xprofile-export-import' ) . '</label>';
 								}
 							}
 						}
@@ -91,11 +91,11 @@ class Bp_Xprofile_Admin_Export_Ajax {
 					}
 					$bpxp_get_xprofile_fields = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
 					if ( ! empty( $bpxp_get_xprofile_fields ) ) {
-						$fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>' . esc_html( 'All X-Profile Fields', 'bp-xprofile-export-import' ) . '</label>';
+						$fields .= '<label for="all-fields-group"><input type="checkbox" name="bpxp_xprofile_fields[]" value="all-xprofile-fields" class="bpxp-all-selected bpxp-all-profile"/>' . esc_html__( 'All X-Profile Fields', 'bp-xprofile-export-import' ) . '</label>';
 						foreach ( $bpxp_get_xprofile_fields as $bpxp_fields_key => $bpxp_fields_value ) {
 							if ( ! empty( $bpxp_fields_value->fields ) && in_array( $bpxp_fields_value->id, $bpxp_gid ) ) {
 								foreach ( $bpxp_fields_value->fields as $bpxp_fields_data ) {
-									$fields .= '<label for="' . esc_attr( $bpxp_fields_data->name ) . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . esc_html( $bpxp_fields_data->name ) . '"/>' . esc_html( $bpxp_fields_data->name, 'bp-xprofile-export-import' ) . '</label>';
+									$fields .= '<label for="' . esc_attr( $bpxp_fields_data->name ) . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . esc_attr( $bpxp_fields_data->name ) . '"/>' . esc_html__( $bpxp_fields_data->name, 'bp-xprofile-export-import' ) . '</label>';
 								}
 							}
 						}
