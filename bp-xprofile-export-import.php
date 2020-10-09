@@ -33,8 +33,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
 * Constants used in the plugin.
 */
-define( 'BPXP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'BPXP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+if ( ! defined( 'BPXP_PLUGIN_VERSION' ) ) {
+	define( 'BPXP_PLUGIN_VERSION', '1.0.1' );
+}
+if ( ! defined( 'BPXP_PLUGIN_FILE' ) ) {
+	define( 'BPXP_PLUGIN_FILE', __FILE__ );
+}
+if ( ! defined( 'BPXP_PLUGIN_PATH' ) ) {
+	define( 'BPXP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+}
+if ( ! defined( 'BPXP_PLUGIN_URL' ) ) {
+	define( 'BPXP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
+
 
 if ( ! function_exists( 'bpxp_admin_page_link' ) ) {
 
@@ -47,7 +58,7 @@ if ( ! function_exists( 'bpxp_admin_page_link' ) ) {
 	 */
 	function bpxp_admin_page_link( $links ) {
 		$bpxp_links = array(
-			'<a href="' . admin_url( 'admin.php?page=bpxp-member-export' ) . '">' . __( 'Settings', 'bp-xprofile-export-import' ) . '</a>',
+			'<a href="' . admin_url( 'admin.php?page=bpxp-member-export-import' ) . '">' . __( 'Settings', 'bp-xprofile-export-import' ) . '</a>',
 			'<a href="https://wbcomdesigns.com/contact/" target="_blank">' . __( 'Support', 'bp-xprofile-export-import' ) . '</a>',
 		);
 		return array_merge( $links, $bpxp_links );
