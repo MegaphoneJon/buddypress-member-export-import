@@ -210,7 +210,7 @@ class Bp_Xprofile_Export_Import {
 
 	public function bpxp_plugin_updater() {
 		$bpep_export_impoer_updater = Puc_v4_Factory::buildUpdateChecker(
-			'https://github.com/vapvarun/buddypress-member-export-import',
+			'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-member-export-import.json',
 			BPXP_PLUGIN_FILE,
 			'buddypress-member-export-import'
 		);
