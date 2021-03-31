@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -178,7 +177,7 @@ class Bp_Xprofile_Export_Import {
 
 		$export_admin = new Bp_Xprofile_Admin_Export_Ajax( $this->get_plugin_name(), $this->get_version() );
 
-		/*	add action to set xprofile fields type */
+		/*  add action to set xprofile fields type */
 		$this->loader->add_action( 'wp_ajax_bpxp_get_export_xprofile_fields', $export_admin, 'bpxp_get_xprofile_fields' );
 		/* add action for exprot member data */
 		$this->loader->add_action( 'wp_ajax_bpxp_export_xprofile_data', $export_admin, 'bpxp_export_member_data' );

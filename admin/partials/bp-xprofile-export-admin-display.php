@@ -57,7 +57,7 @@ if ( ! empty( $bpxp_xprofile_fields ) ) {
 					<?php
 					if ( ! empty( $bpxp_user ) ) {
 						foreach ( $bpxp_user as $bpxp_admin_data => $bpxp_admin_value ) {
-						?>
+							?>
 							<label for="<?php echo esc_attr( $bpxp_admin_value->data->user_login ); ?>">
 								<input type="checkbox" class="bpxp-export bpxp-single-member" name="bpxp_bpmember[]" value="<?php echo esc_html( $bpxp_admin_value->data->ID, 'bp-xprofile-export-import' ); ?>"/>
 								<?php echo esc_html( $bpxp_admin_value->data->display_name, 'bp-xprofile-export-import' ); ?>
@@ -96,7 +96,7 @@ if ( ! empty( $bpxp_xprofile_fields ) ) {
 					<?php
 					if ( ! empty( $bpxp_fields_group ) ) {
 						foreach ( $bpxp_fields_group as $bpxp_group_id => $bpxp_group_data ) {
-						?>
+							?>
 							<label for="<?php echo esc_attr( $bpxp_group_data ); ?>">
 								<input type="checkbox" class="bpxp-single-group" name="bpxp_field_group[]" value="<?php echo esc_html( $bpxp_group_id, 'bp-xprofile-export-import' ); ?>"/>
 								<?php echo esc_html( $bpxp_group_data, 'bp-xprofile-export-import' ); ?>
