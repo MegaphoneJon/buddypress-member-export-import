@@ -102,7 +102,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 					}
 				}
 			}
-			echo esc_html( $fields );
+			echo wp_kses_post( $fields );
 			die;
 		}
 	}

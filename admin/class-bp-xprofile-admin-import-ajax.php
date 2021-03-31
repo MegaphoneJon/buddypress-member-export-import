@@ -126,7 +126,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 						$current_group .= '</tr>';
 					}
 				}
-				$current_group .= '<br/><tr><td colspan="2"><p class="description"> <b> ' . esc_html__( 'Note:', 'bp-xprofile-export-import' ) . '</b>' . esc_html__( ' Select xProfile Fields from above to insert value for xProfile Fileds. If the fields that exist in the CSV file do not exist in your website, in that case the fields processing will be skipped, otherwise you need to create those fields..', 'bp-xprofile-export-import' ) . '</p></td></tr>';
+				$current_group .= '<br/><tr><td colspan="2"><p class="description"> <b> ' . esc_html__( 'Note:', 'bp-xprofile-export-import' ) . '</b>' . esc_html__( 'Select xProfile Fields from above to insert value for xProfile Fileds. If the fields that exist in the CSV file do not exist in your website, in that case the fields processing will be skipped, otherwise you need to create those fields..', 'bp-xprofile-export-import' ) . '</p></td></tr>';
 
 				$user_meta      = array( 'user_nicename', 'display_name', 'nickname', 'first_name', 'last_name', 'description' );
 				$current_group .= '<tr><th> User Meta </th><th> CSV Column </th></tr>';

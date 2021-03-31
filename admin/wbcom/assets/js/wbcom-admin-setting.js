@@ -19,6 +19,7 @@ jQuery( document ).ready( function ( event ) {
             data: {
                 action: 'wbcom_manage_plugin_installation',
                 plugin_action: action,
+                nonce: wbcom_plugin_installer_params.nonce,
                 plugin_slug: thisRef.parent('.activation_button_wrap').siblings( 'input.plugin-slug' ).val()
             },            
             complete: function() {

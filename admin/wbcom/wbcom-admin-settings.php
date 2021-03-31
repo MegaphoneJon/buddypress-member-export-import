@@ -5,6 +5,7 @@
  * @author   Wbcom Designs
  * @package  BuddyPress_Member_Reviews
  */
+
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
@@ -38,12 +39,14 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 * @access public
 		 */
 		public function wbcom_do_plugin_action() {
-			$action = ! empty( $_POST['plugin_action'] ) ? $_POST['plugin_action'] : false;
-			$slug   = ! empty( $_POST['plugin_slug'] ) ? $_POST['plugin_slug'] : false;
+			if ( empty( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'installer-nonce' ) ) ) {
+				$action = ! empty( $_POST['plugin_action'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin_action'] ) ) : false;
+				$slug   = ! empty( $_POST['plugin_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin_slug'] ) ) : false;
 
-			if ( 'install_plugin' == $action ) {
+			}
+			if ( 'install_plugin' === $action ) {
 				$this->wbcom_do_plugin_install( $slug );
-			} elseif ( 'activate_plugin' == $action ) {
+			} elseif ( 'activate_plugin' === $action ) {
 				$this->wbcom_do_plugin_activate( $slug );
 			} else {
 				$this->wbcom_do_plugin_deactivate( $slug );
@@ -58,7 +61,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 * @access public
 		 * @param string $slug Plugin's slug.
 		 */
-		function wbcom_do_plugin_activate( $slug ) {
+		public function wbcom_do_plugin_activate( $slug ) {
 			$plugin_file_path = $this->_get_plugin_file_path_from_slug( $slug );
 			$result           = activate_plugin( $plugin_file_path );
 		}
@@ -70,7 +73,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 * @access public
 		 * @param string $slug Plugin's slug.
 		 */
-		function wbcom_do_plugin_deactivate( $slug ) {
+		public function wbcom_do_plugin_deactivate( $slug ) {
 			$plugin_file_path = $this->_get_plugin_file_path_from_slug( $slug );
 			$result           = deactivate_plugins( $plugin_file_path );
 		}
@@ -82,7 +85,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 * @access public
 		 * @param string $slug Plugin's slug.
 		 */
-		function _get_plugin_file_path_from_slug( $slug ) {
+		public function _get_plugin_file_path_from_slug( $slug ) {
 			if ( ! function_exists( 'get_plugins' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
@@ -103,7 +106,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 * @access public
 		 * @param string $slug Plugin's slug.
 		 */
-		function wbcom_do_plugin_install( $slug ) {
+		public function wbcom_do_plugin_install( $slug ) {
 			include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 			wp_cache_flush();
 
@@ -126,7 +129,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 * @access public
 		 * @param string $plugin_slug Plugin's slug.
 		 */
-		function upgrade_plugin( $plugin_slug ) {
+		public function upgrade_plugin( $plugin_slug ) {
 			include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 			wp_cache_flush();
 
@@ -154,7 +157,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 * @access public
 		 * @param string $slug Plugin's slug.
 		 */
-		function get_wp_repo_download_url( $slug ) {
+		public function get_wp_repo_download_url( $slug ) {
 			include_once ABSPATH . 'wp-admin/includes/plugin-install.php'; // for plugins_api..
 			$api = plugins_api(
 				'plugin_information',
@@ -415,7 +418,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		 * @access public
 		 * @param string $slug Plugin's slug.
 		 */
-		function wbcom_is_plugin_installed( $slug ) {
+		public function wbcom_is_plugin_installed( $slug ) {
 			if ( ! function_exists( 'get_plugins' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
@@ -496,6 +499,7 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 					'wbcom_plugin_installer_params',
 					array(
 						'ajax_url'        => admin_url( 'admin-ajax.php' ),
+						'nonce'           => wp_create_nonce( 'installer-nonce' ),
 						'activate_text'   => esc_html__( 'Activate', 'bp-xprofile-export-import' ),
 						'deactivate_text' => esc_html__( 'Deactivate', 'bp-xprofile-export-import' ),
 					)
@@ -629,32 +633,32 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 			<div id="wb_admin_header" class="wp-clearfix">
 
 				<div id="wb_admin_logo">
-					<img src="<?php echo BPXP_PLUGIN_URL . 'admin/wbcom/assets/imgs/logowbcom.png'; ?>">
+					<img src="<?php echo esc_url( BPXP_PLUGIN_URL . 'admin/wbcom/assets/imgs/logowbcom.png' ); ?>">
 					<div class="wb_admin_right"></div>
 				</div>
 
 				<nav id="wb_admin_nav">
 					<ul>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $settings_active ); ?>">
-							<a href="<?php echo get_admin_url() . 'admin.php?page=wbcomplugins'; ?>" id="wb_admin_nav_trigger_settings">
+							<a href="<?php echo esc_url( get_admin_url() . 'admin.php?page=wbcomplugins' ); ?>" id="wb_admin_nav_trigger_settings">
 								<i class="fa fa-sliders" aria-hidden="true"></i>
 								<h4><?php esc_html_e( 'Settings', 'bp-xprofile-export-import' ); ?></h4>
 							</a>
 						</li>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $plugin_active ); ?>">
-							<a href="<?php echo get_admin_url() . 'admin.php?page=wbcom-plugins-page'; ?>" id="wb_admin_nav_trigger_extensions">
+							<a href="<?php echo esc_url( get_admin_url() . 'admin.php?page=wbcom-plugins-page' ); ?>" id="wb_admin_nav_trigger_extensions">
 								<i class="fa fa-th" aria-hidden="true"></i>
 								<h4><?php esc_html_e( 'Components', 'bp-xprofile-export-import' ); ?></h4>
 							</a>
 						</li>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $theme_active ); ?>">
-							<a href="<?php echo get_admin_url() . 'admin.php?page=wbcom-themes-page'; ?>" id="wb_admin_nav_trigger_themes">
+							<a href="<?php echo esc_url( get_admin_url() . 'admin.php?page=wbcom-themes-page' ); ?>" id="wb_admin_nav_trigger_themes">
 								<i class="fa fa-magic" aria-hidden="true"></i>
 								<h4><?php esc_html_e( 'Themes', 'bp-xprofile-export-import' ); ?></h4>
 							</a>
 						</li>
 						<li class="wb_admin_nav_item <?php echo esc_attr( $support_active ); ?>">
-							<a href="<?php echo get_admin_url() . 'admin.php?page=wbcom-support-page'; ?>" id="wb_admin_nav_trigger_support">
+							<a href="<?php echo esc_url( get_admin_url() . 'admin.php?page=wbcom-support-page' ); ?>" id="wb_admin_nav_trigger_support">
 								<i class="fa fa-question-circle" aria-hidden="true"></i>
 								<h4><?php esc_html_e( 'Support', 'bp-xprofile-export-import' ); ?></h4>
 							</a>
@@ -667,7 +671,9 @@ if ( ! class_exists( 'Wbcom_Admin_Settings' ) ) {
 		}
 
 	}
-
+	/**
+	 * Wbcom plugin manager.
+	 */
 	function instantiate_wbcom_plugin_manager() {
 		new Wbcom_Admin_Settings();
 	}

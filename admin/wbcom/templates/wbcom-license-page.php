@@ -1,3 +1,11 @@
+<?php
+/**
+ * Wbcom Admin License Page template.
+ *
+ * @package buddypress-member-export-import
+ * @subpackage \admin\wbcom\templates
+ */
+?>
 <div class="wrap">
 	<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 	<h1 class="wbcom-plugin-heading"><?php esc_html_e( 'Plugin License Settings', 'bp-xprofile-export-import' ); ?></h1>
@@ -45,7 +53,7 @@
 		<td class="wb-plugin-version">3.0.1</td>
 		<td class="wb-plugin-license-key"><input id="edd_wbcom_wbbpp_license_key" name="edd_wbcom_wbbpp_license_key" type="text" class="regular-text" value="AIzaSyDej_OIorXYT5Ds7MR5TVDSbmcze08v020" /></td>
 		<td class="wb-license-status active">Active</td>
-		<td class="wb-license-action"><input type="submit" class="button-secondary" name="edd_license_deactivate" value="<?php _e( 'Deactivate License', 'bp-xprofile-export-import' ); ?>"/></td>
+		<td class="wb-license-action"><input type="submit" class="button-secondary" name="edd_license_deactivate" value="<?php esc_html__( 'Deactivate License', 'bp-xprofile-export-import' ); ?>"/></td>
 		<td><input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes"></td>
 	</tr>
 	</form>
@@ -54,7 +62,7 @@
 		<td class="wb-plugin-version">3.0.1</td>
 		<td class="wb-plugin-license-key"><input id="edd_wbcom_wbbpp_license_key" name="edd_wbcom_wbbpp_license_key" type="text" class="regular-text" value="AIzaSyDej_OIorXYT5Ds7MR5TVDSbmcze08v020" /></td>
 		<td class="wb-license-status inactive">Inactive</td>
-		<td class="wb-license-action"><input type="submit" class="button-secondary" name="edd_license_deactivate" value="<?php _e( 'Deactivate License', 'bp-xprofile-export-import' ); ?>"/></td>
+		<td class="wb-license-action"><input type="submit" class="button-secondary" name="edd_license_deactivate" value="<?php esc_html__( 'Deactivate License', 'bp-xprofile-export-import' ); ?>"/></td>
 		<td><input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes"></td>
 	</tr>
 	<tr>
@@ -62,7 +70,7 @@
 		<td class="wb-plugin-version">3.0.1</td>
 		<td class="wb-plugin-license-key"><input id="edd_wbcom_wbbpp_license_key" name="edd_wbcom_wbbpp_license_key" type="text" class="regular-text" value="AIzaSyDej_OIorXYT5Ds7MR5TVDSbmcze08v020" /></td>
 		<td class="wb-license-status active">Active</td>
-		<td class="wb-license-action"><input type="submit" class="button-secondary" name="edd_license_deactivate" value="<?php _e( 'Deactivate License', 'bp-xprofile-export-import' ); ?>"/></td>
+		<td class="wb-license-action"><input type="submit" class="button-secondary" name="edd_license_deactivate" value="<?php esc_html__( 'Deactivate License', 'bp-xprofile-export-import' ); ?>"/></td>
 		<td><input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes"></td>
 	</tr>
 	<tfoot>

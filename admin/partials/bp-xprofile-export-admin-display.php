@@ -97,7 +97,7 @@ if ( ! empty( $bpxp_xprofile_fields ) ) {
 					if ( ! empty( $bpxp_fields_group ) ) {
 						foreach ( $bpxp_fields_group as $bpxp_group_id => $bpxp_group_data ) {
 							?>
-							<label for="<?php echo esc_attr( $bpxp_group_data ); ?>">
+							<label sffor="<?php echo esc_attr( $bpxp_group_data ); ?>">
 								<input type="checkbox" class="bpxp-single-group" name="bpxp_field_group[]" value="<?php echo esc_html( $bpxp_group_id, 'bp-xprofile-export-import' ); ?>"/>
 								<?php echo esc_html( $bpxp_group_data, 'bp-xprofile-export-import' ); ?>
 							</label>
