@@ -76,7 +76,6 @@ class Bp_Xprofile_Export_Import {
 		$this->define_admin_hooks();
 		$this->define_admin_export_ajax_hooks();
 		$this->define_admin_import_ajax_hooks();
-		$this->bpxp_plugin_updater();
 	}
 
 	/**
@@ -130,12 +129,6 @@ class Bp_Xprofile_Export_Import {
 		* admin area.
 		*/
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-bp-xprofile-admin-import-ajax.php';
-
-		/**
-		* The class responsible for defining all actions for ajax that occur in the
-		* admin area.
-		*/
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'bpxp-update-checker/plugin-update-checker.php';
 
 		$this->loader = new Bp_Xprofile_Export_Import_Loader();
 
@@ -207,15 +200,6 @@ class Bp_Xprofile_Export_Import {
 		/* import csv data */
 		$this->loader->add_action( 'wp_ajax_bpxp_import_csv_data', $plugin_admin, 'bpxp_import_csv_member_data' );
 	}
-
-	public function bpxp_plugin_updater() {
-		$bpep_export_impoer_updater = Puc_v4_Factory::buildUpdateChecker(
-			'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-member-export-import.json',
-			BPXP_PLUGIN_FILE,
-			'buddypress-member-export-import'
-		);
-	}
-
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
