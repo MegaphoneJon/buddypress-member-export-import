@@ -65,7 +65,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 		check_ajax_referer( 'bpxp_ajax_request', 'bpxp_fields_nonce' );
 
 		if ( isset( $_POST['action'] ) && 'bpxp_get_export_xprofile_fields' === $_POST['action'] ) {
-			$bpxp_field_group_id = empty( array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxp_field_group_id'] ) ) );
+			$bpxp_field_group_id = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxp_field_group_id'] ) );
 
 			if ( ! empty( $bpxp_field_group_id ) ) {
 				$fields = '';
@@ -102,7 +102,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 					}
 				}
 			}
-			echo wp_kses_post( $fields );
+			echo $fields;
 			die;
 		}
 	}
@@ -120,9 +120,9 @@ class Bp_Xprofile_Admin_Export_Ajax {
 		*/
 		check_ajax_referer( 'bpxp_ajax_request', 'bpxp_members_nonce' );
 		if ( isset( $_POST['action'] ) && 'bpxp_export_xprofile_data' === $_POST['action'] ) {
-			$bpxp_bpmember_id      = empty( array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_bpmember'] ) ) );
-			$bpxp_field_group_id   = empty( array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_field_group'] ) ) );
-			$bpxp_xpro_fields_name = empty( array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_xprofile_fields'] ) ) );
+			$bpxp_bpmember_id      = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_bpmember'] ) );
+			$bpxp_field_group_id   = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_field_group'] ) );
+			$bpxp_xpro_fields_name = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_xprofile_fields'] ) );
 			$bpxp_bpmember_id      = $this->bpxp_remove_array_value( $bpxp_bpmember_id, 'user_id' );
 			$bpxp_field_group_id   = $this->bpxp_remove_array_value( $bpxp_field_group_id, 'group_id' );
 			$bpxp_xpro_fields_name = $this->bpxp_remove_array_value( $bpxp_xpro_fields_name, 'fields_name' );
