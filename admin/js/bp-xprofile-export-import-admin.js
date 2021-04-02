@@ -170,7 +170,6 @@
 								'bpxp_header_nonce' 	: bpxp_ajax_url.ajax_nonce
 							},
 							function(response) {
-								console.log( response );
 								jQuery( '#upload_csv' ).after( response );
 								jQuery( '#bpxp_import_xprofile_data' ).removeAttr( "disabled", "disabled" );
 								jQuery( '.bpxp-admin-settings-spinner' ).css( 'display' , 'none' );

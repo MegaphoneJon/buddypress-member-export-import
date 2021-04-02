@@ -143,10 +143,11 @@ class Bp_Xprofile_Export_Import_Admin {
 	/**
 	 * Callback function for bp member xprofile export import settings page.
 	 *
-	 * @since 1.0.0
+	 * @since    1.0.0
+	 * @param    string $current       The current tab.
 	 */
 	public function bpxp_member_export_import_settings_page() {
-		$current = isset( $_GET['tab'] ) ? wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['tab'] ) ), 'bpxp_ajax_request' ) : 'members_export';
+		$current = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'members_export';
 		?>
 		<div class="wrap">
 		<div class="blpro-header">
@@ -164,11 +165,11 @@ class Bp_Xprofile_Export_Import_Admin {
 
 		$tab_html = '<div class="wbcom-tabs-section"><h2 class="nav-tab-wrapper">';
 		foreach ( $bpxp_tabs as $bpxp_tab => $bpxp_name ) {
-			$class     = ( $bpxp_tab === $current ) ? 'nav-tab-active' : '';
+			$class     = ( $bpxp_tab == $current ) ? 'nav-tab-active' : '';
 			$tab_html .= '<a class="nav-tab ' . $class . '" href="admin.php?page=bpxp-member-export-import&tab=' . $bpxp_tab . '">' . $bpxp_name . '</a>';
 		}
 		$tab_html .= '</h2></div>';
-		echo wp_kses_post( $tab_html );
+		echo $tab_html;
 		$this->bpxp_plugin_option_pages();
 		echo '</div>'; /* closing of div class wbcom-admin-settings-page */
 		echo '</div>'; /* closing div class wrap */
@@ -183,7 +184,7 @@ class Bp_Xprofile_Export_Import_Admin {
 	 */
 	public function bpxp_plugin_option_pages() {
 		if ( isset( $_GET['tab'] ) ) {
-			$bpxp_tab = sanitize_text_field( wp_unslash( $_GET['tab'] ) );
+			$bpxp_tab = sanitize_text_field( $_GET['tab'] );
 		} else {
 			$bpxp_tab = 'general';
 		}
@@ -194,7 +195,6 @@ class Bp_Xprofile_Export_Import_Admin {
 	/**
 	 * Include setting template.
 	 *
-	 * @param string $bpxp_tab Admin dashboard tab.
 	 * @since    1.0.0
 	 * @access   public
 	 * @author   Wbcom Designs
