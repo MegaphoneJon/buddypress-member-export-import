@@ -49,7 +49,7 @@
 		<?php do_action( 'bpxp_before_import_file' ); ?>
 		<div class="bpxp-admin-row" id="upload_csv">
 			<div class="bpxp-admin-3 bpxp-admin-label">
-				<label for="bpxp_xprofile_fields"><?php esc_html_e( 'Uploade CSV File', 'bp-xprofile-export-import' ); ?></label>
+				<label for="bpxp_xprofile_fields"><?php esc_html_e( 'Upload CSV File', 'bp-xprofile-export-import' ); ?></label>
 			</div>
 			<div class="bpxp-admin-3">
 				<input type="file" name="bpxp_import_file" id="bpxp_import_file" value="" />
