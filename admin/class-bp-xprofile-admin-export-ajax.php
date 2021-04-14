@@ -220,7 +220,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 			case 'user_id':
 				if ( ! empty( $array_data ) ) {
 					$bpxp_id_index = array_search( 'bpxp-all-user', $array_data, true );
-					if ( 'bpxp-all-user' === $bpxp_id_index ) {
+					if ( 'bpxp-all-user' == $bpxp_id_index ) {
 						unset( $array_data[ $bpxp_id_index ] );
 					}
 					return $array_data;
@@ -229,7 +229,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 			case 'group_id':
 				if ( ! empty( $array_data ) ) {
 					$bpxp_id_index = array_search( 'all-fields-group', $array_data, true );
-					if ( 'all-fields-group' === $bpxp_id_index ) {
+					if ( 'all-fields-group' == $bpxp_id_index ) {
 						unset( $array_data[ $bpxp_id_index ] );
 					}
 					return $array_data;
@@ -238,7 +238,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 			case 'fields_name':
 				if ( ! empty( $array_data ) ) {
 					$bpxp_id_index = array_search( 'all-xprofile-fields', $array_data, true );
-					if ( 'all-xprofile-fields' === $bpxp_id_index ) {
+					if ( 'all-xprofile-fields' == $bpxp_id_index ) {
 						unset( $array_data[ $bpxp_id_index ] );
 					}
 					return $array_data;
