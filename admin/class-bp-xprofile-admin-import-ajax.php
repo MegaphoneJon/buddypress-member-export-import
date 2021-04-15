@@ -183,7 +183,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 			$bpxp_members_data              = '';
 			if ( ! empty( $_POST['bpxp_csv_file'] ) ) {
 				$bpxp_members_data = wp_unslash( $_POST['bpxp_csv_file'] );
-				if ( count( $bpxp_members_data[0] ) === 1 ) {
+				if ( count( $bpxp_members_data[0] ) == 1 ) {
 					unset( $bpxp_members_data[0] );
 				}
 			}
@@ -192,7 +192,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 			$bpxp_data_key   = array();
 			$bpxp_counter    = 0;
 			if ( ! empty( $bpxp_members_data ) ) {
-				if ( 0 === $_POST['bpxpj_counter'] ) {
+				if ( 0 == $_POST['bpxpj_counter'] ) {
 					foreach ( $bpxp_members_data as $bpxp_member ) {
 						if ( count( $bpxp_member ) > 1 ) {
 							foreach ( $bpxp_member as $data ) {
@@ -251,12 +251,12 @@ class Bp_Xprofile_Admin_Import_Ajax {
 
 						foreach ( $bpxp_user as $fields_key => $fields_value ) {
 							/** Check if user already exists. */
-							if ( 'user_login' === $fields_key && ! empty( $fields_value ) ) {
+							if ( 'user_login' == $fields_key && ! empty( $fields_value ) ) {
 								$user_id   = username_exists( $fields_value );
 								$user_name = $fields_value;
 							}
 							/* Create user if not exists */
-							if ( 'user_email' === $fields_key && ! empty( $fields_value ) ) {
+							if ( 'user_email' == $fields_key && ! empty( $fields_value ) ) {
 								$bpxp_user_id = '';
 								if ( empty( $user_id ) && email_exists( $fields_value ) === false ) {
 									$bpxp_password = wp_generate_password( $length, $include_standard_special_chars );
@@ -268,7 +268,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 								} else {
 									/* update existing user */
 
-									if ( 'update-users' === $bpxp_update_user ) {
+									if ( 'update-users' == $bpxp_update_user ) {
 										$bpxp_ext_user = get_user_by( 'email', $fields_value );
 										if ( ! empty( $bpxp_ext_user ) ) {
 											$bpxp_user_id                   = $bpxp_ext_user->data->ID;
@@ -289,7 +289,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 							*/
 							if ( ! empty( $bpxp_user_id ) ) {
 								/* Get users role form csv data */
-								if ( 'user_role' === $fields_key && ! empty( $fields_value ) ) {
+								if ( 'user_role' == $fields_key && ! empty( $fields_value ) ) {
 									$id = wp_update_user(
 										array(
 											'ID'   => $bpxp_user_id,
@@ -303,7 +303,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 									update_user_meta( $bpxp_user_id, 'author_avatar', $fields_value );
 								}
 								/* Create password */
-								if ( 'group_slug' === $fields_key && ! empty( $fields_value ) ) {
+								if ( 'group_slug' == $fields_key && ! empty( $fields_value ) ) {
 									$grp_name = '';
 									$grp_name = $this->bpxp_add_members_to_group( $fields_value, $bpxp_user_id );
 
