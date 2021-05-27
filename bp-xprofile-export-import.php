@@ -120,3 +120,17 @@ function bpxp_run_bp_xprofile_export_import() {
 	$plugin = new Bp_Xprofile_Export_Import();
 	$plugin->run();
 }
+
+
+/**
+ * redirect to plugin settings page after activated
+ */
+
+add_action( 'activated_plugin', 'bpxp_activation_redirect_settings' );
+function bpxp_activation_redirect_settings( $plugin ){
+
+	if( $plugin == plugin_basename( __FILE__ ) ) {
+		wp_redirect( admin_url( 'admin.php?page=bpxp-member-export-import' ) ) ;
+		exit;
+	}
+}

@@ -147,7 +147,7 @@ class Bp_Xprofile_Export_Import_Admin {
 	 * @param    string $current       The current tab.
 	 */
 	public function bpxp_member_export_import_settings_page() {
-		$current = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'members_export';
+		$current = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'welcome';
 		?>
 		<div class="wrap">
 		<div class="blpro-header">
@@ -159,6 +159,7 @@ class Bp_Xprofile_Export_Import_Admin {
 		<div class="wbcom-admin-settings-page">
 		<?php
 		$bpxp_tabs = array(
+			'welcome' => __( 'Welcome', 'bp-xprofile-export-import' ),
 			'members_export' => __( 'Members Export', 'bp-xprofile-export-import' ),
 			'members_import' => __( 'Members Import', 'bp-xprofile-export-import' ),
 		);
@@ -186,7 +187,7 @@ class Bp_Xprofile_Export_Import_Admin {
 		if ( isset( $_GET['tab'] ) ) {
 			$bpxp_tab = sanitize_text_field( $_GET['tab'] );
 		} else {
-			$bpxp_tab = 'general';
+			$bpxp_tab = 'welcome';
 		}
 
 		$this->bpxp_include_admin_setting_tabs( $bpxp_tab );
@@ -201,6 +202,9 @@ class Bp_Xprofile_Export_Import_Admin {
 	 */
 	public function bpxp_include_admin_setting_tabs( $bpxp_tab ) {
 		switch ( $bpxp_tab ) {
+			case 'welcome':
+				$this->bpxp_welcome_page();
+				break;
 			case 'members_export':
 				$this->bpxp_export_setting_page();
 				break;
@@ -208,12 +212,14 @@ class Bp_Xprofile_Export_Import_Admin {
 				$this->bpxp_import_setting_page();
 				break;
 			default:
-				$this->bpxp_export_setting_page();
+				$this->bpxp_welcome_page();
 				break;
 		}
 	}
 
-
+	public function bpxp_welcome_page() {
+		include BPXP_PLUGIN_PATH . 'admin/partials/bp-welcome-page.php';
+	}
 
 
 	/**
