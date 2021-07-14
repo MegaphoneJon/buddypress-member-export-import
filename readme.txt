@@ -3,8 +3,8 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: www.wbcomdesigns.com
 Tags: export, import, users, members, buddypress, x-profile, user-data, avatar.
 Requires at least: 3.0.1
-Tested up to: 5.6.0
-Stable tag: 1.0.3
+Tested up to: 5.7.3
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,11 @@ Go to Admin menu and click  "/Members Data->Members Import" page. Upload CSV fil
 7. Notice when importing.
 
 == Changelog ==
+
+= 1.1.0 =
+* Fixed: Added class check intsted of check loader
+* Fixed: Update dependent plugin notice
+
 = 1.0.3 =
 * Fixed: Escaping function.
 
