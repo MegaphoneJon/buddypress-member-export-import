@@ -95,7 +95,7 @@ if ( ! function_exists( 'bpxp_admin_notice' ) ) {
 	function bpxp_admin_notice() {
 		?>
 		<div class="error notice is-dismissible">
-			<p><?php esc_html_e( 'The Buddypress Member Export Import plugin requires Buddypress plugin to be installed and active', 'bp-xprofile-export-import' ); ?></p>
+			<p><?php esc_html_e( 'The Buddypress Member Export Import plugin requires Buddypress or Buddyboss plugin to be installed and active', 'bp-xprofile-export-import' ); ?></p>
 		</div>
 		<?php
 	}
