@@ -17,7 +17,7 @@
  * Description:       Buddypress Member Export Import plugin bring you feature to export Buddypress members and x-profile fields data into CSV file and import buddypress members from CSV file.
 
  *
- * Version:           1.0.3
+ * Version:           1.1.0
  * Author:            Wbcom Designs
  * Author URI:        www.wbcomdesigns.com
  * License:           GPL-2.0+
@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 * Constants used in the plugin.
 */
 if ( ! defined( 'BPXP_PLUGIN_VERSION' ) ) {
-	define( 'BPXP_PLUGIN_VERSION', '1.0.3' );
+	define( 'BPXP_PLUGIN_VERSION', '1.1.0' );
 }
 if ( ! defined( 'BPXP_PLUGIN_FILE' ) ) {
 	define( 'BPXP_PLUGIN_FILE', __FILE__ );
