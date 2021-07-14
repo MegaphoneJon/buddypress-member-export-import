@@ -76,7 +76,7 @@ if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 	 * @since    1.0.0
 	 */
 	function bpxp_plugins_files() {
-		if ( ! in_array( 'buddypress/bp-loader.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
+		if ( ! class_exists( 'BuddyPress' ) ) {
 			add_action( 'admin_notices', 'bpxp_admin_notice' );
 		} else {
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bpxp_admin_page_link' );
