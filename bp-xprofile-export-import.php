@@ -17,7 +17,7 @@
  * Description:       Buddypress Member Export Import plugin bring you feature to export Buddypress members and x-profile fields data into CSV file and import buddypress members from CSV file.
 
  *
- * Version:           1.0.3
+ * Version:           1.2.0
  * Author:            Wbcom Designs
  * Author URI:        www.wbcomdesigns.com
  * License:           GPL-2.0+
@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 * Constants used in the plugin.
 */
 if ( ! defined( 'BPXP_PLUGIN_VERSION' ) ) {
-	define( 'BPXP_PLUGIN_VERSION', '1.0.3' );
+	define( 'BPXP_PLUGIN_VERSION', '1.2.0' );
 }
 if ( ! defined( 'BPXP_PLUGIN_FILE' ) ) {
 	define( 'BPXP_PLUGIN_FILE', __FILE__ );
@@ -76,7 +76,7 @@ if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 	 * @since    1.0.0
 	 */
 	function bpxp_plugins_files() {
-		if ( ! in_array( 'buddypress/bp-loader.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
+		if ( ! class_exists( 'BuddyPress' ) ) {
 			add_action( 'admin_notices', 'bpxp_admin_notice' );
 		} else {
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bpxp_admin_page_link' );
@@ -95,7 +95,7 @@ if ( ! function_exists( 'bpxp_admin_notice' ) ) {
 	function bpxp_admin_notice() {
 		?>
 		<div class="error notice is-dismissible">
-			<p><?php esc_html_e( 'The Buddypress Member Export Import plugin requires Buddypress plugin to be installed and active', 'bp-xprofile-export-import' ); ?></p>
+			<p><?php esc_html_e( 'The Buddypress Member Export Import plugin requires Buddypress or Buddyboss plugin to be installed and active', 'bp-xprofile-export-import' ); ?></p>
 		</div>
 		<?php
 	}
