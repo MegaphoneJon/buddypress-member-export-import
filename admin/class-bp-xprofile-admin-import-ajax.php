@@ -231,7 +231,8 @@ class Bp_Xprofile_Admin_Import_Ajax {
 			$bpxp_users_data = array();
 			if ( ! empty( $bpxp_data_value ) ) {
 				foreach ( $bpxp_data_value as $bpxp_array ) {
-					$bpxp_users_data[] = array_combine( $bpxp_data_key, $bpxp_array );
+					$min               = min( count( $bpxp_data_key ), count( $bpxp_array ) );
+					$bpxp_users_data[] = array_combine( array_slice( $bpxp_data_key, 0, $min ), array_slice( $bpxp_array, 0, $min ) );
 				}
 			}
 
@@ -501,7 +502,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 					);
 					wp_cache_delete( $id, 'users' );
 					$date = date( 'Y-m-d h:i:m' );
-					update_user_meta( $id, 'last_activity', $date );
+					bp_update_user_last_activity( $id, $date );
 				}
 			}
 		}
@@ -537,7 +538,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 	public function bpxp_add_members_to_group( $bpxpcsv_groups, $member_id ) {
 		$group_msg = '';
 		$date      = date( 'Y-m-d h:i:m' );
-		update_user_meta( $member_id, 'last_activity', $date );
+		bp_update_user_last_activity( $member_id, $date );
 
 		if ( ! empty( $bpxpcsv_groups ) && strpos( $bpxpcsv_groups, ' - ' ) !== false ) {
 			$bpxp_group_array = explode( ' - ', $bpxpcsv_groups );

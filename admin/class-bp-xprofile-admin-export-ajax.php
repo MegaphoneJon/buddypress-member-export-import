@@ -170,7 +170,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 					$bpxp_fields_data = array();
 					foreach ( $bpxp_xpro_fields_name as $bpxp_field ) {
 						$bpxp_value = bp_get_profile_field_data( 'field=' . $bpxp_field . '&user_id=' . $bpxp_user );
-						if ( strpos( $bpxp_value, '<a href=' ) === 0 ) {
+						if ( ! is_array( $bpxp_value ) && strpos( $bpxp_value, '<a href=' ) === 0 ) {
 							$result = '';
 							preg_match_all( '/<a[^>]+href=([\'"])(?<href>.+?)\1[^>]*>/i', $bpxp_value, $result );
 							if ( ! empty( $result['href'][0] ) && strpos( $result['href'][0], 'www' ) !== false ) {
