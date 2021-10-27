@@ -67,7 +67,7 @@ if ( ! function_exists( 'bpxp_admin_page_link' ) ) {
 
 if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 
-	add_action( 'plugins_loaded', 'bpxp_plugins_files' );
+	add_action( 'admin_init', 'bpxp_plugins_files' );
 
 	/**
 	 * Include requir files
@@ -78,6 +78,7 @@ if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 	function bpxp_plugins_files() {
 		if ( ! class_exists( 'BuddyPress' ) ) {
 			add_action( 'admin_notices', 'bpxp_admin_notice' );
+			deactivate_plugins( plugin_basename( __FILE__ ) );
 		} else {
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bpxp_admin_page_link' );
 			bpxp_run_bp_xprofile_export_import();
