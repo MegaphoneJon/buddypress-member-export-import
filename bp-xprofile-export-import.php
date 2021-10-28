@@ -67,7 +67,7 @@ if ( ! function_exists( 'bpxp_admin_page_link' ) ) {
 
 if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 
-	add_action( 'plugins_loaded', 'bpxp_plugins_files' );
+	add_action( 'admin_init', 'bpxp_plugins_files' );
 
 	/**
 	 * Include requir files
