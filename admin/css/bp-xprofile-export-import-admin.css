@@ -3,150 +3,174 @@
  * included in this file.
  */
 
-.bpxp-admin-container{
-	width:90%;
-	float:left;
-	background-color:#fff;
- }
-
-.bpxp-admin-container h1{
-	border-bottom: 1px solid hsl(0, 0%, 95%);
-	line-height: 40px;
-	margin: 0;
-	padding: 20px;
+.bpxp-admin-container {
+    width: 90%;
+    float: left;
+    background-color: #fff;
 }
 
-.bpxp-admin-container .bpxp-admin-row{
-	float: left;
-	padding: 20px 10px;
-	width: 100%;
+.bpxp-admin-container h1 {
+    border-bottom: 1px solid hsl(0, 0%, 95%);
+    line-height: 40px;
+    margin: 0;
+    padding: 20px;
 }
 
-.bpxp-admin-container .bpxp-admin-3{
-	width:32%;
-	padding:0px 10px;
-	float:left;
-	display:inline;
+.bpxp-admin-container .bpxp-admin-row {
+    float: left;
+    padding: 20px 10px;
+    width: 100%;
 }
-#csv_header_error{
-  display:none;
+
+.bpxp-admin-container .bpxp-admin-3 {
+    width: 32%;
+    padding: 0px 10px;
+    float: left;
+    display: inline;
 }
+
+#csv_header_error {
+    display: none;
+}
+
 
 /* Select box in drop down list */
+
 .bpxp-multiselect {
-  width: 100%;
+    width: 100%;
 }
 
 .bpxp-selectBox {
-  position: relative;
+    position: relative;
 }
 
 .bpxp-selectBox select {
-  width: 100%;
-  font-weight: bold;
+    width: 100%;
+    font-weight: bold;
 }
 
 .bpxp-overSelect {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 
 .bpxp-checkboxes {
-  display: none;
-  border: 1px #dadada solid;
+    display: none;
+    border: 1px #dadada solid;
 }
 
 .bpxp-checkboxes label {
-  display: block;
+    display: block;
+    padding: 5px;
 }
 
 .bpxp-checkboxes label:hover {
-  background-color: #1e90ff;
-}
-.bpxp-admin-settings-spinner , .bpxp-admin-button-spinner{
-	display:none;
-}
-/* message box container */
-.bpxp-admin-notice-box{
-  margin-left:13%;
-  width:40%;
-}
-.bpxp-error-message{
-  background-color: hsl(0, 43%, 91%);
-  border:1px solid hsl(348, 83%, 47%);
-  color: hsl(1, 44%, 46%);
-}
-.bpxp-success-message{
-  background-color: hsl(103, 44%, 89%);
-  border: 1px solid hsl(121, 33%, 35%);
-  color: hsl(121, 33%, 35%);
-}
-.bpxp-success-message .bpxp-close{
-  color: hsl(121, 33%, 35%);
-}
-.bpxp-error-message .bpxp-close{
-  color: hsl(1, 44%, 46%);
+    background-color: #1e90ff;
 }
 
-#bpxp_header_close{
- color: hsl(0, 0%, 100%);
-	float: right;
+.bpxp-admin-settings-spinner,
+.bpxp-admin-button-spinner {
+    display: none;
 }
-.bpxp-message{
-  border-radius: 3px;
-  font-weight: bold;
-  margin-left: 10px;
-  padding: 10px;
-  width: 50%;
+
+
+/* message box container */
+
+.bpxp-admin-notice-box {
+    margin-left: 13%;
+    width: 40%;
 }
-.bpxp-admin-label{
-	font-weight:bold;
-	font-size:16px;
+
+.bpxp-error-message {
+    background-color: hsl(0, 43%, 91%);
+    border: 1px solid hsl(348, 83%, 47%);
+    color: hsl(1, 44%, 46%);
 }
-.bpxp-notice{
-	padding:0!important;
+
+.bpxp-success-message {
+    background-color: hsl(103, 44%, 89%);
+    border: 1px solid hsl(121, 33%, 35%);
+    color: hsl(121, 33%, 35%);
 }
+
+.bpxp-success-message .bpxp-close {
+    color: hsl(121, 33%, 35%);
+}
+
+.bpxp-error-message .bpxp-close {
+    color: hsl(1, 44%, 46%);
+}
+
+#bpxp_header_close {
+    color: hsl(0, 0%, 100%);
+    float: right;
+}
+
+.bpxp-message {
+    border-radius: 3px;
+    font-weight: bold;
+    margin-left: 10px;
+    padding: 10px;
+    width: 50%;
+}
+
+.bpxp-admin-label {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.bpxp-notice {
+    padding: 0!important;
+}
+
 
 /*----------------------------------------------
  Maping group fields css on member import page admin
 -----------------------------------------------*/
-.bpxp-maping{
-  padding-top:0px!important;
-}
-.bpxp-admin-table{
-  width:70%;
-  margin:0px 10px;
-}
-.bpxp-admin-table th{
-  text-align:left;
-  padding:10px 0px;
-}
-tr.bpxp-group-heading{
-  font-weight: bold;
+
+.bpxp-maping {
+    padding-top: 0px!important;
 }
 
-tr.bpxp-group-fields{
+.bpxp-admin-table {
+    width: 70%;
+    margin: 0px 10px;
 }
 
-.bpxp-admin-table td span{
-  font-size:14px;
+.bpxp-admin-table th {
+    text-align: left;
+    padding: 10px 0px;
 }
-.bpxp-close{
-  float: right;
-  font-size: 16px;
-  font-weight: normal;
-  margin-top: -2px;
-  text-decoration: none;
+
+tr.bpxp-group-heading {
+    font-weight: bold;
 }
-.bpxp-close:hover{
-  color:white;
+
+tr.bpxp-group-fields {}
+
+.bpxp-admin-table td span {
+    font-size: 14px;
 }
-.bpxp-error-border{
-   border-color: hsl(0, 100%, 50%);
+
+.bpxp-close {
+    float: right;
+    font-size: 16px;
+    font-weight: normal;
+    margin-top: -2px;
+    text-decoration: none;
 }
-select.bpxp_csv_fields{
-	min-width:175px;
+
+.bpxp-close:hover {
+    color: white;
+}
+
+.bpxp-error-border {
+    border-color: hsl(0, 100%, 50%);
+}
+
+select.bpxp_csv_fields {
+    min-width: 175px;
 }
