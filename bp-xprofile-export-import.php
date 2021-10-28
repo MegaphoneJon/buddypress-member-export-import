@@ -67,7 +67,7 @@ if ( ! function_exists( 'bpxp_admin_page_link' ) ) {
 
 if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 
-	add_action( 'admin_init', 'bpxp_plugins_files' );
+	add_action( 'plugins_loaded', 'bpxp_plugins_files' );
 
 	/**
 	 * Include requir files
@@ -76,16 +76,25 @@ if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 	 * @since    1.0.0
 	 */
 	function bpxp_plugins_files() {
-		if ( current_user_can( 'activate_plugins' ) && ! class_exists( 'BuddyPress' ) ) {
-			add_action( 'admin_notices', 'bpxp_admin_notice' );
-			add_action( 'admin_init', 'bpxp_deacticate_plugin' );
-		} else {
+		if ( class_exists( 'BuddyPress' ) ) {
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bpxp_admin_page_link' );
 			bpxp_run_bp_xprofile_export_import();
 		}
 	}
 }
 
+/**
+ * Function to check dependent plugin and print notice
+ *
+ * @since 1.3.0
+ */
+function bpxp_check_dependent_plugin() {
+	if ( ! class_exists( 'BuddyPress' ) ) {
+		add_action( 'admin_notices', 'bpxp_admin_notice' );
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+	}
+}
+add_action( 'admin_init', 'bpxp_check_dependent_plugin' );
 
 /**
  * Function to through notice when buddypress plugin is not activated.
@@ -105,17 +114,7 @@ function bpxp_admin_notice() {
 	}
 }
 
-/**
- * Function to deactivate this plugin if already activate.
- *
- * @since 1.3.0
- */
-function bpxp_deacticate_plugin() {
-	// Check to see if plugin is already active.
-	if ( is_plugin_active( plugin_basename( __FILE__ ) ) ) {
-		deactivate_plugins( plugin_basename( __FILE__ ) );
-	}
-}
+
 
 
 /**
