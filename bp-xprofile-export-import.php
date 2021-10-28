@@ -76,8 +76,9 @@ if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 	 * @since    1.0.0
 	 */
 	function bpxp_plugins_files() {
-		if ( ! class_exists( 'BuddyPress' ) ) {
+		if ( current_user_can( 'activate_plugins' ) && ! class_exists( 'BuddyPress' ) ) {
 			add_action( 'admin_notices', 'bpxp_admin_notice' );
+			add_action( 'admin_init', 'bpxp_deacticate_plugin' );
 		} else {
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bpxp_admin_page_link' );
 			bpxp_run_bp_xprofile_export_import();
@@ -85,21 +86,37 @@ if ( ! function_exists( 'bpxp_plugins_files' ) ) {
 	}
 }
 
-if ( ! function_exists( 'bpxp_admin_notice' ) ) {
-	/**
-	 * Display admin notice
-	 *
-	 * @author   Wbcom Designs
-	 * @since    1.0.0
-	 */
-	function bpxp_admin_notice() {
-		?>
-		<div class="error notice is-dismissible">
-			<p><?php esc_html_e( 'The Buddypress Member Export Import plugin requires Buddypress or Buddyboss plugin to be installed and active', 'bp-xprofile-export-import' ); ?></p>
-		</div>
-		<?php
+
+/**
+ * Function to through notice when buddypress plugin is not activated.
+ *
+ * @since 1.3.0
+ */
+function bpxp_admin_notice() {
+	$bpcp_plugin = 'Buddypress Member Export Import';
+	$bp_plugin   = 'BuddyPress';
+
+	echo '<div class="error"><p>'
+	. sprintf( esc_attr( '%1$s is ineffective as it requires %2$s to be installed and active.', 'bp-xprofile-export-import' ), '<strong>' . esc_html( $bpcp_plugin ) . '</strong>', '<strong>' . esc_html( $bp_plugin ) . '</strong>' )
+	. '</p></div>';
+	if ( null !== filter_input( INPUT_GET, 'activate' ) ) {
+		$activate = filter_input( INPUT_GET, 'activate' );
+		unset( $activate );
 	}
 }
+
+/**
+ * Function to deactivate this plugin if already activate.
+ *
+ * @since 1.3.0
+ */
+function bpxp_deacticate_plugin() {
+	// Check to see if plugin is already active.
+	if ( is_plugin_active( plugin_basename( __FILE__ ) ) ) {
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+	}
+}
+
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -127,10 +144,9 @@ function bpxp_run_bp_xprofile_export_import() {
  */
 
 add_action( 'activated_plugin', 'bpxp_activation_redirect_settings' );
-function bpxp_activation_redirect_settings( $plugin ){
-
-	if( $plugin == plugin_basename( __FILE__ ) ) {
-		wp_redirect( admin_url( 'admin.php?page=bpxp-member-export-import' ) ) ;
+function bpxp_activation_redirect_settings( $plugin ) {
+	if ( class_exists( 'BuddyPress' ) && $plugin == plugin_basename( __FILE__ ) ) {
+		wp_redirect( admin_url( 'admin.php?page=bpxp-member-export-import' ) );
 		exit;
 	}
 }
