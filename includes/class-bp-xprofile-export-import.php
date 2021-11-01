@@ -207,6 +207,8 @@ class Bp_Xprofile_Export_Import {
 		$this->loader->add_action( 'wp_ajax_bpxp_import_csv_data', $plugin_admin, 'bpxp_import_csv_member_data' );
 	}
 
+
+
 	/**
 	 * Bpxp_plugin_updater
 	 *

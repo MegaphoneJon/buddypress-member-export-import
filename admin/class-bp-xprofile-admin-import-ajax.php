@@ -182,7 +182,7 @@ class Bp_Xprofile_Admin_Import_Ajax {
 			$pass_encrypte                  = ( isset( $_POST['pass_encrypte'] ) ) ? sanitize_text_field( wp_unslash( $_POST['pass_encrypte'] ) ) : '';
 			$bpxp_members_data              = '';
 			if ( ! empty( $_POST['bpxp_csv_file'] ) ) {
-				$bpxp_members_data = wp_unslash( $_POST['bpxp_csv_file'] );// phpcs:ignore
+				$bpxp_members_data = wp_unslash( $_POST['bpxp_csv_file'] );// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 				if ( count( $bpxp_members_data[0] ) == 1 ) {
 					unset( $bpxp_members_data[0] );
 				}
