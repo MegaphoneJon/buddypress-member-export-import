@@ -63,12 +63,12 @@ class Bp_Xprofile_Admin_Export_Ajax {
 		* Check ajax nonce security.
 		*/
 		check_ajax_referer( 'bpxp_ajax_request', 'bpxp_fields_nonce' );
-
-		if ( isset( $_POST['action'] ) && 'bpxp_get_export_xprofile_fields' === $_POST['action'] ) {
+		$fields = '<label for="bpxp-msg">Select Fields Group Type First.</label>';
+		if ( isset( $_POST['action'] ) && isset( $_POST['bpxp_field_group_id'] ) && 'bpxp_get_export_xprofile_fields' === $_POST['action'] ) {
 			$bpxp_field_group_id = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxp_field_group_id'] ) );
-
+			$fields              = '';
 			if ( ! empty( $bpxp_field_group_id ) ) {
-				$fields = '';
+
 				if ( in_array( 'all-fields-group', $bpxp_field_group_id, true ) ) {
 					$bpxp_all_xprofile_fields = BP_XProfile_Group::get( array( 'fetch_fields' => true ) );
 					if ( ! empty( $bpxp_all_xprofile_fields ) ) {
@@ -76,7 +76,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 						foreach ( $bpxp_all_xprofile_fields as $bpxp_fields_key => $bpxp_fields_value ) {
 							if ( ! empty( $bpxp_fields_value->fields ) ) {
 								foreach ( $bpxp_fields_value->fields as $bpxp_fields_data ) {
-									$fields .= '<label for="' . esc_attr( $bpxp_fields_data->name ) . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . esc_attr( $bpxp_fields_data->name ) . '"/>' . esc_html__( $bpxp_fields_data->name, 'bp-xprofile-export-import' ) . '</label>';
+									$fields .= '<label for="' . esc_attr( $bpxp_fields_data->name ) . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . esc_attr( $bpxp_fields_data->name ) . '"/>' . esc_html( $bpxp_fields_data->name ) . '</label>';
 								}
 							}
 						}
@@ -95,16 +95,16 @@ class Bp_Xprofile_Admin_Export_Ajax {
 						foreach ( $bpxp_get_xprofile_fields as $bpxp_fields_key => $bpxp_fields_value ) {
 							if ( ! empty( $bpxp_fields_value->fields ) && in_array( $bpxp_fields_value->id, $bpxp_gid ) ) {
 								foreach ( $bpxp_fields_value->fields as $bpxp_fields_data ) {
-									$fields .= '<label for="' . esc_attr( $bpxp_fields_data->name ) . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . esc_attr( $bpxp_fields_data->name ) . '"/>' . esc_html__( $bpxp_fields_data->name, 'bp-xprofile-export-import' ) . '</label>';
+									$fields .= '<label for="' . esc_attr( $bpxp_fields_data->name ) . '"><input type="checkbox" name="bpxp_xprofile_fields[]" class="bpxp-single-profile" value="' . esc_attr( $bpxp_fields_data->name ) . '"/>' . esc_html( $bpxp_fields_data->name ) . '</label>';
 								}
 							}
 						}
 					}
 				}
 			}
-			echo $fields;
-			die;
 		}
+		$response = array( 'data' => $fields );
+		return wp_send_json_success( $response );
 	}
 
 	/**
@@ -119,7 +119,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 		* Check ajax nonce security.
 		*/
 		check_ajax_referer( 'bpxp_ajax_request', 'bpxp_members_nonce' );
-		if ( isset( $_POST['action'] ) && 'bpxp_export_xprofile_data' === $_POST['action'] ) {
+		if ( isset( $_POST['action'] ) && isset( $_POST['bpxpj_bpmember'] ) && isset( $_POST['bpxpj_field_group'] ) && isset( $_POST['bpxpj_xprofile_fields'] ) && 'bpxp_export_xprofile_data' === $_POST['action'] ) {
 			$bpxp_bpmember_id      = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_bpmember'] ) );
 			$bpxp_field_group_id   = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_field_group'] ) );
 			$bpxp_xpro_fields_name = array_map( 'sanitize_text_field', wp_unslash( $_POST['bpxpj_xprofile_fields'] ) );
@@ -221,7 +221,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 			case 'user_id':
 				if ( ! empty( $array_data ) ) {
 					$bpxp_id_index = array_search( 'bpxp-all-user', $array_data, true );
-					if ( 'bpxp-all-user' == $bpxp_id_index ) {
+					if ( 'bpxp-all-user' === $bpxp_id_index ) {
 						unset( $array_data[ $bpxp_id_index ] );
 					}
 					return $array_data;
@@ -230,7 +230,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 			case 'group_id':
 				if ( ! empty( $array_data ) ) {
 					$bpxp_id_index = array_search( 'all-fields-group', $array_data, true );
-					if ( 'all-fields-group' == $bpxp_id_index ) {
+					if ( 'all-fields-group' === $bpxp_id_index ) {
 						unset( $array_data[ $bpxp_id_index ] );
 					}
 					return $array_data;
@@ -239,7 +239,7 @@ class Bp_Xprofile_Admin_Export_Ajax {
 			case 'fields_name':
 				if ( ! empty( $array_data ) ) {
 					$bpxp_id_index = array_search( 'all-xprofile-fields', $array_data, true );
-					if ( 'all-xprofile-fields' == $bpxp_id_index ) {
+					if ( 'all-xprofile-fields' === $bpxp_id_index ) {
 						unset( $array_data[ $bpxp_id_index ] );
 					}
 					return $array_data;

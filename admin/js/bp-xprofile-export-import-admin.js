@@ -110,7 +110,7 @@
 					'bpxp_fields_nonce' 	: bpxp_ajax_url.ajax_nonce
 				},
 				function(response) {
-					jQuery( '#bpxp_xprofile_fileds_data' ).html( response );
+					jQuery( '#bpxp_xprofile_fileds_data' ).html( response.data.data );
 					jQuery( '.bpxp-admin-settings-spinner' ).css( 'display' , 'none' );
 				}
 			);
@@ -160,7 +160,6 @@
 							var temp = bpxpj_csvHeader[i].split( "," );
 							bpxpj_csvData.push( temp );
 						}
-						console.log( bpxpj_csvData );
 						jQuery( '.bpxp-admin-settings-spinner' ).css( 'display' , 'block' );
 						jQuery.post(
 							bpxp_ajax_url.ajaxurl,
@@ -170,8 +169,7 @@
 								'bpxp_header_nonce' 	: bpxp_ajax_url.ajax_nonce
 							},
 							function(response) {
-								console.log( response );
-								jQuery( '#upload_csv' ).after( response );
+								jQuery( '#upload_csv' ).after( response.data.data );
 								jQuery( '#bpxp_import_xprofile_data' ).removeAttr( "disabled", "disabled" );
 								jQuery( '.bpxp-admin-settings-spinner' ).css( 'display' , 'none' );
 							}
@@ -317,7 +315,6 @@
 						'bpxp_members_nonce' 	: bpxp_ajax_url.ajax_nonce
 					},
 					function(response) {
-						console.log( response );
 						jQuery( '#bpxp_export_fields' ).before( '<p id="bpxp_export_message" class="bpxp-success-message bpxp-message"> Successfully! CSV File Exported </p>' );
 						JSONToCSVConvertor( response );
 					}

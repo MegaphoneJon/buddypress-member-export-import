@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -208,6 +207,11 @@ class Bp_Xprofile_Export_Import {
 		$this->loader->add_action( 'wp_ajax_bpxp_import_csv_data', $plugin_admin, 'bpxp_import_csv_member_data' );
 	}
 
+	/**
+	 * Bpxp_plugin_updater
+	 *
+	 * @return void
+	 */
 	public function bpxp_plugin_updater() {
 		$bpep_export_impoer_updater = Puc_v4_Factory::buildUpdateChecker(
 			'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-member-export-import.json',

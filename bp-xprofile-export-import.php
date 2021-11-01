@@ -106,7 +106,8 @@ function bpxp_admin_notice() {
 	$bp_plugin   = 'BuddyPress';
 
 	echo '<div class="error"><p>'
-	. sprintf( esc_attr( '%1$s is ineffective as it requires %2$s to be installed and active.', 'bp-xprofile-export-import' ), '<strong>' . esc_html( $bpcp_plugin ) . '</strong>', '<strong>' . esc_html( $bp_plugin ) . '</strong>' )
+	/* translators: %s: */
+	. sprintf( esc_html__( '%1$s is ineffective as it requires %2$s to be installed and active.', 'bp-xprofile-export-import' ), '<strong>' . esc_html( $bpcp_plugin ) . '</strong>', '<strong>' . esc_html( $bp_plugin ) . '</strong>' )
 	. '</p></div>';
 	if ( null !== filter_input( INPUT_GET, 'activate' ) ) {
 		$activate = filter_input( INPUT_GET, 'activate' );
@@ -139,12 +140,18 @@ function bpxp_run_bp_xprofile_export_import() {
 
 
 /**
- * redirect to plugin settings page after activated
+ * Redirect to plugin settings page after activated
  */
 
 add_action( 'activated_plugin', 'bpxp_activation_redirect_settings' );
+/**
+ * Bpxp_activation_redirect_settings
+ *
+ * @param  mixed $plugin plugin.
+ * @return void
+ */
 function bpxp_activation_redirect_settings( $plugin ) {
-	if ( class_exists( 'BuddyPress' ) && $plugin == plugin_basename( __FILE__ ) ) {
+	if ( class_exists( 'BuddyPress' ) && plugin_basename( __FILE__ ) == $plugin ) {
 		wp_redirect( admin_url( 'admin.php?page=bpxp-member-export-import' ) );
 		exit;
 	}

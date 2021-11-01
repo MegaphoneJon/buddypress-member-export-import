@@ -144,14 +144,13 @@ class Bp_Xprofile_Export_Import_Admin {
 	 * Callback function for bp member xprofile export import settings page.
 	 *
 	 * @since    1.0.0
-	 * @param    string $current       The current tab.
 	 */
 	public function bpxp_member_export_import_settings_page() {
-		$current = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'welcome';
+		$current = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'welcome';
 		?>
 		<div class="wrap">
-                <hr class="wp-header-end">
-                <div class="wbcom-wrap">
+				<hr class="wp-header-end">
+				<div class="wbcom-wrap">
 		<div class="blpro-header">
 			<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 			<h1 class="wbcom-plugin-heading">
@@ -161,7 +160,7 @@ class Bp_Xprofile_Export_Import_Admin {
 		<div class="wbcom-admin-settings-page">
 		<?php
 		$bpxp_tabs = array(
-			'welcome' => __( 'Welcome', 'bp-xprofile-export-import' ),
+			'welcome'        => __( 'Welcome', 'bp-xprofile-export-import' ),
 			'members_export' => __( 'Members Export', 'bp-xprofile-export-import' ),
 			'members_import' => __( 'Members Import', 'bp-xprofile-export-import' ),
 		);
@@ -172,10 +171,10 @@ class Bp_Xprofile_Export_Import_Admin {
 			$tab_html .= '<li><a class="nav-tab ' . $class . '" href="admin.php?page=bpxp-member-export-import&tab=' . $bpxp_tab . '">' . $bpxp_name . '</a></li>';
 		}
 		$tab_html .= '</div></ul></div>';
-		echo $tab_html;
+		echo wp_kses_post( $tab_html );
 		$this->bpxp_plugin_option_pages();
 		echo '</div>'; /* closing of div class wbcom-admin-settings-page */
-                echo '</div>'; /* closing div class wbcom-wrap */
+		echo '</div>'; /* closing div class wbcom-wrap */
 		echo '</div>'; /* closing div class wrap */
 	}
 
@@ -188,7 +187,7 @@ class Bp_Xprofile_Export_Import_Admin {
 	 */
 	public function bpxp_plugin_option_pages() {
 		if ( isset( $_GET['tab'] ) ) {
-			$bpxp_tab = sanitize_text_field( $_GET['tab'] );
+			$bpxp_tab = sanitize_text_field( wp_unslash( $_GET['tab'] ) );
 		} else {
 			$bpxp_tab = 'welcome';
 		}
@@ -202,6 +201,7 @@ class Bp_Xprofile_Export_Import_Admin {
 	 * @since    1.0.0
 	 * @access   public
 	 * @author   Wbcom Designs
+	 * @param bpxp_tab $bpxp_tab bpxp_tab.
 	 */
 	public function bpxp_include_admin_setting_tabs( $bpxp_tab ) {
 		switch ( $bpxp_tab ) {
@@ -220,6 +220,11 @@ class Bp_Xprofile_Export_Import_Admin {
 		}
 	}
 
+	/**
+	 * Bpxp_welcome_page
+	 *
+	 * @return void
+	 */
 	public function bpxp_welcome_page() {
 		include BPXP_PLUGIN_PATH . 'admin/partials/bp-welcome-page.php';
 	}
