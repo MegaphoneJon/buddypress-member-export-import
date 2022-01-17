@@ -391,7 +391,7 @@ function JSONToCSVConvertor(JSONData){
 		var rowText = "";
 
 		for (var index in allData[i]) {
-			rowText += '' + allData[i][index] + ',';
+			rowText += '"' + allData[i][index] + '",';
 		}
 
 		rowText.slice( 0, rowText.length - 1 );
